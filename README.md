@@ -7,4 +7,4 @@ The stylized graphs below show some very simple examples of the kind of light sc
 ![Graph showing brightness over the course of a day with a simple schedule generated using the TimeGiver framework](/images/illustrations/livingroombrightnessillustration.png)
 
 ## Attributions
-TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health.  Questions and comments can be directed to Timothy Lee, @timotheonpaulonlee on Github.
+TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health.  Questions and comments can be directed to Timothy Lee, @timotheonpaulonlee on Github or linkedin.com/in/timothy-paul-lee/.
