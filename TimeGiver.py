@@ -59,7 +59,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_length_bright_yellow = float (90), #set_length_bright_yellow is the length of the evening sunset routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dusk.
     rise_length_bright_blue = float (60), #rise_length_bright_blue is the length of the morning sunrise routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dawn.
     set_length_bright_blue = float (180), #set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.
-):
+ ):
     now = datetime.datetime.now() #sets the variable now equal to the current date and time
     hh = int (now.strftime("%H")) #sets the variable hh equal to the number of hours that have passed since the day started.
     hh_sixty = (hh * 60) #sets the variable hh_sixty equal to the number of minutes in the day at the time of the last hour change.
@@ -123,10 +123,6 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     else:
         set_length_scatdist_flt = float (set_length_scatdist)
 
-    set_length_CCT_flt = float (half_day_length) #length of color temperature bed routine in minutes
-    rise_length_scatdist_flt = float (half_day_length) #length of scattering distance wake routine in minutes
-    set_length_scatdist_flt = float (half_day_length) #length of scattering distance bed routine in minutes
-
     rise_length_scatangshift_flt = float (rise_length_scatangshift) #length of scattering angle shift wake routine in minutes
     set_length_scatangshift_flt = float (set_length_scatangshift) #length of scattering angle shift bed routine in minutes
     rise_length_bright_yellow_flt = float (rise_length_bright_yellow) #length of yellow brightness wake routine in minutes
@@ -186,10 +182,10 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_CCT_int = int (set_CCT)
     min_CCT_int = int (min_CCT_flt)
 
-    max_scatdist_CCT_int = int (max_scatdist_flt)
-    rise_scatdist_CCT_int = int (rise_scatdist)
-    set_scatdist_CCT_int = int (set_scatdist)
-    min_scatdist_CCT_int = int (min_scatdist_flt)
+    max_scatdist_int = int (max_scatdist_flt)
+    rise_scatdist_int = int (rise_scatdist)
+    set_scatdist_int = int (set_scatdist)
+    min_scatdist_int = int (min_scatdist_flt)
 
     max_bright_yellow_int = int (max_bright_yellow_flt * 254)
     rise_bright_yellow_int = int (rise_bright_yellow * 254)
@@ -204,86 +200,86 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     #This next part consists of most of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
 
     #Setting bright_int to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         bright_int = min_bright_int
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_flt) > 0:
         bright_int = rise_bright_int
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_bright_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_bright_flt) > 0:
         bright_int = max_bright_int
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_int = set_bright_int
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_int = min_bright_int
         #print ('Time is after bed')
 
     #Setting CCT_int to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         CCT_int = min_CCT_int
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_CCT_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_CCT_flt) > 0:
         CCT_int = rise_CCT_int
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_CCT_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_CCT_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_CCT_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_CCT_flt) > 0:
         CCT_int = max_CCT_int
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_CCT_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_CCT_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_CCT_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_CCT_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
         CCT_int = set_CCT_int
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_CCT_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_CCT_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_CCT_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_CCT_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
         CCT_int = min_CCT_int
         #print ('Time is after bed')
 
-    #Setting scatdist_CCT_int to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
-        scatdist_CCT_int = min_scatdist_CCT_int
+    #Setting scatdist_int to appropriate value based on day segment
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
+        scatdist_int = min_scatdist_int
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_scatdist_flt) > 0:
-        scatdist_CCT_int = rise_scatdist_CCT_int
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_scatdist_flt) > 0:
+        scatdist_int = rise_scatdist_int
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatdist_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_scatdist_flt) > 0:
-        scatdist_CCT_int = max_scatdist_CCT_int
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatdist_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_scatdist_flt) > 0:
+        scatdist_int = max_scatdist_int
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatdist_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_scatdist_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
-        scatdist_CCT_int = set_scatdist_CCT_int
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatdist_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_scatdist_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
+        scatdist_int = set_scatdist_int
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatdist_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_scatdist_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
-        scatdist_CCT_int = min_scatdist_CCT_int
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatdist_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_scatdist_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
+        scatdist_int = min_scatdist_int
         #print ('Time is after bed')
 
     #Setting scatangshift_flt to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         scatangshift_flt = float (max_scatangshift_flt)
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_scatangshift_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_scatangshift_flt) > 0:
         scatangshift_flt = float (rise_scatangshift)
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatangshift_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_scatangshift_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatangshift_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_scatangshift_flt) > 0:
         scatangshift_flt = float (min_scatangshift_flt)
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatangshift_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_scatangshift_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatangshift_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_scatangshift_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
         scatangshift_flt = float (set_scatangshift)
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_scatangshift_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_scatangshift_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_scatangshift_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_scatangshift_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
         scatangshift_flt = float (max_scatangshift_flt)
         #print ('Time is after bed')
 
@@ -291,7 +287,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     #In a nutshell, this part finds the xy values for the main white color temperature and a somewhat warmer color temperature and then finds a blue point exactly opposite on the other side of the central white point from the warmer white point.
     #Lastly, the warm white point is shifted up to make it more yellow and the blue point shifted down to make it more blue by an angle that increases at sunrise and sunset
     white_CCT_str = str (CCT_int)
-    yellow_CCT_str = str (CCT_int - scatdist_CCT_int)
+    yellow_CCT_str = str (CCT_int - scatdist_int)
 
     if int (white_CCT_str) > 1000: #These if statements ensure that a meaningless number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
         white_x_flt = float (x_transform_dict.get(white_CCT_str))
@@ -325,44 +321,44 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     #This next part consists of more of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
     
     #Setting bright_yellow_int to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         bright_yellow_int = min_bright_yellow_int
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_yellow_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_yellow_flt) > 0:
         bright_yellow_int = rise_bright_yellow_int
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_yellow_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_bright_yellow_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_yellow_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_bright_yellow_flt) > 0:
         bright_yellow_int = max_bright_yellow_int
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_yellow_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_yellow_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_yellow_int = set_bright_yellow_int
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_yellow_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_yellow_int = min_bright_yellow_int
         #print ('Time is after bed')
 
     ##Setting bright_blue_int to appropriate value based on day segment
-    if not float (hm - wake_time_flt - wake_offset_flt) > 0:
+    if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         bright_blue_int = min_bright_blue_int
         #print ('Time is before wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and not float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_blue_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and not float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_blue_flt) > 0:
         bright_blue_int = rise_bright_blue_int
         #print ('Time is during wake up')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_blue_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt + set_length_bright_blue_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_blue_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt + set_length_bright_blue_flt) > 0:
         bright_blue_int = max_bright_blue_int
         #print ('Time is after wake up and before bed')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_blue_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_blue_flt) > 0 and not float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_blue_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_blue_flt) > 0 and not float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_blue_int = set_bright_blue_int
         #print ('Time is during bed time')
 
-    elif float (hm - wake_time_flt - wake_offset_flt) > 0 and float (hm - wake_time_flt - wake_offset_flt - rise_length_bright_blue_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt + set_length_bright_blue_flt) > 0 and float (hm - bed_time_flt - bed_offset_flt) > 0:
+    elif float (hm - wake_time_flt + wake_offset_flt) > 0 and float (hm - wake_time_flt + wake_offset_flt - rise_length_bright_blue_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt + set_length_bright_blue_flt) > 0 and float (hm - bed_time_flt + bed_offset_flt) > 0:
         bright_blue_int = min_bright_blue_int
         #print ('Time is after bed')
 
