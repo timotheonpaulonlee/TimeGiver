@@ -3,7 +3,7 @@
 
 ## Illustrations
 The stylized graphs below show some very simple examples of the kind of light scheduling information that can be generated on the fly using TimeGiver.
-![Graph showing color temperature over the course of a day with a simple schedule generated using the TimeGiver framework](/images/illustrations/Bathroom TimeGiver Demo 20 sec.gif)
+![Graph showing color temperature over the course of a day with a simple schedule generated using the TimeGiver framework](/images/illustrations/BathroomTimeGiverDemo20sec.gif)
 ![Graph showing color temperature over the course of a day with a simple schedule generated using the TimeGiver framework](/images/illustrations/livingroomcctillustration.png)
 ![Graph showing brightness over the course of a day with a simple schedule generated using the TimeGiver framework](/images/illustrations/livingroombrightnessillustration.png)
 
