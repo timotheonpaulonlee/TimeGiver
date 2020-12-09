@@ -43,6 +43,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_bright_yellow = float (0), #set_slope_bright_yellow describes the slope at which brightness of a yellow light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     rise_slope_bright_blue = float (0), #rise_slope_bright_blue describes the slope at which brightness of a blue light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     set_slope_bright_blue = float (0), #set_slope_bright_blue describes the slope at which brightness of a blue light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+    time = float (0), #time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1
     wake_time = float (420), #wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time
     bed_time = float (1320), #bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight
     wake_offset = float (30), #wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
@@ -60,12 +61,18 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     rise_length_bright_blue = float (60), #rise_length_bright_blue is the length of the morning sunrise routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dawn.
     set_length_bright_blue = float (180), #set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.
  ):
-    now = datetime.datetime.now() #sets the variable now equal to the current date and time
-    hh = int (now.strftime("%H")) #sets the variable hh equal to the number of hours that have passed since the day started.
-    hh_sixty = (hh * 60) #sets the variable hh_sixty equal to the number of minutes in the day at the time of the last hour change.
-    mm = float ((now.strftime("%M"))) #sets the variable mm equal to the number of minutes since the last hour
-    hm = float (hh_sixty + mm) #sets the variable hm equal to the total number of minutes that have passed since the day began.
 
+    if time > 1: #This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
+        hm = float (time) #length of color temperature wake routine in minutes
+    else: 
+        now = datetime.datetime.now() #sets the variable now equal to the current date and time
+        hh = int (now.strftime("%H")) #sets the variable hh equal to the number of hours that have passed since the day started.
+        hh_sixty = (hh * 60) #sets the variable hh_sixty equal to the number of minutes in the day at the time of the last hour change.
+        mm = float ((now.strftime("%M"))) #sets the variable mm equal to the number of minutes since the last hour
+        hm = float (hh_sixty + mm) #sets the variable hm equal to the total number of minutes that have passed since the day began.
+
+
+    
     max_bright_flt = float (max_bright) #maximum brightness as a decimal
     min_bright_flt = float (min_bright) #minimum brightness as a decimal
     max_CCT_flt = float (max_CCT) #maximum color temperature in kelvins
@@ -148,7 +155,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_bright_exp2 = float (set_slope_bright_exp1/-100) #slope exponent for brightness
     set_slope_CCT_exp1 = float ((set_slope_CCT_flt - 100))
     set_slope_CCT_exp2 = float (set_slope_CCT_exp1/-100) #slope exponent for color temperature
-    set_slope_scatdist_exp1 = float ((set_slope_scatdist_flt - 100))
+    set_slope_scatdist_exp1 = float ((set_slope_scatdist_flt - 100))   
     set_slope_scatdist_exp2 = float (set_slope_scatdist_exp1/-100) #slope exponent for scattering distance
     set_slope_scatangshift_exp1 = float ((set_slope_scatdist_flt - 100))
     set_slope_scatangshift_exp2 = float (set_slope_scatdist_exp1/-100) #slope exponent for scattering angle shift
@@ -158,17 +165,17 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_bright_blue_exp2 = float (set_slope_bright_blue_exp1/-100) #slope exponent for blue brightness
 
     #These are the final formulas that define the lighting parameters during periods of change
-    rise_bright = float ((((hm - wake_time_flt - wake_offset_flt)/rise_length_bright_flt) ** (rise_slope_bright_exp2)) * (max_bright_flt - min_bright_flt) + min_bright_flt) #brightness as a decimal during wake routine
-    rise_CCT = float ((((hm - wake_time_flt - wake_offset_flt)/rise_length_CCT_flt) ** (rise_slope_CCT_exp2)) * (max_CCT_flt - min_CCT_flt) + min_CCT_flt) #color temperature in kelvin during wake routine
+    rise_bright = float ((((hm - wake_time_flt + wake_offset_flt)/rise_length_bright_flt) ** (rise_slope_bright_exp2)) * (max_bright_flt - min_bright_flt) + min_bright_flt) #brightness as a decimal during wake routine
+    rise_CCT = float ((((hm - wake_time_flt + wake_offset_flt)/rise_length_CCT_flt) ** (rise_slope_CCT_exp2)) * (max_CCT_flt - min_CCT_flt) + min_CCT_flt) #color temperature in kelvin during wake routine
     set_bright = float ((((bed_time_flt - bed_offset_flt - hm)/set_length_bright_flt) ** (set_slope_bright_exp2)) * (max_bright_flt - min_bright_flt) + min_bright_flt) #brightness as a decimal during bed routine
     set_CCT = float ((((bed_time_flt - bed_offset_flt - hm)/set_length_CCT_flt) ** (set_slope_CCT_exp2)) * (max_CCT_flt - min_CCT_flt) + min_CCT_flt) #color temperature in kelvin during bed routine
-    rise_scatdist = float ((((hm - wake_time_flt - wake_offset_flt)/rise_length_scatdist_flt) ** (rise_slope_scatdist_exp2)) * (max_scatdist_flt - min_scatdist_flt) + min_scatdist_flt) #scattering distance in kelvin during wake routine
+    rise_scatdist = float ((((hm - wake_time_flt + wake_offset_flt)/rise_length_scatdist_flt) ** (rise_slope_scatdist_exp2)) * (max_scatdist_flt - min_scatdist_flt) + min_scatdist_flt) #scattering distance in kelvin during wake routine
     set_scatdist = float ((((bed_time_flt - bed_offset_flt - hm)/set_length_scatdist_flt) ** (set_slope_scatdist_exp2)) * (max_scatdist_flt - min_scatdist_flt) + min_scatdist_flt) #scattering distance in kelvin during bed routine
-    rise_scatangshift = float (-1 * ((((hm - wake_time_flt - wake_offset_flt)/rise_length_scatangshift_flt) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift_flt - min_scatangshift_flt) + min_scatangshift_flt) + max_scatangshift_flt) #scattering angle shift in degrees during wake routine
+    rise_scatangshift = float (-1 * ((((hm - wake_time_flt + wake_offset_flt)/rise_length_scatangshift_flt) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift_flt - min_scatangshift_flt) + min_scatangshift_flt) + max_scatangshift_flt) #scattering angle shift in degrees during wake routine
     set_scatangshift = float (-1 * ((((bed_time_flt - bed_offset_flt - hm)/set_length_scatangshift_flt) ** (set_slope_scatangshift_exp2)) * (max_scatangshift_flt - min_scatangshift_flt) + min_scatangshift_flt) + max_scatangshift_flt) #scattering angle shift in degrees during bed routine
-    rise_bright_yellow = float ((((hm - wake_time_flt - wake_offset_flt)/rise_length_bright_yellow_flt) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow_flt - min_bright_yellow_flt) + min_bright_yellow_flt) #brightness as a decimal during wake routine
+    rise_bright_yellow = float ((((hm - wake_time_flt + wake_offset_flt)/rise_length_bright_yellow_flt) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow_flt - min_bright_yellow_flt) + min_bright_yellow_flt) #brightness as a decimal during wake routine
     set_bright_yellow = float ((((bed_time_flt - bed_offset_flt - hm)/set_length_bright_yellow_flt) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow_flt - min_bright_yellow_flt) + min_bright_yellow_flt) #brightness as a decimal during bed routine
-    rise_bright_blue = float ((((hm - wake_time_flt - wake_offset_flt)/rise_length_bright_blue_flt) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue_flt - min_bright_blue_flt) + min_bright_blue_flt) #brightness as a decimal during wake routine
+    rise_bright_blue = float ((((hm - wake_time_flt + wake_offset_flt)/rise_length_bright_blue_flt) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue_flt - min_bright_blue_flt) + min_bright_blue_flt) #brightness as a decimal during wake routine
     set_bright_blue = float ((((bed_time_flt - bed_offset_flt - hm)/set_length_bright_blue_flt) ** (set_slope_bright_blue_exp2)) * (max_bright_blue_flt - min_bright_blue_flt) + min_bright_blue_flt) #brightness as a decimal during bed routine
 
     #This section takes the outputs from the formulas above and the arguments and converts it into the form and data type needed for the final output
