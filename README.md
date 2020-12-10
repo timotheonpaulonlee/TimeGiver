@@ -8,6 +8,9 @@ This gif shows a very simple light rhythm generated on the fly using TimeGiver a
 ![Graph showing brightness over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoBrightness.png)
 ![Graph showing color temperature over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoCCT.png)
 
+This next gif shows a pair of light strips running a rhythm created using TimeGiver's sunlight simulator feature that produces a blue-yellow color gradient that mimics the changes in sunlight over the course of a sunny day.
+![Animation of a simple daily rhythm created with TimeGiver](/images/illustrations/KitchedTimeGiverDemo.gif)
+
 
 ## Attributions
 TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health.  Questions and comments can be directed to Timothy Lee, @timotheonpaulonlee on Github or linkedin.com/in/timothy-paul-lee/.
