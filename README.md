@@ -8,7 +8,7 @@ This gif shows a very simple light rhythm generated on the fly using TimeGiver a
 ![Graph showing brightness over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoBrightness.png)
 ![Graph showing color temperature over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoCCT.png)
 
-This next gif shows a pair of light strips running a rhythm created using TimeGiver's sunlight simulator feature that produces a blue-yellow color gradient that mimics the changes in sunlight over the course of a sunny day.
+This next gif shows a pair of light strips running a rhythm created using TimeGiver's sunlight simulator feature that produces a blue-yellow color gradient that mimics the changes in sunlight over the course of a sunny day.  The two colors always combine to form a perfect white, guaranteeing good color rendering all day long.  Note that the flashing and lines are visual artifacts created by the camera.
 ![Animation of a simple daily rhythm created with TimeGiver](/images/illustrations/KitchenTimeGiverDemo.gif)
 
 
