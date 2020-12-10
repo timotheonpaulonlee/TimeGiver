@@ -300,15 +300,15 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
         white_x_flt = float (x_transform_dict.get(white_CCT_str))
         white_y_flt = float (y_transform_dict.get(white_CCT_str))
     else:
-        white_x_flt = float (0.5)
-        white_y_flt = float (0.5)
+        white_x_flt = float (0.9)
+        white_y_flt = float (0.9)
 
     if int (yellow_CCT_str) > 1000:
         yellow_x_flt = float (x_transform_dict.get(yellow_CCT_str))
         yellow_y_flt = float (y_transform_dict.get(yellow_CCT_str))
     else:
-        yellow_x_flt = float (0.6)
-        yellow_y_flt = float (0.6)
+        yellow_x_flt = float (0.9)
+        yellow_y_flt = float (0.9)
 
     blue_x_flt = float (white_x_flt - (yellow_x_flt - white_x_flt))
     blue_y_flt = float (white_y_flt - (yellow_y_flt - white_y_flt))
@@ -322,6 +322,8 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
 
     blue_x_shifted_flt = float (white_x_flt - (yellow_x_shifted_flt - white_x_flt))
     blue_y_shifted_flt = float (white_y_flt - (yellow_y_shifted_flt - white_y_flt))
+    print (blue_x_shifted_flt)
+    print (blue_y_shifted_flt)
     
     CCT_mired_int = int (1000000*(1/CCT_int))
 
@@ -371,3 +373,5 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
 
     #Here is the final return command for the function that returns a list of the lighting parameters in the stated order
     return [bright_int, CCT_mired_int, bright_yellow_int, bright_blue_int, yellow_x_shifted_flt, yellow_y_shifted_flt, blue_x_shifted_flt, blue_y_shifted_flt]
+
+TimeGiver()
