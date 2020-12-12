@@ -41,9 +41,9 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_scatangshift = float (0), #set_slope_scatangshift describes the slope at which the angle by which the blue and warm white points are shifted while using the blue-yellow feature decreases over the course of the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     rise_slope_bright_yellow = float (0), #rise_slope_bright_yellow describes the slope at which brightness of a yellow light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     set_slope_bright_yellow = float (0), #set_slope_bright_yellow describes the slope at which brightness of a yellow light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    rise_slope_bright_blue = float (0), #rise_slope_bright_blue describes the slope at which brightness of a blue light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+    rise_slope_bright_blue = float (0), # rise_slope_bright_blue describes the slope at which brightness of a blue light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     set_slope_bright_blue = float (0), #set_slope_bright_blue describes the slope at which brightness of a blue light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    time = float (0), #time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1
+    time = float (0), #time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1, and it is only intended to be used for testing purposes
     wake_time = float (420), #wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time
     bed_time = float (1320), #bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight
     wake_offset = float (30), #wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
@@ -63,7 +63,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
  ):
 
     if time > 1: #This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
-        hm = float (time) #length of color temperature wake routine in minutes
+        hm = float (time) 
     else: 
         now = datetime.datetime.now() #sets the variable now equal to the current date and time
         hh = int (now.strftime("%H")) #sets the variable hh equal to the number of hours that have passed since the day started.
@@ -71,6 +71,14 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
         mm = float ((now.strftime("%M"))) #sets the variable mm equal to the number of minutes since the last hour
         hm = float (hh_sixty + mm) #sets the variable hm equal to the total number of minutes that have passed since the day began.
 
+    if float (float (wake_time) - float (wake_offset) - float (bed_time) + float (bed_offset)) > 0 and float (float (wake_time) - float (wake_offset) - float (hm)) > 0: #This conditional statement allows for proper handling of the edge case in which wake_time is greater than bed_time, i.e. when the user is going to bed after midnight.
+        hm = float (float (hm) + float (1440))
+        bed_time = float (float (bed_time) + float (1440))
+        print ("if wake time greater than bed time")
+
+    elif float (float (wake_time) - float (wake_offset) - float (bed_time) + float (bed_offset)) > 0:
+        bed_time = float (float (bed_time) + float (1440))
+        print ("else wake time greater than bed time")
 
     
     max_bright_flt = float (max_bright) #maximum brightness as a decimal
@@ -110,23 +118,24 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     rise_length_bright_flt = float (rise_length_bright) #length of brightness wake routine in minutes
     set_length_bright_flt = float (set_length_bright) #length of brightness bed routine in minutes
 
+    #This next set of conditional statements allows these variables to default to half of day length, whatever that is, since that tends to work well for these variables
     if rise_length_CCT < 2:
-        rise_length_CCT_flt = float (half_day_length) #length of color temperature wake routine in minutes
+        rise_length_CCT_flt = float (half_day_length)
     else:
         rise_length_CCT_flt = float (rise_length_CCT)
     
     if set_length_CCT < 2:
-        set_length_CCT_flt = float (half_day_length) #length of color temperature wake routine in minutes
+        set_length_CCT_flt = float (half_day_length)
     else:
         set_length_CCT_flt = float (set_length_CCT)
 
     if rise_length_scatdist < 2:
-        rise_length_scatdist_flt = float (half_day_length) #length of color temperature wake routine in minutes
+        rise_length_scatdist_flt = float (half_day_length)
     else:
         rise_length_scatdist_flt = float (rise_length_scatdist)
 
     if set_length_scatdist < 2:
-        set_length_scatdist_flt = float (half_day_length) #length of color temperature wake routine in minutes
+        set_length_scatdist_flt = float (half_day_length)
     else:
         set_length_scatdist_flt = float (set_length_scatdist)
 
@@ -157,8 +166,8 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_CCT_exp2 = float (set_slope_CCT_exp1/-100) #slope exponent for color temperature
     set_slope_scatdist_exp1 = float ((set_slope_scatdist_flt - 100))   
     set_slope_scatdist_exp2 = float (set_slope_scatdist_exp1/-100) #slope exponent for scattering distance
-    set_slope_scatangshift_exp1 = float ((set_slope_scatdist_flt - 100))
-    set_slope_scatangshift_exp2 = float (set_slope_scatdist_exp1/-100) #slope exponent for scattering angle shift
+    set_slope_scatangshift_exp1 = float ((set_slope_scatangshift_flt - 100))
+    set_slope_scatangshift_exp2 = float (set_slope_scatangshift_exp1/-100) #slope exponent for scattering angle shift
     set_slope_bright_yellow_exp1 = float ((set_slope_bright_yellow_flt - 100))
     set_slope_bright_yellow_exp2 = float (set_slope_bright_yellow_exp1/-100) #slope exponent for yellow brightness
     set_slope_bright_blue_exp1 = float ((set_slope_bright_blue_flt - 100))
@@ -296,19 +305,19 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     white_CCT_str = str (CCT_int)
     yellow_CCT_str = str (CCT_int - scatdist_int)
 
-    if int (white_CCT_str) > 1000: #These if statements ensure that a meaningless number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
+    if int (white_CCT_str) > 1000: #These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
         white_x_flt = float (x_transform_dict.get(white_CCT_str))
         white_y_flt = float (y_transform_dict.get(white_CCT_str))
     else:
-        white_x_flt = float (0.9)
-        white_y_flt = float (0.9)
+        white_x_flt = float (x_transform_dict.get("1001"))
+        white_y_flt = float (y_transform_dict.get("1001"))
 
     if int (yellow_CCT_str) > 1000:
         yellow_x_flt = float (x_transform_dict.get(yellow_CCT_str))
         yellow_y_flt = float (y_transform_dict.get(yellow_CCT_str))
     else:
-        yellow_x_flt = float (0.9)
-        yellow_y_flt = float (0.9)
+        yellow_x_flt = float (x_transform_dict.get("1001"))
+        yellow_y_flt = float (y_transform_dict.get("1001"))
 
     blue_x_flt = float (white_x_flt - (yellow_x_flt - white_x_flt))
     blue_y_flt = float (white_y_flt - (yellow_y_flt - white_y_flt))
@@ -322,8 +331,6 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
 
     blue_x_shifted_flt = float (white_x_flt - (yellow_x_shifted_flt - white_x_flt))
     blue_y_shifted_flt = float (white_y_flt - (yellow_y_shifted_flt - white_y_flt))
-    print (blue_x_shifted_flt)
-    print (blue_y_shifted_flt)
     
     CCT_mired_int = int (1000000*(1/CCT_int))
 
@@ -350,7 +357,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
         bright_yellow_int = min_bright_yellow_int
         #print ('Time is after bed')
 
-    ##Setting bright_blue_int to appropriate value based on day segment
+    #Setting bright_blue_int to appropriate value based on day segment
     if not float (hm - wake_time_flt + wake_offset_flt) > 0:
         bright_blue_int = min_bright_blue_int
         #print ('Time is before wake up')
