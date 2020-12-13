@@ -38,6 +38,7 @@ wake_offset is how soon before your intended wake up time your lights should sta
 #### Bed Offset
 bed_offset is how soon before your intended bed time your lights reach nightlight level and may need to be as high as an hour for hard sleepers or as low as 0 for easy sleepers.
 
+
 ### General-Purpose Arguments for Maximums and Minimums
 
 #### Maximum Brightness
@@ -51,6 +52,7 @@ max_CCT is the maximum color temperature in kelvins that a light should reach at
 
 #### Minimum Correlated Color Temperature 
 min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.
+
 
 ### General-Purpose Arguments for Length
 
@@ -66,6 +68,7 @@ rise_length_CCT is the length of the morning increase in color temperature in mi
 #### Sunset Correlated Color Temperature Length
 set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic evening change with a more restful midday.
 
+
 ### General-Purpose Arguments for Slope
 
 #### Sunrise Brightness Slope
@@ -79,6 +82,7 @@ rise_slope_CCT describes the slope at which color temperature increases in the m
 
 #### Sunset Correlated Color Temperature Slope
 set_slope_CCT describes the slope at which color temperature decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+
 
 ### Sunrise Simulator Specific Arguments for Maximums and Minimums
 
@@ -106,6 +110,7 @@ max_bright_blue is the maximum brightness as a decimal that a blue light using t
 #### Minimum Blue Brightness
 min_bright_blue is the minimum brightness a blue light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
 
+
 ### Sunrise Simulator Specific Arguments for Length
 
 #### Sunrise Blue-Yellow Scatter Distance Length
@@ -131,6 +136,7 @@ rise_length_bright_blue is the length of the morning sunrise routine for brightn
 
 #### Sunset Brightness Blue Length
 set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.
+
 
 ### Sunrise Simulator Specific Arguments for Slope
 
