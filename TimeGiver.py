@@ -19,7 +19,7 @@ for x in y_transform_file:
     y_transform_dict.update({CCT_value: y_value})
 
 def TimeGiver ( #TimeGiver is the main function of the script that takes arguments about rhythm parameters using key-value syntax with defaults as shown below and returns a list of 8 items describing how the lights should look at that moment according to that schedule.
-    time = float (0), #time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1, and it is only intended to be used for testing purposes
+    time = None, #time is a simulated time variable that overrides real current time if it is set by the user, and it is only intended to be used for testing purposes
     wake_time = float (420), #wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time
     bed_time = float (1320), #bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight
     wake_offset = float (30), #wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
@@ -28,10 +28,10 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     min_bright = float (0.05), #min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space
     max_CCT = float (6500), #max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain, unless you find that white uncomfortably cool.
     min_CCT = float (2700), #min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.
-    rise_length_bright = float (45), #rise_length_bright is the length of the morning sunrise routine for brightness change and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise
-    set_length_bright = float (180), #set_length_bright is the length of the evening sunset routine for brightness change and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime
-    rise_length_CCT = float (1), #rise_length_CCT is the length of the morning increase in color temperature in minutes.  The default value of 1 sets it to run for the entire first half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic morning change with a more restful midday. 
-    set_length_CCT = float (1), #set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic evening change with a more restful midday.
+    rise_length_bright = float (45), #rise_length_bright is the length of the morning sunrise routine for brightness change and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    set_length_bright = float (180), #set_length_bright is the length of the evening sunset routine for brightness change and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    rise_length_CCT = None, #rise_length_CCT is the length of the morning increase in color temperature in minutes.  The default value of None or Null sets it to run for the entire first half of the day, but values values less than half the day make for a more dramatic morning change with a more restful midday. 
+    set_length_CCT = None, #set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value of None or Null sets it to run for the entire second half of the day, but values values less than half the day make for a more dramatic evening change with a more restful midday.
     rise_slope_bright = float (0), #rise_slope_bright describes the slope at which brightness increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     set_slope_bright = float (0), #set_slope_bright describes the slope at which brightness decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     rise_slope_CCT = float (0), #rise_slope_CCT describes the slope at which color temperature increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
@@ -44,14 +44,14 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     min_bright_yellow = float (0.05), #min_bright_yellow is the minimum brightness a yellow light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
     max_bright_blue = float (1), #max_bright_blue is the maximum brightness as a decimal that a blue light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
     min_bright_blue = float (0.05), #min_bright_blue is the minimum brightness a blue light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
-    rise_length_scatdist = float (1), #rise_length_scatdist is the length in minutes of the morning increase in the distance between the white and warm white points when using the blue-yellow feature.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic morning change with a more restful midday.
-    set_length_scatdist = float (1), #rise_length_scatdist is the length in minutes of the evening decrease in the distance between the white and warm white points when using the blue-yellow feature.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic evening change with a more restful midday.
-    rise_length_scatangshift = float (240), #rise_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunrises followed by dramatic golden hours, while lower numbers will make for shorter, more forceful sunrises.
-    set_length_scatangshift = float (240), #set_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunsets preceeded by dramatic golden hours, while lower numbers will make for shorter, more forceful sunsets.
-    rise_length_bright_yellow = float (30), #rise_length_bright_yellow is the length of the morning sunrise routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dawn.
-    set_length_bright_yellow = float (90), #set_length_bright_yellow is the length of the evening sunset routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dusk.
-    rise_length_bright_blue = float (60), #rise_length_bright_blue is the length of the morning sunrise routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dawn.
-    set_length_bright_blue = float (180), #set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.
+    rise_length_scatdist = None, #rise_length_scatdist is the length in minutes of the morning increase in the distance between the white and warm white points when using the blue-yellow feature.  The default value of None or Null sets it to run for the entire second half of the day, but values less than half the day make for a more dramatic morning change with a more restful midday.
+    set_length_scatdist = None, #rise_length_scatdist is the length in minutes of the evening decrease in the distance between the white and warm white points when using the blue-yellow feature.  The default value of None or Null sets it to run for the entire second half of the day, but values less than half the day make for a more dramatic evening change with a more restful midday.
+    rise_length_scatangshift = float (240), #rise_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunrises followed by dramatic golden hours, while lower numbers will make for shorter, more forceful sunrises.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    set_length_scatangshift = float (240), #set_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunsets preceeded by dramatic golden hours, while lower numbers will make for shorter, more forceful sunsets.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    rise_length_bright_yellow = float (30), #rise_length_bright_yellow is the length of the morning sunrise routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dawn.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    set_length_bright_yellow = float (90), #set_length_bright_yellow is the length of the evening sunset routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dusk.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    rise_length_bright_blue = float (60), #rise_length_bright_blue is the length of the morning sunrise routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dawn.  This argument can also accept None or null, in which case it will be set to half of the day length.
+    set_length_bright_blue = float (180), #set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.  This argument can also accept None or null, in which case it will be set to half of the day length.
     rise_slope_scatdist = float (0), #rise_slope_scatdist describes the slope at which the distance between the central white and the warm white increases in the morning when using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     set_slope_scatdist = float (0), #set_slope_scatdist describes the slope at which the distance between the central white and the warm white decreases in the evening when using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
     rise_slope_scatangshift = float (0), #rise_slope_scatangshift describes the slope at which the angle by which the blue and warm white points are shifted while using the blue-yellow feature decreases over the course of the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
@@ -62,7 +62,7 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     set_slope_bright_blue = float (0), #set_slope_bright_blue describes the slope at which brightness of a blue light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
  ):
 
-    if time > 1: #This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
+    if time is not None: #This conditional statement allows users to pass a simulated time variable that will override the real current time.
         hm = float (time) 
     else: 
         now = datetime.datetime.now() #sets the variable now equal to the current date and time
@@ -115,36 +115,66 @@ def TimeGiver ( #TimeGiver is the main function of the script that takes argumen
     day_length = float ((bed_time_flt - bed_offset_flt) - (wake_time_flt - wake_offset_flt)) #time between wake time and bed time in minutes
     half_day_length = float (day_length/2) #half of time between wake time and bed time in minutes
 
-    rise_length_bright_flt = float (rise_length_bright) #length of brightness wake routine in minutes
-    set_length_bright_flt = float (set_length_bright) #length of brightness bed routine in minutes
-
     #This next set of conditional statements allows these variables to default to half of day length, whatever that is, since that tends to work well for these variables
-    if rise_length_CCT < 2:
+    if rise_length_bright is None:
+        rise_length_bright_flt = float (half_day_length)
+    else:
+        rise_length_bright_flt = float (rise_length_bright)
+
+    if set_length_bright is None:
+        set_length_bright_flt = float (half_day_length)
+    else:
+        set_length_bright_flt = float (set_length_bright)
+    
+    if rise_length_CCT is None:
         rise_length_CCT_flt = float (half_day_length)
     else:
         rise_length_CCT_flt = float (rise_length_CCT)
     
-    if set_length_CCT < 2:
+    if set_length_CCT is None:
         set_length_CCT_flt = float (half_day_length)
     else:
         set_length_CCT_flt = float (set_length_CCT)
 
-    if rise_length_scatdist < 2:
+    if rise_length_scatdist is None:
         rise_length_scatdist_flt = float (half_day_length)
     else:
         rise_length_scatdist_flt = float (rise_length_scatdist)
 
-    if set_length_scatdist < 2:
+    if set_length_scatdist is None:
         set_length_scatdist_flt = float (half_day_length)
     else:
         set_length_scatdist_flt = float (set_length_scatdist)
 
-    rise_length_scatangshift_flt = float (rise_length_scatangshift) #length of scattering angle shift wake routine in minutes
-    set_length_scatangshift_flt = float (set_length_scatangshift) #length of scattering angle shift bed routine in minutes
-    rise_length_bright_yellow_flt = float (rise_length_bright_yellow) #length of yellow brightness wake routine in minutes
-    set_length_bright_yellow_flt = float (set_length_bright_yellow) #length of yellow brightness bed routine in minutes
-    rise_length_bright_blue_flt = float (rise_length_bright_blue) #length of blue brightness wake routine in minutes
-    set_length_bright_blue_flt = float (set_length_bright_blue) #length of blue brightness bed routine in minutes
+    if rise_length_scatangshift is None:
+        rise_length_scatangshift_flt = float (half_day_length)
+    else:
+        rise_length_scatangshift_flt = float (rise_length_scatangshift)
+
+    if set_length_scatangshift is None:
+        set_length_scatangshift_flt = float (half_day_length)
+    else:
+        set_length_scatangshift_flt = float (set_length_scatangshift)
+
+    if rise_length_bright_yellow is None:
+        rise_length_bright_yellow_flt = float (half_day_length)
+    else:
+        rise_length_bright_yellow_flt = float (rise_length_bright_yellow)
+
+    if set_length_bright_yellow is None:
+        set_length_bright_yellow_flt = float (half_day_length)
+    else:
+        set_length_bright_yellow_flt = float (set_length_bright_yellow)
+    
+    if rise_length_bright_blue is None:
+        rise_length_bright_blue_flt = float (half_day_length)
+    else:
+        rise_length_bright_blue_flt = float (rise_length_bright_blue)
+
+    if set_length_bright_blue is None:
+        set_length_bright_blue_flt = float (half_day_length)
+    else:
+        set_length_bright_blue_flt = float (set_length_bright_blue)
 
     #This part consists of intermediate variables that are only defined to make the final math formulas easier to read and change if needed
     rise_slope_bright_exp1 = float ((rise_slope_bright_flt - 100))
