@@ -10,49 +10,49 @@ function degreestoradians(degrees)
   var pi = Math.PI;
   return degrees * (pi/180);
 }
-
-function TimeGiver({ //TimeGiver is the main function of the script that takes arguments about rhythm parameters using key-value syntax with defaults as shown below and returns a list of 8 items describing how the lights should look at that moment according to that schedule.
-    time = null, //time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1, and it is only intended to be used for testing purposes
-    wake_time = 420, //wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time
-    bed_time = 1320, //bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight
-    wake_offset = 30, //wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
-    bed_offset = 30, //bed_offset is how soon before your intended bed time your lights reach nightlight level and may need to be as high as an hour for hard sleepers or as low as 0 for easy sleepers.
-    max_bright = 1, //max_bright is the maximum brightness as a decimal that a light can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
-    min_bright = 0.05, //min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space
-    max_CCT = 7500, //max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain, unless you find that white uncomfortably cool.
-    min_CCT = 4000,  //min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.
-    rise_length_bright = 45, //rise_length_bright is the length of the morning sunrise routine for brightness change and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    set_length_bright = 180, //set_length_bright is the length of the evening sunset routine for brightness change and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    rise_length_CCT = null, //rise_length_CCT is the length of the morning increase in color temperature in minutes.  The default value of 1 sets it to run for the entire first half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic morning change with a more restful midday. 
-    set_length_CCT = null, //set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic evening change with a more restful midday.
-    rise_slope_bright = 0, //rise_slope_bright describes the slope at which brightness increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_bright = 0, //set_slope_bright describes the slope at which brightness decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    rise_slope_CCT = 0, //rise_slope_CCT describes the slope at which color temperature increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_CCT = 0, //set_slope_CCT describes the slope at which color temperature decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    max_scatdist = 3000, //max_scatdist is the maximum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around midday, but a number too high can lead to errors, especially with low max_CCT, because color temperature is not defined below 1000K
-    min_scatdist = 2000, //min_scatdist is the minimum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around bedtime, but a number too high can lead to errors, especially with low min_CCT, because color temperature is not defined below 1000K
-    max_scatangshift = 15, //max_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during sunrise or sunset.  Higher numbers make for more yellow sunsets with dusky blue accents while lower numbers make for more pink sunsets with more aqua accents.
-    min_scatangshift = 0, //min_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during midday.  Higher numbers make for more yellow tinting with dusky blue accents around midday while lower numbers make for more neutral tinting during midday.  This should be 0 under most circumstances, unless you are simulating sunlight near a wildfire
-    max_bright_yellow = 1, //max_bright_yellow is the maximum brightness as a decimal that a yellow light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
-    min_bright_yellow = 0.05, //min_bright_yellow is the minimum brightness a yellow light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
-    max_bright_blue = 1, //max_bright_blue is the maximum brightness as a decimal that a blue light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
-    min_bright_blue = 0.05, //min_bright_blue is the minimum brightness a blue light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
-    rise_length_scatdist = null, //rise_length_scatdist is the length in minutes of the morning increase in the distance between the white and warm white points when using the blue-yellow feature.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic morning change with a more restful midday.
-    set_length_scatdist = null, //rise_length_scatdist is the length in minutes of the evening decrease in the distance between the white and warm white points when using the blue-yellow feature.  The default value of 1 sets it to run for the entire second half of the day, but values greater than 2 will be honored, and values less than half the day make for a more dramatic evening change with a more restful midday.
-    rise_length_scatangshift = 240, //rise_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunrises followed by dramatic golden hours, while lower numbers will make for shorter, more forceful sunrises.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    set_length_scatangshift = 240, //set_length_scatangshift is the length in minutes of the morning increase in angle by which the warm white point is shifted upward and the blue point shifted downward during sunrise.  Higher numbers will make for long, sunsets preceeded by dramatic golden hours, while lower numbers will make for shorter, more forceful sunsets.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    rise_length_bright_yellow = 30, //rise_length_bright_yellow is the length of the morning sunrise routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dawn.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    set_length_bright_yellow = 90, //set_length_bright_yellow is the length of the evening sunset routine for brightness change in yellow lights when using the blue-yellow feature and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_blue, making this one shorter than that to emphasize yellows in the golden hour or longer than that to emphasize blues at dusk.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    rise_length_bright_blue = 60, //rise_length_bright_blue is the length of the morning sunrise routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This can be changed relative to set_length_bright_blue, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dawn.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    set_length_bright_blue = 180, //set_length_bright_blue is the length of the evening sunset routine for brightness change in blue lights when using the blue-yellow feature and should usually be between 1 and 1.5 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This can be changed relative to set_length_bright_yellow, making this one longer than that to emphasize yellows in the golden hour or shorter than that to emphasize blues at dusk.  This argument can also accept None or null, in which case it will be set to half of the day length.
-    rise_slope_scatdist = 0, //rise_slope_scatdist describes the slope at which the distance between the central white and the warm white increases in the morning when using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_scatdist = 0, //set_slope_scatdist describes the slope at which the distance between the central white and the warm white decreases in the evening when using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    rise_slope_scatangshift = 0, //rise_slope_scatangshift describes the slope at which the angle by which the blue and warm white points are shifted while using the blue-yellow feature decreases over the course of the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_scatangshift = 0, //set_slope_scatangshift describes the slope at which the angle by which the blue and warm white points are shifted while using the blue-yellow feature decreases over the course of the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    rise_slope_bright_yellow = 0, //rise_slope_bright_yellow describes the slope at which brightness of a yellow light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_bright_yellow = 0, //set_slope_bright_yellow describes the slope at which brightness of a yellow light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    rise_slope_bright_blue = 0, // rise_slope_bright_blue describes the slope at which brightness of a blue light increases in the morning while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
-    set_slope_bright_blue = 0, //set_slope_bright_blue describes the slope at which brightness of a blue light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+//TimeGiver is the main function of the script that takes arguments about rhythm parameters using key-value syntax with defaults as shown below and returns a list of 8 items describing how the lights should look at that moment according to that schedule.
+function TimeGiver({ //The meaning and use of these arguments is explained at length in the TimeGiver documentation.
+    time = null, 
+    wake_time = 420, 
+    bed_time = 1320, 
+    wake_offset = 30, 
+    bed_offset = 30, 
+    max_bright = 1, 
+    min_bright = 0.05, 
+    max_CCT = 7500, 
+    min_CCT = 4000,  
+    rise_length_bright = 45, 
+    set_length_bright = 180, 
+    rise_length_CCT = null, 
+    set_length_CCT = null, 
+    rise_slope_bright = 0, 
+    set_slope_bright = 0, 
+    rise_slope_CCT = 0, 
+    set_slope_CCT = 0, 
+    max_scatdist = 3000, 
+    min_scatdist = 2000, 
+    max_scatangshift = 15, 
+    min_scatangshift = 0, 
+    max_bright_yellow = 1, 
+    min_bright_yellow = 0.05, 
+    max_bright_blue = 1, 
+    min_bright_blue = 0.05, 
+    rise_length_scatdist = null, 
+    set_length_scatdist = null, 
+    rise_length_scatangshift = 240, 
+    set_length_scatangshift = 240, 
+    rise_length_bright_yellow = 30, 
+    set_length_bright_yellow = 90, 
+    rise_length_bright_blue = 60, 
+    set_length_bright_blue = 180, 
+    rise_slope_scatdist = 0, 
+    set_slope_scatdist = 0, 
+    rise_slope_scatangshift = 0, 
+    set_slope_scatangshift = 0, 
+    rise_slope_bright_yellow = 0, 
+    set_slope_bright_yellow = 0, 
+    rise_slope_bright_blue = 0, 
+    set_slope_bright_blue = 0, 
 }) {
     if (time !== null) {var hm = time} else { //This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
     var now = new Date(); //sets the variable now equal to the current date and time
@@ -70,19 +70,19 @@ function TimeGiver({ //TimeGiver is the main function of the script that takes a
     var day_length = ((bed_time - bed_offset) - (wake_time - wake_offset)); //time between wake time and bed time in minutes
     var half_day_length = day_length/2; //half of time between wake time and bed time in minutes
 
-    //This next set of conditional statements allows these variables to default to half of day length, whatever that is, since that tends to work well for these variables
-    if (rise_length_bright === null) {var rise_length_bright = half_day_length} else {var rise_length_bright = rise_length_bright};
-    if (set_length_bright === null) {var set_length_bright = half_day_length} else {var set_length_bright = set_length_bright};
-    if (rise_length_CCT === null) {var rise_length_CCT = half_day_length} else {var rise_length_CCT = rise_length_CCT};
-    if (set_length_CCT === null) {var set_length_CCT = half_day_length} else {var set_length_CCT = set_length_CCT};
-    if (rise_length_scatdist === null) {var rise_length_scatdist = half_day_length} else {var rise_length_scatdist = rise_length_scatdist};
-    if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else {var set_length_scatdist = set_length_scatdist};
-    if (rise_length_scatangshift === null) {var rise_length_scatangshift = half_day_length} else {var rise_length_scatangshift = rise_length_scatangshift};
-    if (set_length_scatangshift === null) {var set_length_scatangshift = half_day_length} else {var set_length_scatangshift = set_length_scatangshift};
-    if (rise_length_bright_yellow === null) {var rise_length_bright_yellow = half_day_length} else {var rise_length_bright_yellow = rise_length_bright_yellow};
-    if (set_length_bright_yellow === null) {var set_length_bright_yellow = half_day_length} else {var set_length_bright_yellow = set_length_bright_yellow};
-    if (rise_length_bright_blue === null) {var rise_length_bright_blue = half_day_length} else {var rise_length_bright_blue = rise_length_bright_blue};
-    if (set_length_bright_blue === null) {var set_length_bright_blue = half_day_length} else {var set_length_bright_blue = set_length_bright_blue};
+    //This next set of conditional statements allows these variables to default to half of day length when it is appropriate or to be set to half of day length when null is passed.
+    if (rise_length_bright === null) {var rise_length_bright = half_day_length} else if ((typeof (rise_length_bright)) === "string") {var rise_length_bright_fact = rise_length_bright.slice(0, -1); var rise_length_bright = (half_day_length * rise_length_bright_fact);} else {var rise_length_bright = rise_length_bright};
+    if (set_length_bright === null) {var set_length_bright = half_day_length} else if ((typeof (set_length_bright)) === "string") {var set_length_bright_fact = set_length_bright.slice(0, -1); var set_length_bright = (half_day_length * set_length_bright_fact);} else {var set_length_bright = set_length_bright};
+    if (rise_length_CCT === null) {var rise_length_CCT = half_day_length} else if ((typeof (rise_length_CCT)) === "string") {var rise_length_CCT_fact = rise_length_CCT.slice(0, -1); var rise_length_CCT = (half_day_length * rise_length_CCT_fact);} else {var rise_length_CCT = rise_length_CCT};
+    if (set_length_CCT === null) {var set_length_CCT = half_day_length} else if ((typeof (set_length_CCT)) === "string") {var set_length_CCT_fact = set_length_CCT.slice(0, -1); var set_length_CCT = (half_day_length * set_length_CCT_fact);} else {var set_length_CCT = set_length_CCT};
+    if (rise_length_scatdist === null) {var rise_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var rise_length_scatdist_fact = rise_length_scatdist.slice(0, -1); var rise_length_scatdist = (half_day_length * rise_length_scatdist_fact);} else {var rise_length_scatdist = rise_length_scatdist};
+    if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var set_length_scatdist_fact = set_length_scatdist.slice(0, -1); var set_length_scatdist = (half_day_length * set_length_scatdist_fact);} else {var set_length_scatdist = set_length_scatdist};
+    if (rise_length_scatangshift === null) {var rise_length_scatangshift = half_day_length} else if ((typeof (rise_length_scatangshift)) === "string") {var rise_length_scatangshift_fact = rise_length_scatangshift.slice(0, -1); var rise_length_scatangshift = (half_day_length * rise_length_scatangshift_fact);} else {var rise_length_scatangshift = rise_length_scatangshift};
+    if (set_length_scatangshift === null) {var set_length_scatangshift = half_day_length} else if ((typeof (set_length_scatangshift)) === "string") {var set_length_scatangshift_fact = set_length_scatangshift.slice(0, -1); var set_length_scatangshift = (half_day_length * set_length_scatangshift_fact);} else {var set_length_scatangshift = set_length_scatangshift};
+    if (rise_length_bright_yellow === null) {var rise_length_bright_yellow = half_day_length} else if ((typeof (rise_length_bright_yellow)) === "string") {var rise_length_bright_yellow_fact = rise_length_bright_yellow.slice(0, -1); var rise_length_bright_yellow = (half_day_length * rise_length_bright_yellow_fact);} else {var rise_length_bright_yellow = rise_length_bright_yellow};
+    if (set_length_bright_yellow === null) {var set_length_bright_yellow = half_day_length} else if ((typeof (set_length_bright_yellow)) === "string") {var set_length_bright_yellow_fact = set_length_bright_yellow.slice(0, -1); var set_length_bright_yellow = (half_day_length * set_length_bright_yellow_fact);} else {var set_length_bright_yellow = set_length_bright_yellow};
+    if (rise_length_bright_blue === null) {var rise_length_bright_blue = half_day_length} else if ((typeof (rise_length_bright_blue)) === "string") {var rise_length_bright_blue_fact = rise_length_bright_blue.slice(0, -1); var rise_length_bright_blue = (half_day_length * rise_length_bright_blue_fact);} else {var rise_length_bright_blue = rise_length_bright_blue};
+    if (set_length_bright_blue === null) {var set_length_bright_blue = half_day_length} else if ((typeof (set_length_bright_blue)) === "string") {var set_length_bright_blue_fact = set_length_bright_blue.slice(0, -1); var set_length_bright_blue = (half_day_length * set_length_bright_blue_fact);} else {var set_length_bright_blue = set_length_bright_blue};
 
     //This part consists of intermediate variables that are only defined to make the final math formulas easier to read and change if needed
     var rise_slope_bright_exp1 = rise_slope_bright - 100;
