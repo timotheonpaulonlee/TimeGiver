@@ -19,8 +19,8 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     bed_offset = 30, 
     max_bright = 1, 
     min_bright = 0.05, 
-    max_CCT = 7500, 
-    min_CCT = 4000,  
+    max_CCT = 6500, 
+    min_CCT = 2700,  
     rise_length_bright = 45, 
     set_length_bright = 180, 
     rise_length_CCT = null, 
@@ -162,16 +162,16 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //Setting CCT_int to appropriate value based on day segment
     if (hm - wake_time + wake_offset <= 0) {CCT_int = min_CCT_int
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT <= 0) {CCT_int = rise_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT_fin <= 0) {CCT_int = max_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT_fin > 0 && hm - bed_time + bed_offset <= 0) {CCT_int = set_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT_fin > 0 && hm - bed_time + bed_offset > 0) {CCT_int = min_CCT_int}
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT <= 0) {CCT_int = max_CCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT > 0 && hm - bed_time + bed_offset <= 0) {CCT_int = set_CCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT > 0 && hm - bed_time + bed_offset > 0) {CCT_int = min_CCT_int}
 
     //Setting scatdist_int to appropriate value based on day segment
     if (hm - wake_time + wake_offset <= 0) {scatdist_int = min_scatdist_int
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist <= 0) {scatdist_int = rise_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist_fin <= 0) {scatdist_int = max_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist_fin > 0 && hm - bed_time + bed_offset <= 0) {scatdist_int = set_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist_fin > 0 && hm - bed_time + bed_offset > 0) {scatdist_int = min_scatdist_int}
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist <= 0) {scatdist_int = max_scatdist_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset <= 0) {scatdist_int = set_scatdist_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset > 0) {scatdist_int = min_scatdist_int}
     
     //Setting scatangshift_flt to appropriate value based on day segment
     if (hm - wake_time + wake_offset <= 0) {scatangshift = max_scatangshift
@@ -225,7 +225,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_blue > 0 && hm - bed_time + bed_offset + set_length_bright_blue > 0 && hm - bed_time + bed_offset > 0) {bright_blue_int = min_bright_blue_int}
     
     //Here is the final return command for the function that returns a object with the lighting parameters named as follows
-    return {bright_int_ret: bright_int, CCT_mired_int_ret: CCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_blue_int, yellow_x_shifted_ret: yellow_x_shifted, yellow_y_shifted_ret: yellow_y_shifted, blue_x_shifted_ret: blue_x_shifted, blue_y_shifted_ret: blue_y_shifted, retretret: retret}}
+    return {bright_int_ret: bright_int, CCT_mired_int_ret: CCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_blue_int, white_x_ret: white_x, white_y_ret: white_y, yellow_x_shifted_ret: yellow_x_shifted, yellow_y_shifted_ret: yellow_y_shifted, blue_x_shifted_ret: blue_x_shifted, blue_y_shifted_ret: blue_y_shifted}}
 
 //CCT to XY Transformer - Converts CCT values stored as integers in kelvin into CIE 1931 Color Diagram X and Y coordinates specifying the location of that color temperature in that master color space.
 

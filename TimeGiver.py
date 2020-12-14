@@ -446,6 +446,6 @@ def TimeGiver ( #The meaning and use of these arguments is explained at length i
         #print ('Time is after bed')
 
     #Here is the final return command for the function that returns a list of the lighting parameters in the stated order
-    return [bright_int, CCT_mired_int, bright_yellow_int, bright_blue_int, yellow_x_shifted_flt, yellow_y_shifted_flt, blue_x_shifted_flt, blue_y_shifted_flt]
+    return [bright_int, CCT_mired_int, bright_yellow_int, bright_blue_int, white_x_flt, white_y_flt, yellow_x_shifted_flt, yellow_y_shifted_flt, blue_x_shifted_flt, blue_y_shifted_flt]
 
 TimeGiver()
