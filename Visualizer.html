@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+.slidecontainer {
+  width: 100%; 
+  margin-top: 20px;
+}
+
+
+.slider {
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 200px; 
+  height: 15px; 
+  border-radius: 5px;
+  background: #d3d3d3; 
+  outline: none; 
+  opacity: 0.7; 
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+}
+
+
+.slider:hover {
+  opacity: 1; 
+}
+
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 20px; 
+  height: 20px; 
+  border-radius: 50%;
+  background: #4CAF50; 
+  cursor: pointer; 
+}
+
+.slider::-moz-range-thumb {
+  width: 20px; 
+  height: 20px; 
+  border-radius: 50%;
+  background: #4CAF50; 
+  cursor: pointer; 
+}
+        </style>
+<script type="text/javascript" src="TimeGiver.js"></script>
+<script type="text/javascript" src="xytorgb.js"></script>
+<script>
+
+function linedrawer ({time}) {
+    var wake_time = (document.getElementById("wake_time_var").value);
+    var wake_time_hh = (wake_time.slice(0,2));
+    var wake_time_hh_sixty = (wake_time_hh * 60);
+    var wake_time_mm = wake_time.slice(-2);
+    var wake_time_hm = (Number(wake_time_hh_sixty) + Number(wake_time_mm));
+    var bed_time = (document.getElementById("bed_time_var").value);
+    var bed_time_hh = (bed_time.slice(0,2));
+    var bed_time_hh_sixty = (bed_time_hh * 60);
+    var bed_time_mm = bed_time.slice(-2);
+    var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+    if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
+    if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
+    if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
+    if (Number((document.getElementById("set_length_CCT_var").value)) == 0) {var set_length_CCT_var = ((document.getElementById("set_length_CCT_mult_var").value) + "x")} else {var set_length_CCT_var = (Number (document.getElementById("set_length_CCT_var").value))}  
+    let lighting_parameters = TimeGiver({time: time, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value))})
+    let rgb_values = xytorgb(lighting_parameters.white_x_ret, lighting_parameters.white_y_ret, 200)
+    var rgb_final = "rgb("+rgb_values.r_gamma_ret+","+rgb_values.g_gamma_ret+","+rgb_values.b_gamma_ret+")";
+    var c = document.getElementById("visualizer");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.strokeStyle = rgb_final;
+    ctx.strokeRect((time/2), (254 - lighting_parameters.bright_int_ret), 1, lighting_parameters.bright_int_ret);
+    ctx.stroke();
+    if (time <= 1440) {linedrawer ({time: (time + 2)})} else {event.preventDefault();}
+}
+
+function lineremover() {
+    var c = document.getElementById("visualizer");
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0, 0, 720, 254);
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 720, 254);
+    linedrawer({time: 0})
+}
+
+
+    </script>
+    
+</head>
+<body>
+
+<canvas id="visualizer" width="720" height="254"
+style="border:1px solid #c3c3c3; position: -webkit-sticky;
+position: sticky;
+top: 20px;
+left: 20px;
+bottom: 20px;
+z-index: 5;">
+Your browser does not support the canvas element.
+</canvas>
+
+
+<div class="slidecontainer">
+    <h1>Welcome to TimeGiver's Visualizer</h1>
+    <p>TimeGiver is an open-source, highly-customizable circadian lighting rhythm generator that empowers connected lighting systems to support a healthy cycle of sleep and wakefulness. It takes arguments such as wake time and sunset length and returns an appropriate set of lighting parameters such as brightness and color temperature for the current moment. Rhythms can be generated based on just a few parameters using appropriate defaults or customized extensively according to desired maximums, minimums, rates of change, and slope shapes.  This visualizer beta demonstrates TimeGiver's potential.  The following inputs are set to TimeGiver's default settings and can be modified to change the schedule illustration above that is generated live using TimeGiver's actual code.  For more information about the following parameters or to learn how to integrate TimeGiver into a project, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <input type="time" id="wake_time_var" value="07:00" onchange="lineremover()"();> Wake Time</input><br>
+    <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"();> Bed Time</input><br>
+    <input type="range" min="0" max="60" value="30" class="slider" id="wake_offset_var" onchange="lineremover()">Wake Offset: <span id="wake_offset_label"></span> minutes</input><br>
+    <input type="range" min="0" max="60" value="30" class="slider" id="bed_offset_var" onchange="lineremover()">Bed Offset: <span id="bed_offset_label"></span> minutes</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()">Maximum Brightness: <span id="max_bright_label"></span> %</input><br>
+    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()">Minimum Brightness: <span id="min_bright_label"></span> %</input><br>
+    <input type="range" min="1500" max="10000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><br>
+    <input type="range" min="1500" max="10000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><br>
+    <input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><span id="rise_length_bright_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_var" onchange="lineremover()">Sunset Brightness Length: <span id="set_length_bright_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_mult_var" onchange="lineremover()"><span id="set_length_bright_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_CCT_mult_var" onchange="lineremover()">Sunrise Color Temperature Length: <span id="rise_length_CCT_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_CCT_var" onchange="lineremover()"><span id="rise_length_CCT_label"></span> minutes</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_CCT_mult_var" onchange="lineremover()">Sunset Color Temperature Length: <span id="set_length_CCT_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_CCT_var" onchange="lineremover()"><span id="set_length_CCT_label"></span> minutes</input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_var" onchange="lineremover()">Sunrise Brightness Slope: <span id="rise_slope_bright_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_var" onchange="lineremover()">Sunset Brightness Slope: <span id="set_slope_bright_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_CCT_var" onchange="lineremover()">Sunrise Color Temperature Slope: <span id="rise_slope_CCT_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_CCT_var" onchange="lineremover()">Sunset Color Temperature Slope: <span id="set_slope_CCT_label"></span></input><br>
+</div>
+
+<script>
+    var wake_offset_slider = document.getElementById("wake_offset_var");
+    var wake_offset_output = document.getElementById("wake_offset_label");
+    wake_offset_output.innerHTML = wake_offset_slider.value;
+    wake_offset_slider.oninput = function() {wake_offset_output.innerHTML = this.value;}
+
+    var bed_offset_slider = document.getElementById("bed_offset_var");
+    var bed_offset_output = document.getElementById("bed_offset_label");
+    bed_offset_output.innerHTML = bed_offset_slider.value;
+    bed_offset_slider.oninput = function() {bed_offset_output.innerHTML = this.value;}
+
+    var max_bright_slider = document.getElementById("max_bright_var");
+    var max_bright_output = document.getElementById("max_bright_label");
+    max_bright_output.innerHTML = (max_bright_slider.value * 100);
+    max_bright_slider.oninput = function() {max_bright_output.innerHTML = (Math.round(this.value * 100));}
+
+    var min_bright_slider = document.getElementById("min_bright_var");
+    var min_bright_output = document.getElementById("min_bright_label");
+    min_bright_output.innerHTML = (min_bright_slider.value * 100);
+    min_bright_slider.oninput = function() {min_bright_output.innerHTML = (Math.round(this.value * 100));}
+
+    var max_CCT_slider = document.getElementById("max_CCT_var");
+    var max_CCT_output = document.getElementById("max_CCT_label");
+    max_CCT_output.innerHTML = (max_CCT_slider.value);
+    max_CCT_slider.oninput = function() {max_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var min_CCT_slider = document.getElementById("min_CCT_var");
+    var min_CCT_output = document.getElementById("min_CCT_label");
+    min_CCT_output.innerHTML = (min_CCT_slider.value);
+    min_CCT_slider.oninput = function() {min_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var rise_length_bright_slider = document.getElementById("rise_length_bright_var");
+    var rise_length_bright_output = document.getElementById("rise_length_bright_label");
+    rise_length_bright_output.innerHTML = rise_length_bright_slider.value;
+    rise_length_bright_slider.oninput = function() {rise_length_bright_output.innerHTML = this.value;}
+
+    var rise_length_bright_mult_slider = document.getElementById("rise_length_bright_mult_var");
+    var rise_length_bright_mult_output = document.getElementById("rise_length_bright_mult_label");
+    rise_length_bright_mult_output.innerHTML = rise_length_bright_mult_slider.value;
+    rise_length_bright_mult_slider.oninput = function() {rise_length_bright_mult_output.innerHTML = this.value;}
+
+    var set_length_bright_slider = document.getElementById("set_length_bright_var");
+    var set_length_bright_output = document.getElementById("set_length_bright_label");
+    set_length_bright_output.innerHTML = set_length_bright_slider.value;
+    set_length_bright_slider.oninput = function() {set_length_bright_output.innerHTML = this.value;}
+
+    var set_length_bright_mult_slider = document.getElementById("set_length_bright_mult_var");
+    var set_length_bright_mult_output = document.getElementById("set_length_bright_mult_label");
+    set_length_bright_mult_output.innerHTML = set_length_bright_mult_slider.value;
+    set_length_bright_mult_slider.oninput = function() {set_length_bright_mult_output.innerHTML = this.value;}
+
+    var rise_length_CCT_slider = document.getElementById("rise_length_CCT_var");
+    var rise_length_CCT_output = document.getElementById("rise_length_CCT_label");
+    rise_length_CCT_output.innerHTML = rise_length_CCT_slider.value;
+    rise_length_CCT_slider.oninput = function() {rise_length_CCT_output.innerHTML = this.value;}
+
+    var rise_length_CCT_mult_slider = document.getElementById("rise_length_CCT_mult_var");
+    var rise_length_CCT_mult_output = document.getElementById("rise_length_CCT_mult_label");
+    rise_length_CCT_mult_output.innerHTML = rise_length_CCT_mult_slider.value;
+    rise_length_CCT_mult_slider.oninput = function() {rise_length_CCT_mult_output.innerHTML = this.value;}
+
+    var set_length_CCT_slider = document.getElementById("set_length_CCT_var");
+    var set_length_CCT_output = document.getElementById("set_length_CCT_label");
+    set_length_CCT_output.innerHTML = set_length_CCT_slider.value;
+    set_length_CCT_slider.oninput = function() {set_length_CCT_output.innerHTML = this.value;}
+
+    var set_length_CCT_mult_slider = document.getElementById("set_length_CCT_mult_var");
+    var set_length_CCT_mult_output = document.getElementById("set_length_CCT_mult_label");
+    set_length_CCT_mult_output.innerHTML = set_length_CCT_mult_slider.value;
+    set_length_CCT_mult_slider.oninput = function() {set_length_CCT_mult_output.innerHTML = this.value;}
+
+    var rise_slope_bright_slider = document.getElementById("rise_slope_bright_var");
+    var rise_slope_bright_output = document.getElementById("rise_slope_bright_label");
+    rise_slope_bright_output.innerHTML = (rise_slope_bright_slider.value);
+    rise_slope_bright_slider.oninput = function() {rise_slope_bright_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_bright_slider = document.getElementById("set_slope_bright_var");
+    var set_slope_bright_output = document.getElementById("set_slope_bright_label");
+    set_slope_bright_output.innerHTML = (set_slope_bright_slider.value);
+    set_slope_bright_slider.oninput = function() {set_slope_bright_output.innerHTML = (Math.round(this.value));}
+
+    var rise_slope_CCT_slider = document.getElementById("rise_slope_CCT_var");
+    var rise_slope_CCT_output = document.getElementById("rise_slope_CCT_label");
+    rise_slope_CCT_output.innerHTML = (rise_slope_CCT_slider.value);
+    rise_slope_CCT_slider.oninput = function() {rise_slope_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_CCT_slider = document.getElementById("set_slope_CCT_var");
+    var set_slope_CCT_output = document.getElementById("set_slope_CCT_label");
+    set_slope_CCT_output.innerHTML = (set_slope_CCT_slider.value);
+    set_slope_CCT_slider.oninput = function() {set_slope_CCT_output.innerHTML = (Math.round(this.value));}
+
+    lineremover()
+
+</script>
+
+</body>
+</html>
