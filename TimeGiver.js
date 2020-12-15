@@ -2,21 +2,21 @@
 function radianstodegrees(radians)
 {
   var pi = Math.PI;
-  return radians * (180/pi);
+  return (radians * (180/pi));
 }
 
 function degreestoradians(degrees)
 {
   var pi = Math.PI;
-  return degrees * (pi/180);
+  return (degrees * (pi/180));
 }
 //TimeGiver is the main function of the script that takes arguments about rhythm parameters using key-value syntax with defaults as shown below and returns a list of 8 items describing how the lights should look at that moment according to that schedule.
 function TimeGiver({ //The meaning and use of these arguments is explained at length in the TimeGiver documentation.
     time = null, 
     wake_time = 420, 
     bed_time = 1320, 
-    wake_offset = 30, 
-    bed_offset = 30, 
+    wake_offset = 0, 
+    bed_offset = 0, 
     max_bright = 1, 
     min_bright = 0.05, 
     max_CCT = 6500, 
@@ -199,10 +199,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var scatdist_x = (yellow_x - white_x)
     var scatdist_y = (yellow_y - white_y)
     
-    var origang_deg = radianstodegrees(Math.atan(scatdist_x/scatdist_y))
+    var origang_deg = radianstodegrees(Math.atan(scatdist_y/scatdist_x))
 
-    var yellow_x_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_x))) * (Math.cos(degreestoradians(origang_deg + scatangshift)))) + (white_x)
-    var yellow_y_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_x))) * (Math.sin(degreestoradians(origang_deg + scatangshift)))) + (white_y)
+    var yellow_x_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.cos(degreestoradians(origang_deg + scatangshift)))) + (white_x)
+    var yellow_y_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.sin(degreestoradians(origang_deg + scatangshift)))) + (white_y)
 
     var blue_x_shifted = (white_x - (yellow_x_shifted - white_x))
     var blue_y_shifted = (white_y - (yellow_y_shifted - white_y))
