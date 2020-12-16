@@ -76,7 +76,11 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     if (rise_length_CCT === null) {var rise_length_CCT = half_day_length} else if ((typeof (rise_length_CCT)) === "string") {var rise_length_CCT_fact = rise_length_CCT.slice(0, -1); var rise_length_CCT = (half_day_length * rise_length_CCT_fact);} else {var rise_length_CCT = rise_length_CCT};
     if (set_length_CCT === null) {var set_length_CCT = half_day_length} else if ((typeof (set_length_CCT)) === "string") {var set_length_CCT_fact = set_length_CCT.slice(0, -1); var set_length_CCT = (half_day_length * set_length_CCT_fact);} else {var set_length_CCT = set_length_CCT};
     if (rise_length_scatdist === null) {var rise_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var rise_length_scatdist_fact = rise_length_scatdist.slice(0, -1); var rise_length_scatdist = (half_day_length * rise_length_scatdist_fact);} else {var rise_length_scatdist = rise_length_scatdist};
-    if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var set_length_scatdist_fact = set_length_scatdist.slice(0, -1); var set_length_scatdist = (half_day_length * set_length_scatdist_fact);} else {var set_length_scatdist = set_length_scatdist};
+    if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else if ((typeof (set_length_scatdist)) === "string") {var set_length_scatdist_fact = set_length_scatdist.slice(0, -1); var set_length_scatdist = (half_day_length * set_length_scatdist_fact);} else {var set_length_scatdist = set_length_scatdist};
+    
+    //if (rise_length_scatdist === null) {var rise_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var rise_length_scatdist_fact = rise_length_scatdist.slice(0, -1); var rise_length_scatdist = (half_day_length * rise_length_scatdist_fact);} else {var rise_length_scatdist = rise_length_scatdist};
+    //if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var set_length_scatdist_fact = set_length_scatdist.slice(0, -1); var set_length_scatdist = (half_day_length * set_length_scatdist_fact);} else {var set_length_scatdist = set_length_scatdist};
+    
     if (rise_length_scatangshift === null) {var rise_length_scatangshift = half_day_length} else if ((typeof (rise_length_scatangshift)) === "string") {var rise_length_scatangshift_fact = rise_length_scatangshift.slice(0, -1); var rise_length_scatangshift = (half_day_length * rise_length_scatangshift_fact);} else {var rise_length_scatangshift = rise_length_scatangshift};
     if (set_length_scatangshift === null) {var set_length_scatangshift = half_day_length} else if ((typeof (set_length_scatangshift)) === "string") {var set_length_scatangshift_fact = set_length_scatangshift.slice(0, -1); var set_length_scatangshift = (half_day_length * set_length_scatangshift_fact);} else {var set_length_scatangshift = set_length_scatangshift};
     if (rise_length_bright_yellow === null) {var rise_length_bright_yellow = half_day_length} else if ((typeof (rise_length_bright_yellow)) === "string") {var rise_length_bright_yellow_fact = rise_length_bright_yellow.slice(0, -1); var rise_length_bright_yellow = (half_day_length * rise_length_bright_yellow_fact);} else {var rise_length_bright_yellow = rise_length_bright_yellow};
@@ -138,7 +142,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     var max_scatdist_int = Math.round(max_scatdist);
     var rise_scatdist_int = Math.round(rise_scatdist);
-    var set_scatdist_int = Math.round(set_scatdist);
+    var set_scatdist_int = Math.round(Number (set_scatdist));
     var min_scatdist_int = Math.round(min_scatdist);
 
     var max_bright_yellow_int = Math.round(max_bright_yellow * 254);
@@ -167,11 +171,11 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT > 0 && hm - bed_time + bed_offset > 0) {CCT_int = min_CCT_int}
 
     //Setting scatdist_int to appropriate value based on day segment
-    if (hm - wake_time + wake_offset <= 0) {scatdist_int = min_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist <= 0) {scatdist_int = rise_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist <= 0) {scatdist_int = max_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset <= 0) {scatdist_int = set_scatdist_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset > 0) {scatdist_int = min_scatdist_int}
+    if (hm - wake_time + wake_offset <= 0) {scatdist_int = min_scatdist_int;
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist <= 0) {scatdist_int = rise_scatdist_int;
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist <= 0) {scatdist_int = max_scatdist_int;
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset <= 0) {scatdist_int = set_scatdist_int;
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatdist > 0 && hm - bed_time + bed_offset + set_length_scatdist > 0 && hm - bed_time + bed_offset > 0) {scatdist_int = min_scatdist_int;}
     
     //Setting scatangshift_flt to appropriate value based on day segment
     if (hm - wake_time + wake_offset <= 0) {scatangshift = max_scatangshift
