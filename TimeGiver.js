@@ -54,6 +54,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     rise_slope_bright_blue = 0, 
     set_slope_bright_blue = 0, 
 }) {
+  
     if (time !== null) {var hm = time} else { //This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
     var now = new Date(); //sets the variable now equal to the current date and time
     var hh = now.getHours(); //sets the variable hh equal to the number of hours that have passed since the day started.
@@ -142,7 +143,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     var max_scatdist_int = Math.round(max_scatdist);
     var rise_scatdist_int = Math.round(rise_scatdist);
-    var set_scatdist_int = Math.round(Number (set_scatdist));
+    var set_scatdist_int = Math.round(set_scatdist);
     var min_scatdist_int = Math.round(min_scatdist);
 
     var max_bright_yellow_int = Math.round(max_bright_yellow * 254);
@@ -211,7 +212,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var blue_x_shifted = (white_x - (yellow_x_shifted - white_x))
     var blue_y_shifted = (white_y - (yellow_y_shifted - white_y))
 
-    var CCT_mired_int = (1000000*(1/CCT_int))
+    var CCT_mired_int = Math.round((1000000*(1/CCT_int)))
 
     //This next part consists of more of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
     //Setting bright_yellow_int to appropriate value based on day segment
