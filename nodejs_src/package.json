@@ -1,0 +1,29 @@
+{
+  "name": "timegiver",
+  "version": "1.0.0",
+  "description": "TimeGiver is a highly-customizable circadian lighting rhythm generator that empowers connected lighting systems to support a healthy cycle of sleep and wakefulness by taking arguments such as wake time and sunset length and returning an appropriate set of lighting parameters such as brightness and color temperature for the current moment.  TimeGiver also includes a sunlight simulator that uses multiple color lights to mimic the natural blue-yellow color gradient of sunlight, producing a unique combination of colors for every time of day that recreates everything from the crisp blue of noontime to the golden hues of late afternoon and mellow blues of dusk, all without compromising color rendering.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timotheonpaulonlee/TimeGiver.git#main"
+  },
+  "keywords": [
+    "circadian",
+    "schedule",
+    "rhythm",
+    "connectedlighting",
+    "smartlighting",
+    "colortemperature",
+    "CCT",
+    "sleep"
+  ],
+  "author": "Timothy Lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timotheonpaulonlee/TimeGiver/issues"
+  },
+  "homepage": "https://github.com/timotheonpaulonlee/TimeGiver/tree/main#readme"
+}
