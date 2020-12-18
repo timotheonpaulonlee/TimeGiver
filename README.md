@@ -26,76 +26,76 @@ TimeGiver accepts over 40 different arguments that describe aspects of how a rhy
 ### General-Purpose Arguments for Key Times
 
 #### Time
-time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1, and it is only intended to be used for testing purposes
+time is a simulated time variable that overrides real current time if it is defined.  It is only intended to be used for testing and validation purposes.
 
 #### Wake Time
-**wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time**
+**wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time.**
 
 #### Bed Time
-**bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight**
+**bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight.**
 
 #### Wake Offset
-wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
+wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers.  This variable is likely to confuse ordinary users and should probably be exposed through a binary questions such as "Are you a heavy sleeper?"
 
 #### Bed Offset
-bed_offset is how soon before your intended bed time your lights reach nightlight level and may need to be as high as an hour for hard sleepers or as low as 0 for easy sleepers.
+bed_offset is how soon before your intended bed time your lights reach nightlight level and may need to be as high as an hour for hard sleepers or as low as 0 for easy sleepers.  This variable is likely to confuse ordinary users and should probably be exposed through a binary questions such as "Do you typically fall asleep easily?"
 
 
 ### General-Purpose Arguments for Maximums and Minimums
 
 #### Maximum Brightness
-**max_bright is the maximum brightness as a decimal that a light can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs**
+**max_bright is the maximum brightness as a decimal that a light can take at midday and should be 1 under almost all circumstances except perhaps for overpowered lighting designs.**
 
 #### Minimum Brightness
-**min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space**
+**min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space.  Think of this as your nighttime snack, getting up to use the bathroom nightlight level.**
 
 #### Maximum Correlated Color Temperature
-**max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain, unless you find that white uncomfortably cool.**
+**max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain with full brightness, unless you find that white uncomfortably cool.**
 
 #### Minimum Correlated Color Temperature 
-**min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.**
+**min_CCT is the minimum color temperature in kelvins that a light should reach in the early morning and at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.**
 
 
 ### General-Purpose Arguments for Length
 
 #### Sunrise Brightness Length
-rise_length_bright is the length of the morning sunrise routine for brightness change and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.  It can also accept None or null, in which case it will be set to half of the day length.
+rise_length_bright is the length of the morning sunrise routine for brightness change and should usually be between 30 minutes and 1 hour to simulate the fast increase in brightness that happens around sunrise and support a quick, painless transition to wakefulness.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total time between wakening and going to bed.
 
 #### Sunset Brightness Length
-set_length_bright is the length of the evening sunset routine for brightness change and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk, supporting a gradual transition to sleepiness at bedtime.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.  It can also accept None or null, in which case it will be set to half of the day length.
+set_length_bright is the length of the evening sunset routine for brightness change and should usually be between 2 and 3 hours to simulate the gradual decrease in brightness that happens around sunset and dusk and support a gradual transition to sleepiness at bedtime.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.
 
 #### Sunrise Correlated Color Temperature Length
-rise_length_CCT is the length of the morning increase in color temperature in minutes.  The default value of None or null sets it to run for the entire first half of the day, but values values less than half the day make for a more dramatic morning change with a more restful midday.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.  It can also accept None or null, in which case it will be set to half of the day length.
+rise_length_CCT is the length of the morning increase in color temperature in minutes.  The default value sets it to run for the entire first half of the day, but values values less than half the day make for a more dramatic morning change with a more restful midday.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.
 
 #### Sunset Correlated Color Temperature Length
-set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value of None or null sets it to run for the entire second half of the day, but values values less than half the day make for a more dramatic evening change with a more restful midday.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.  It can also accept None or null, in which case it will be set to half of the day length.
+set_length_CCT is the length of the evening decrease in color temperature in minutes.  The default value sets it to run for the entire second half of the day, but values values less than half the day make for a more dramatic evening change with a more restful midday.  This argument can also accept fractions of half day length in a string with the form "0.5x", which would set the argument to 1/4th of the total day length.
 
 
 ### General-Purpose Arguments for Slope
 
 #### Sunrise Brightness Slope
-rise_slope_bright describes the slope at which brightness increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+rise_slope_bright describes the slope at which brightness increases in the morning.  0 makes for a perfectly smooth change with a flat slope.  values approaching 100 make for a change that happens very quickly and then plateaus.  Intermediate positive numbers can be used to mimic exponential changes that happen during sunrise and sunset.  Negative numbers simulate a change that starts out gradually and accelerates over time.
 
 #### Sunset Brightness Slope
-set_slope_bright describes the slope at which brightness decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+set_slope_bright describes the slope at which brightness decreases in the evening. 0 makes for a perfectly smooth change with a flat slope.  values approaching 100 make for a change that happens very quickly and then plateaus.  Intermediate positive numbers can be used to mimic exponential changes that happen during sunrise and sunset.  Negative numbers simulate a change that starts out gradually and accelerates over time.
 
 #### Sunrise Correlated Color Temperature Slope
-rise_slope_CCT describes the slope at which color temperature increases in the morning. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+rise_slope_CCT describes the slope at which color temperature increases in the morning. 0 makes for a perfectly smooth change with a flat slope.  values approaching 100 make for a change that happens very quickly and then plateaus.  Intermediate positive numbers can be used to mimic exponential changes that happen during sunrise and sunset.  Negative numbers simulate a change that starts out gradually and accelerates over time.
 
 #### Sunset Correlated Color Temperature Slope
-set_slope_CCT describes the slope at which color temperature decreases in the evening. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+set_slope_CCT describes the slope at which color temperature decreases in the evening. 0 makes for a perfectly smooth change with a flat slope.  values approaching 100 make for a change that happens very quickly and then plateaus.  Intermediate positive numbers can be used to mimic exponential changes that happen during sunrise and sunset.  Negative numbers simulate a change that starts out gradually and accelerates over time.
 
 
 ### Sunrise Simulator Specific Arguments for Maximums and Minimums
 
 #### Maximum Blue-Yellow Scatter Distance
-**max_scatdist is the maximum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around midday, but a number too high can lead to errors, especially with low max_CCT, because color temperature is not defined below 1000K**
+**max_scatdist is the maximum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around midday, but a number too high can impair color rendering, especially with low max_CCT, because color temperature is not defined below 1000K**
 
 #### Minimum Blue-Yellow Scatter Distance
-**min_scatdist is the minimum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around bedtime, but a number too high can lead to errors, especially with low min_CCT, because color temperature is not defined below 1000K**
+**min_scatdist is the minimum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around bedtime, but a number too high can impair color rendering, especially with low min_CCT, because color temperature is not defined below 1000K**
 
 #### Maximum Blue-Yellow Angle Shift
-**max_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during sunrise or sunset.  Higher numbers make for more yellow sunsets with dusky blue accents while lower numbers make for more pink sunsets with more aqua accents.**
+**max_scatangshift is the maximum angle in degrees by which the warm white is shifted up toward yellow and the blue point is shifted down toward a more purple blue when using the blue-yellow feature during sunrise or sunset.  Higher numbers make for more yellow sunsets with dusky blue accents while lower numbers make for more orange sunsets with more aqua accents.  Numbers too high can lead to very pink sunrises and sunsets with greenish accents.**
 
 #### Minimum Blue-Yellow Angle Shift
 **min_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during midday.  Higher numbers make for more yellow tinting with dusky blue accents around midday while lower numbers make for more neutral tinting during midday.  This should be 0 under most circumstances, unless you are simulating sunlight near a wildfire**
