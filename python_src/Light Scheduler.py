@@ -17,10 +17,12 @@ def kitchenlightchanger():
     CCT_mired_int = lighting_parameters[1]
     bright_yellow_int = lighting_parameters[2]
     bright_blue_int = lighting_parameters[3]
-    yellow_x_shifted_flt = lighting_parameters[4]
-    yellow_y_shifted_flt = lighting_parameters[5]
-    blue_x_shifted_flt = lighting_parameters[6]
-    blue_y_shifted_flt = lighting_parameters[7]
+    white_x_flt = lighting_parameters[4]
+    white_y_flt = lighting_parameters[5]
+    yellow_x_shifted_flt = lighting_parameters[6]
+    yellow_y_shifted_flt = lighting_parameters[7]
+    blue_x_shifted_flt = lighting_parameters[8]
+    blue_y_shifted_flt = lighting_parameters[9]
     #print (lighting_parameters[0])
 
     lights = ["None"]

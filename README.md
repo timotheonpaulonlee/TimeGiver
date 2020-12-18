@@ -174,7 +174,70 @@ Now that you have reviewed the arguments TimeGiver accepts to build a schedule, 
  4. bright_blue_int_ret = Brightness of blue lights as an integer out of 254.
  5. white_x_ret = CIE 1931 x value of the plain white lights as a decimal, which can also be calculated from the white color temperature.
  6. white_y_ret = CIE 1931 y value of the plain white lights as a decimal, which can also be calculated from the white color temperature.
- 7. yellow_x_ret = CIE 1931 x value of the yellow lights as a decimal.
- 8. yellow_8_ret = CIE 1931 y value of the yellow lights as a decimal.
- 9. blue_x_ret = CIE 1931 x value of the blue lights as a decimal.
- 10. blue_y_ret = CIE 1931 y value of the blue lights as a decimal.
+ 7. yellow_shifted_x_ret = CIE 1931 x value of the yellow lights as a decimal.
+ 8. yellow_shifted_y_ret = CIE 1931 y value of the yellow lights as a decimal.
+ 9. blue_shifted_x_ret = CIE 1931 x value of the blue lights as a decimal.
+ 10. blue_shifted_y_ret = CIE 1931 y value of the blue lights as a decimal.
+
+## Usage
+Now that you are familiar with TimeGiver's arguments and returns, the actual usage of the program is quite straightforward but differs slightly between implementations.
+
+### Python Usage
+1. Download the TimeGiver.py source file and place it in the root directory of the python program that is calling it.
+2. Import the TimeGiver function into your python program as follows: 
+```python 
+from TimeGiver import TimeGiver
+```
+3. Set a variable such as lighting_parameters to assign to the list returned by the TimeGiver function passed with appropriate arguments with the following syntax, leaving all other arguments to be set to their default:
+```python
+lighting_parameters = TimeGiver (bed_time = "1260", wake_time = "360")
+```
+4. Optionally, parse out the items in the ordered list to make for easier usage elsewhere in your code:
+```python
+bright_int_ret = lighting_parameters[0]
+CCT_mired_int_ret = lighting_parameters[1]
+bright_yellow_int_ret = lighting_parameters[2]
+bright_blue_int_ret = lighting_parameters[3]
+white_x_ret = lighting_parameters[4]
+white_y_ret = lighting_parameters[5]
+yellow_x_shifted_ret = lighting_parameters[6]
+yellow_y_shifted_ret = lighting_parameters[7]
+blue_x_shifted_ret = lighting_parameters[8]
+blue_y_shifted_ret = lighting_parameters[9]
+```
+5. Rerun steps 3 and 4 as often as needed to update lighting parameters as time passes.
+
+### Javascript Usage
+1. Download TimeGiver.js and place it somewhere in your project folder
+2. Import TimeGiver.js into your HTML head as follows:
+```javascript
+<script type="text/javascript" src="TimeGiver.js"></script>
+```
+3. Set a variable such as lighting_parameters to assign to the object literal returned by the TimeGiver function passed with appropriate arguments with the following syntax, leaving all other arguments to be set to their default:
+```javascript
+let lighting_parameters = TimeGiver({wake_time: 360, bed_time: 1260})
+```
+4. Access the individual lighting parameters using the object.key syntax as in the example below:
+```javascript
+lighting_parameters.blue_x_shifted_ret
+```
+5. Rerun steps 3 and 4 as often as needed to update lighting parameters as time passes.
+
+### Node.JS Usage
+1. Import the TimeGiver code into your project with npm on the command line as follows:
+```
+npm install timegiver
+```
+2. Set a variable such as parameters to use to interact with the TimeGiver module:
+```javascript
+var parameters = require('TimeGiver');
+```
+3. Set a variable such as lighting_parameters to assign to the object literal returned by the TimeGiver function passed with appropriate arguments with the following syntax, leaving all other arguments to be set to their default:
+```javascript
+let lighting_parameters = parameters.TimeGiver(time = 580);
+```
+4. Access the individual lighting parameters using the object.key syntax as in the example below:
+```javascript
+lighting_parameters.blue_x_shifted_ret
+```
+5. Rerun steps 3 and 4 as often as needed to update lighting parameters as time passes.
