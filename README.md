@@ -21,7 +21,7 @@ TimeGiver is based on the research and development work of Timothy Lee, a 3rd-ye
 TimeGiver is an open-source, highly-customizable circadian lighting schedule generator with implementations in python and javascript built to serve as part of the backend for connected lighting systems.  The core of the system is the function TimeGiver() that takes arguments that describe a lighting rhythm and returns appropriate lighting parameters for the current or specified time under that rhythm.  The code has significant in-line documentation, so this text will focus on a conceptual understanding of the different arguments and return parameters.
 
 ## Arguments
-TimeGiver accepts over 40 different arguments that describe different aspects of how a rhythm is generated, allowing for extensive customization.  However, changes in most of the arguments have a minor effect on the final rhythm and all of them come with default values that should be acceptable for most users.  As a result, the number of arguments you will want to expose as settings depends on your user base and how they value customizability versus simplicity.  There are several core arguments such as wake time and bed time that should be exposed as settings in nearly all applications, and I have listed them at the top and bolded them.  The arguments are the same across both implementations, though the syntax for passing them is different.  Some of the arguments serve for any use of TimeGiver and others only need to be worried about when using the sunlight simulator feature.  The arguments can also be divided into several different types: those that set key times, those that describe maximums and minimums that fence the rhythms in, those that describes lengths of change, and those that describe slopes of change.  The arguments will be grouped according to whether they are general-purpose or specific to the sunrise simulator and then according to their general category as above.
+TimeGiver accepts over 40 different arguments that describe aspects of how a rhythm is generated, allowing for extensive customization.  However, changes in most of the arguments have a minor effect on the final rhythm and all of them come with default values that should be acceptable for most users.  As a result, the number of arguments you will want to expose as settings depends on your user base and how they value customizability versus simplicity.  There are several core arguments such as wake time and bed time that should be exposed as settings in nearly all applications, and I have bolded them.  The arguments are the same across both implementations, though the syntax for passing them is different.  Some of the arguments serve for any use of TimeGiver and others only matter when using the blue-yellow sunlight simulator feature.  The arguments can also be divided into several different types: those that set key times, those that describe maximums and minimums that fence the rhythms in, those that describes lengths of change, and those that describe slopes of change.  The arguments will be grouped according to whether they are general-purpose or specific to the sunrise simulator and then according to their general category as above.
 
 ### General-Purpose Arguments for Key Times
 
@@ -29,10 +29,10 @@ TimeGiver accepts over 40 different arguments that describe different aspects of
 time is a simulated time variable that overrides real current time if it is set to greater than or equal to 1, and it is only intended to be used for testing purposes
 
 #### Wake Time
-wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time
+**wake_time is the time you intend to be awake and ready to start your day in minutes after midnight, and there should be at least 8 hours (480 minutes) of sleep time after bed_time and before wake_time**
 
 #### Bed Time
-bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight
+**bed_time is the time you intend to be in bed with your head on the pillow in minutes after midnight**
 
 #### Wake Offset
 wake_offset is how soon before your intended wake up time your lights should start rising and may need to be as high as 45 minutes for heavy sleepers or as low as 5 minutes for light sleepers
@@ -44,16 +44,16 @@ bed_offset is how soon before your intended bed time your lights reach nightligh
 ### General-Purpose Arguments for Maximums and Minimums
 
 #### Maximum Brightness
-max_bright is the maximum brightness as a decimal that a light can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
+**max_bright is the maximum brightness as a decimal that a light can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs**
 
 #### Minimum Brightness
-min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space
+**min_bright is the minimum brightness a light should reach around bed time and should be just bright enough to allow you to function safely in a space**
 
 #### Maximum Correlated Color Temperature
-max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain, unless you find that white uncomfortably cool.
+**max_CCT is the maximum color temperature in kelvins that a light should reach at midday and should generally correspond to the maximum the lighting system can attain, unless you find that white uncomfortably cool.**
 
 #### Minimum Correlated Color Temperature 
-min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.
+**min_CCT is the minimum color temperature in kelvins that a light should reach at bedtime and should generally correspond to the minimum the lighting system can attain, unless you find that white uncomfortably warm.**
 
 
 ### General-Purpose Arguments for Length
@@ -89,28 +89,28 @@ set_slope_CCT describes the slope at which color temperature decreases in the ev
 ### Sunrise Simulator Specific Arguments for Maximums and Minimums
 
 #### Maximum Blue-Yellow Scatter Distance
-max_scatdist is the maximum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around midday, but a number too high can lead to errors, especially with low max_CCT, because color temperature is not defined below 1000K
+**max_scatdist is the maximum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around midday, but a number too high can lead to errors, especially with low max_CCT, because color temperature is not defined below 1000K**
 
 #### Minimum Blue-Yellow Scatter Distance
-min_scatdist is the minimum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around bedtime, but a number too high can lead to errors, especially with low min_CCT, because color temperature is not defined below 1000K
+**min_scatdist is the minimum difference between the central white point and the warm white point when using the blue-yellow feature. Higher numbers make for deeper blues and warmer whites, especially around bedtime, but a number too high can lead to errors, especially with low min_CCT, because color temperature is not defined below 1000K**
 
 #### Maximum Blue-Yellow Angle Shift
-max_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during sunrise or sunset.  Higher numbers make for more yellow sunsets with dusky blue accents while lower numbers make for more pink sunsets with more aqua accents.
+**max_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during sunrise or sunset.  Higher numbers make for more yellow sunsets with dusky blue accents while lower numbers make for more pink sunsets with more aqua accents.**
 
 #### Minimum Blue-Yellow Angle Shift
-min_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during midday.  Higher numbers make for more yellow tinting with dusky blue accents around midday while lower numbers make for more neutral tinting during midday.  This should be 0 under most circumstances, unless you are simulating sunlight near a wildfire
+**min_scatangshift is the maximum angle in degrees by which the warm white is shifted up and the blue point is shifted down when using the blue-yellow feature during midday.  Higher numbers make for more yellow tinting with dusky blue accents around midday while lower numbers make for more neutral tinting during midday.  This should be 0 under most circumstances, unless you are simulating sunlight near a wildfire**
 
 #### Maximum Yellow Brightness
-max_bright_yellow is the maximum brightness as a decimal that a yellow light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
+**max_bright_yellow is the maximum brightness as a decimal that a yellow light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs**
 
 #### Minimum Yellow Brightness
-min_bright_yellow is the minimum brightness a yellow light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
+**min_bright_yellow is the minimum brightness a yellow light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space**
 
 #### Maximum Blue Brightness
-max_bright_blue is the maximum brightness as a decimal that a blue light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs
+**max_bright_blue is the maximum brightness as a decimal that a blue light using the blue-yellow feature can take at midday and should be 1 under almost all circumstances except for overpowered lighting designs**
 
 #### Minimum Blue Brightness
-min_bright_blue is the minimum brightness a blue light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space
+**min_bright_blue is the minimum brightness a blue light using the blue yellow feature should reach around bed time and should be just bright enough to allow you to function safely in a space**
 
 
 ### Sunrise Simulator Specific Arguments for Length
@@ -165,3 +165,16 @@ rise_slope_bright_blue describes the slope at which brightness of a blue light i
 
 #### Sunset Blue Brightness Slope
 set_slope_bright_blue describes the slope at which brightness of a blue light decreases in the evening while using the blue-yellow feature. 0 makes for a perfectly smooth change with a flat slope and 100 makes for a change that happens very quickly and then plateaus, while numbers inbetween can be used to mimic exponential changes that happen during sunrise and sunset.
+
+## Returns
+Now that you have reviewed the arguments TimeGiver accepts to build a schedule, it is important to understand how TimeGiver returns lighting parameters.  The implementation is different between the implementations, with parameters returned as a list in python and an object literal in javascript and Node.JS, but the variables should be identical across implementations.  There are 10 parameters returned in all instances, 4 of which may be relevant for any purpose and 6 of which are only relevant when using the blue-yellow sunlight simulator feature.  Note that all variables are returned in every situation and it is your job to decide how to give your users choice over which set of parameters to implement.  The ten return variables are:
+ 1. bright_int_ret: Brightness as an integer out of 254.
+ 2. CCT_mired_int_ret: White Color Temperature as an integer in Mired, which can be converted to Kelvin using the formula Kelvin = (1*10^6)/Mired.
+ 3. bright_yellow_int_ret = Brightness of yellow lights as an integer out of 254.
+ 4. bright_blue_int_ret = Brightness of blue lights as an integer out of 254.
+ 5. white_x_ret = CIE 1931 x value of the plain white lights as a decimal, which can also be calculated from the white color temperature.
+ 6. white_y_ret = CIE 1931 y value of the plain white lights as a decimal, which can also be calculated from the white color temperature.
+ 7. yellow_x_ret = CIE 1931 x value of the yellow lights as a decimal.
+ 8. yellow_8_ret = CIE 1931 y value of the yellow lights as a decimal.
+ 9. blue_x_ret = CIE 1931 x value of the blue lights as a decimal.
+ 10. blue_y_ret = CIE 1931 y value of the blue lights as a decimal.
