@@ -15,7 +15,7 @@ This next gif shows a pair of light strips running a rhythm created using TimeGi
 
 
 ## Attributions
-TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health.  Questions and comments can be directed to Timothy Lee, @timotheonpaulonlee on Github or linkedin.com/in/timothy-paul-lee/.
+TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health.  Questions and comments can be directed to Timothy Lee on Github [@timotheonpaulonlee](https://github.com/timotheonpaulonlee) on Github or [via LinkedIn](http://linkedin.com/in/timothy-paul-lee/).
 
 # Documentation
 TimeGiver is an open-source, highly-customizable circadian lighting schedule generator with implementations in python and javascript built to serve as part of the backend for connected lighting systems.  The core of the system is the function TimeGiver() that takes arguments that describe a lighting rhythm and returns appropriate lighting parameters for the current or specified time under that rhythm.  The code has significant in-line documentation, so this text will focus on a conceptual understanding of the different arguments and return parameters.
