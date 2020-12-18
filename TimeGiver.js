@@ -119,8 +119,8 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var set_CCT = ((((bed_time - bed_offset - hm)/set_length_CCT) ** (set_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
     var rise_scatdist = ((((hm - wake_time + wake_offset)/rise_length_scatdist) ** (rise_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var set_scatdist = ((((bed_time - bed_offset - hm)/set_length_scatdist) ** (set_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
-    var rise_scatangshift = (-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift) + max_scatangshift);
-    var set_scatangshift = (-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift) + max_scatangshift);
+    var rise_scatangshift = ((-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift);
+    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift);
     var rise_bright_yellow = ((((hm - wake_time + wake_offset)/rise_length_bright_yellow) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var set_bright_yellow = ((((bed_time - bed_offset - hm)/set_length_bright_yellow) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var rise_bright_blue = ((((hm - wake_time + wake_offset)/rise_length_bright_blue) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
