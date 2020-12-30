@@ -188,7 +188,7 @@ function setCookie(cname,cvalue,exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
   var expires = "expires=" + d.toGMTString();
-  document.cookie = (cname + "=" + cvalue + ";" + expires);
+  document.cookie = (cname + "=" + cvalue + ";" + expires + "SameSite=Lax");
 }
 
 function toggleelement(elementid) {
@@ -209,17 +209,30 @@ function togglearrow(elementid) {
   }
 }
 
+function togglelistitem(name_esc) {
+  var autoondiv = ("autoondiv_" + name_esc)
+  var whitecheckboxchecked = ("#whitelightcheckbox_" + name_esc + ":checked")
+  var bluecheckboxchecked = ("#bluelightcheckbox_" + name_esc + ":checked")
+  var yellowcheckboxchecked = ("#yellowlightcheckbox_" + name_esc + ":checked")
+  var x = document.getElementById(autoondiv);
+  if (document.querySelector(bluecheckboxchecked) !== null || document.querySelector(yellowcheckboxchecked) !== null || document.querySelector(whitecheckboxchecked) !== null){
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+
 function listswitch(color, name){
   if (color.includes("blue")){
-    console.log (color)
+    //console.log (color)
     document.getElementById("yellow" + name).checked = false
     document.getElementById("white" + name).checked = false
   } else if (color.includes("yellow")) {
-    console.log (color)
+    //console.log (color)
     document.getElementById("blue" + name).checked = false
     document.getElementById("white" + name).checked = false
   } else if (color.includes("white")) {
-    console.log (color)
+    //console.log (color)
     document.getElementById("blue" + name).checked = false
     document.getElementById("yellow" + name).checked = false
   }
@@ -646,7 +659,7 @@ var huebridgeaddress = [];
 var huebridgeusername = [];
 var lights = [];
 var switches = [];
-var test;
+
 async function gethuebridgeaddresscookie (){
   var addresscookie = getCookie ("huebridgeaddress")
   if (addresscookie.length > 3) {huebridgeaddress = unescape(addresscookie); /*alert ("Address cookie is" + addresscookie);*/ return huebridgeaddress;} else {
@@ -774,7 +787,7 @@ async function startdemo (){
         var name = (lights[i].name);
         var name_esc = (name.replace(/\s+/g, ''))
         var name_esc = (name_esc.replace(/'/g, ''))
-        document.getElementById("whitelightlist").innerHTML = (document.getElementById("whitelightlist").innerHTML + "<input type='checkbox' id='whitelightcheckbox_" + name_esc + "' onclick='toggleelement(\"autoondiv_" + name_esc + "\"); listswitch(\"white\", \"lightcheckbox_" + name_esc + "\")'>" + lights[i].name + "</input><br>")
+        document.getElementById("whitelightlist").innerHTML = (document.getElementById("whitelightlist").innerHTML + "<input type='checkbox' id='whitelightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"white\", \"lightcheckbox_" + name_esc + "\")'>" + lights[i].name + "</input><br>")
         document.getElementById("autoonlisttext").innerHTML = (document.getElementById("autoonlisttext").innerHTML + "<div style='display:none' id='autoondiv_" + name_esc + "'><input type='checkbox' id='autooncheckbox_" + name_esc + "'>" + lights[i].name + "</input></div>")
       }
 
@@ -782,8 +795,8 @@ async function startdemo (){
         var name = (colorlights[i].name);
         var name_esc = (name.replace(/\s+/g, ''))
         var name_esc = (name_esc.replace(/'/g, ''))
-        document.getElementById("bluelightlisttext").innerHTML = (document.getElementById("bluelightlisttext").innerHTML + "<input type='checkbox' id='bluelightcheckbox_" + name_esc + "' onclick='toggleelement(\"autoondiv_" + name_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
-        document.getElementById("yellowlightlisttext").innerHTML = (document.getElementById("yellowlightlisttext").innerHTML + "<input type='checkbox' id='yellowlightcheckbox_" + name_esc + "' onclick='toggleelement(\"autoondiv_" + name_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        document.getElementById("bluelightlisttext").innerHTML = (document.getElementById("bluelightlisttext").innerHTML + "<input type='checkbox' id='bluelightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        document.getElementById("yellowlightlisttext").innerHTML = (document.getElementById("yellowlightlisttext").innerHTML + "<input type='checkbox' id='yellowlightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
       }
 
       scheduler = setInterval(() => {
@@ -924,22 +937,62 @@ function blueyellowlinedrawer ({time}) {
     var ctx_blue = c.getContext("2d");
     ctx_blue.beginPath();
     ctx_blue.strokeStyle = rgb_final_blue;
-    ctx_blue.strokeRect((time/2), ((254 - lighting_parameters.bright_blue_int_ret)/2), 1, (lighting_parameters.bright_blue_int_ret/2));
+    ctx_blue.strokeRect((time/2), ((274 - lighting_parameters.bright_blue_int_ret)/2), 1, (lighting_parameters.bright_blue_int_ret/2));
     ctx_blue.stroke();
-    ctx_blue.font = "30px Helvetica";
-    ctx_blue.fillStyle = "black";
-    ctx_blue.fillText("🌞", ((wake_time_hm/2)-20), (141-(((Number (document.getElementById("min_bright_blue_var").value))*254)/2)));
-    ctx_blue.fillText("🌙", ((bed_time_hm/2)-25), (141-(((Number (document.getElementById("min_bright_blue_var").value))*254)/2)));
     var ctx_yellow = c.getContext("2d");
     ctx_yellow.beginPath();
     ctx_yellow.strokeStyle = rgb_final_yellow;
-    ctx_yellow.strokeRect((time/2), ((254/2)), 1, (lighting_parameters.bright_yellow_int_ret/2));
+    ctx_yellow.strokeRect((time/2), ((274/2)), 1, (lighting_parameters.bright_yellow_int_ret/2));
     ctx_yellow.stroke();
-    ctx_yellow.font = "30px Helvetica";
-    ctx_yellow.fillStyle = "black";
-    ctx_yellow.fillText("🌞", ((wake_time_hm/2)-20), (129+(((Number (document.getElementById("min_bright_yellow_var").value))*254)/2)));
-    ctx_yellow.fillText("🌙", ((bed_time_hm/2)-25), (129+(((Number (document.getElementById("min_bright_yellow_var").value))*254)/2)));
-    if (time <= 1440) {blueyellowlinedrawer ({time: (time + 2)})} else {return;}
+    if (time <= 1440) {blueyellowlinedrawer ({time: (time + 2)})} else {
+      var wake_time = (document.getElementById("wake_time_var").value);
+      var wake_time_hh = (wake_time.slice(0,2));
+      var wake_time_hh_sixty = (wake_time_hh * 60);
+      var wake_time_mm = wake_time.slice(-2);
+      var wake_time_hm = (Number(wake_time_hh_sixty) + Number(wake_time_mm));
+      var bed_time = (document.getElementById("bed_time_var").value);
+      var bed_time_hh = (bed_time.slice(0,2));
+      var bed_time_hh_sixty = (bed_time_hh * 60);
+      var bed_time_mm = bed_time.slice(-2);
+      var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+      var now = new Date(); //sets the variable now equal to the current date and time
+      var hh = now.getHours(); //sets the variable hh equal to the number of hours that have passed since the day started.
+      var hh_sixty = hh * 60; //sets the variable hh_sixty equal to the number of minutes in the day at the time of the last hour change.
+      var mm = now.getMinutes(); //sets the variable mm equal to the number of minutes since the last hour
+      var hm = hh_sixty + mm; //sets the variable hm equal to the total number of minutes that have passed since the day began.
+      if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
+      if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
+      if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
+      if (Number((document.getElementById("set_length_CCT_var").value)) == 0) {var set_length_CCT_var = ((document.getElementById("set_length_CCT_mult_var").value) + "x")} else {var set_length_CCT_var = (Number (document.getElementById("set_length_CCT_var").value))}  
+      if (Number((document.getElementById("rise_length_scatdist_var").value)) == 0) {var rise_length_scatdist_var = ((document.getElementById("rise_length_scatdist_mult_var").value) + "x")} else {var rise_length_scatdist_var = (Number (document.getElementById("rise_length_scatdist_var").value))} 
+      if (Number((document.getElementById("set_length_scatdist_var").value)) == 0) {var set_length_scatdist_var = ((document.getElementById("set_length_scatdist_mult_var").value) + "x")} else {var set_length_scatdist_var = (Number (document.getElementById("set_length_scatdist_var").value))}  
+      if (Number((document.getElementById("rise_length_scatangshift_mult_var").value)) !== 0) {var rise_length_scatangshift_var = ((document.getElementById("rise_length_scatangshift_mult_var").value) + "x")} else {var rise_length_scatangshift_var = (Number (document.getElementById("rise_length_scatangshift_var").value))} 
+      if (Number((document.getElementById("set_length_scatangshift_mult_var").value)) !== 0) {var set_length_scatangshift_var = ((document.getElementById("set_length_scatangshift_mult_var").value) + "x")} else {var set_length_scatangshift_var = (Number (document.getElementById("set_length_scatangshift_var").value))}
+      if (Number((document.getElementById("rise_length_bright_yellow_mult_var").value)) !== 0) {var rise_length_bright_yellow_var = ((document.getElementById("rise_length_bright_yellow_mult_var").value) + "x")} else {var rise_length_bright_yellow_var = (Number (document.getElementById("rise_length_bright_yellow_var").value))} 
+      if (Number((document.getElementById("set_length_bright_yellow_mult_var").value)) !== 0) {var set_length_bright_yellow_var = ((document.getElementById("set_length_bright_yellow_mult_var").value) + "x")} else {var set_length_bright_yellow_var = (Number (document.getElementById("set_length_bright_yellow_var").value))}
+      if (Number((document.getElementById("rise_length_bright_blue_mult_var").value)) !== 0) {var rise_length_bright_blue_var = ((document.getElementById("rise_length_bright_blue_mult_var").value) + "x")} else {var rise_length_bright_blue_var = (Number (document.getElementById("rise_length_bright_blue_var").value))} 
+      if (Number((document.getElementById("set_length_bright_blue_mult_var").value)) !== 0) {var set_length_bright_blue_var = ((document.getElementById("set_length_bright_blue_mult_var").value) + "x")} else {var set_length_bright_blue_var = (Number (document.getElementById("set_length_bright_blue_var").value))}
+      let lighting_parameters = TimeGiver({time: wake_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
+      let lighting_parameters2 = TimeGiver({time: bed_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
+      let lighting_parameters3 = TimeGiver({time: hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
+      var c = document.getElementById("visualizer");
+      var ctx_blue = c.getContext("2d");
+      ctx_blue.beginPath();
+      ctx_blue.stroke();
+      ctx_blue.font = "30px Helvetica";
+      ctx_blue.fillStyle = "black";
+      ctx_blue.fillText("🌞", ((wake_time_hm/2)-20), (137-(lighting_parameters.bright_blue_int_ret/2)));
+      ctx_blue.fillText("🌝", ((bed_time_hm/2)-25), (132-(lighting_parameters2.bright_blue_int_ret/2)));
+      ctx_blue.fillText("🙌", ((hm/2)), (157-(lighting_parameters3.bright_blue_int_ret/2)));
+      var ctx_yellow = c.getContext("2d");
+      ctx_yellow.beginPath();
+      ctx_yellow.strokeStyle = rgb_final_yellow;
+      ctx_yellow.font = "30px Helvetica";
+      ctx_yellow.fillStyle = "black";
+      ctx_yellow.fillText("🌞", ((wake_time_hm/2)-20), (137+(lighting_parameters.bright_yellow_int_ret/2)));
+      ctx_yellow.fillText("🌝", ((bed_time_hm/2)-25), (152+(lighting_parameters2.bright_yellow_int_ret/2)));
+      ctx_yellow.fillText("🙌", ((hm/2)), (137+(lighting_parameters3.bright_yellow_int_ret/2)));
+      return;}
 }
 
 function linedrawer ({time}) {
@@ -964,13 +1017,44 @@ function linedrawer ({time}) {
     var ctx = c.getContext("2d");
     ctx.beginPath();
     ctx.strokeStyle = rgb_final;
-    ctx.strokeRect((time/2), (254 - lighting_parameters.bright_int_ret), 1, lighting_parameters.bright_int_ret);
+    ctx.strokeRect((time/2), (274 - lighting_parameters.bright_int_ret), 1, lighting_parameters.bright_int_ret);
     ctx.stroke();
     ctx.font = "30px Helvetica";
     ctx.fillStyle = "black";
-    ctx.fillText("🌞", ((wake_time_hm/2)-20), (254-((Number (document.getElementById("min_bright_var").value))*254)));
-    ctx.fillText("🌙", ((bed_time_hm/2)-25), (254-((Number (document.getElementById("min_bright_var").value))*254)));
-    if (time <= 1440) {linedrawer ({time: (time + 2)})} else {return;}
+    //ctx.fillText("🌞", ((wake_time_hm/2)-20), (254-((Number (document.getElementById("min_bright_var").value))*254)));
+    //ctx.fillText("🌙", ((bed_time_hm/2)-25), (254-((Number (document.getElementById("min_bright_var").value))*254)));
+    if (time <= 1440) {linedrawer ({time: (time + 2)})} else {
+      var wake_time = (document.getElementById("wake_time_var").value);
+      var wake_time_hh = (wake_time.slice(0,2));
+      var wake_time_hh_sixty = (wake_time_hh * 60);
+      var wake_time_mm = wake_time.slice(-2);
+      var wake_time_hm = (Number(wake_time_hh_sixty) + Number(wake_time_mm));
+      var bed_time = (document.getElementById("bed_time_var").value);
+      var bed_time_hh = (bed_time.slice(0,2));
+      var bed_time_hh_sixty = (bed_time_hh * 60);
+      var bed_time_mm = bed_time.slice(-2);
+      var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+      var now = new Date(); //sets the variable now equal to the current date and time
+      var hh = now.getHours(); //sets the variable hh equal to the number of hours that have passed since the day started.
+      var hh_sixty = hh * 60; //sets the variable hh_sixty equal to the number of minutes in the day at the time of the last hour change.
+      var mm = now.getMinutes(); //sets the variable mm equal to the number of minutes since the last hour
+      var hm = hh_sixty + mm; //sets the variable hm equal to the total number of minutes that have passed since the day began.
+      if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
+      if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
+      if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
+      if (Number((document.getElementById("set_length_CCT_var").value)) == 0) {var set_length_CCT_var = ((document.getElementById("set_length_CCT_mult_var").value) + "x")} else {var set_length_CCT_var = (Number (document.getElementById("set_length_CCT_var").value))}  
+      let lighting_parameters = TimeGiver({time: wake_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value))})
+      let lighting_parameters2 = TimeGiver({time: bed_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value))})
+      let lighting_parameters3 = TimeGiver({time: hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value))})
+      var c = document.getElementById("visualizer");
+      var ctx = c.getContext("2d");
+      ctx.beginPath();
+      ctx.font = "30px Helvetica";
+      ctx.fillStyle = "black";
+      ctx.fillText("🌞", ((wake_time_hm/2)-20), (274-lighting_parameters.bright_int_ret));
+      ctx.fillText("🌝", ((bed_time_hm/2)-25), (274-lighting_parameters2.bright_int_ret));
+      ctx.fillText("🙌", ((hm/2)), (284-lighting_parameters3.bright_int_ret));
+      return;}
 }
 
 function check() {
@@ -1002,9 +1086,9 @@ function check() {
 function lineremover() {
   var c = document.getElementById("visualizer");
   var ctx = c.getContext("2d");
-  ctx.clearRect(0, 0, 720, 254);
+  ctx.clearRect(0, 0, 720, 274);
   ctx.fillStyle = "white";
-  ctx.fillRect(0, 0, 720, 254);
+  ctx.fillRect(0, 0, 720, 274);
   if ((document.querySelector('#blueyellowactive:checked') !== null)) {
     //document.getElementById("max_bright_var").disabled = true;
     //document.getElementById("min_bright_var").disabled = true;
@@ -1097,12 +1181,14 @@ function lineremover() {
 }
 
 
+
+
     </script>
     
 </head>
 <body>
 
-<canvas class= "canvas" id="visualizer" width="720" height="254">
+<canvas class= "canvas" id="visualizer" width="720" height="274">
 Your browser does not support the canvas element.
 </canvas>
 
@@ -1110,26 +1196,26 @@ Your browser does not support the canvas element.
 <div class="slidecontainer">
     <h1>Welcome to TimeGiver's demo for Philips Hue smart lights</h1>
     <p>TimeGiver is a piece of computer code that builds smart lighting rhythms: 24-hour schedules that tell the lights how to change during the day to copy the sun. The rhythm tells the lights when to rise in the morning, how to get cooler around noon and warmer in the afternoon, and when to set in the evening. In nature, these kinds of changes in sunlight tell our brains when to have energy and when to feel sleepy. But humans today spend most of our time indoors, so our brains may get confused about when to be awake and when to be tired. By building a rhythm for indoor lights around your daily schedule, TimeGiver may help you feel more alert during the day and sleep better at night. TimeGiver also has a blue sky simulator that uses two sets of color lights, one to copy the yellow of the sun and the other to copy the blue of the sky, making for a more natural-feeling light. The simulator can copy everything from the crisp blue of midday to the golden hour of late afternoon and mellow blues of dusk, all while making colors look natural.</p>
-    <p>TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real shade the lights will have at each moment. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <p>TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the lists of lights that show up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
     <button type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
     <button type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
 
     <div id="listlist" style="display: block;">
     <p class="settingheader2">White Lights</p>
-    <div id="whitelightlist"><p>Your Hue lights will appear here, allowing you to check the lights you want on your rhythm.</p></div>
+    <div id="whitelightlist"><p>Your Hue lights will appear here, allowing you to check next to the lights you want on your rhythm.</p></div>
     
     <div id="bluelightlist" style="display: none;">
     <p class="settingheader2">Color Lights for Blue Sky</p>
-    <p id="bluelightlisttext">Your Hue color lights will appear here, allowing you to check the lights you want on your blue rhythm when using the blue sky sunlight simulator.</p></div>
+    <p id="bluelightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your blue rhythm when using the blue sky sunlight simulator.</p></div>
 
     <div id="yellowlightlist" style="display: none;">
     <p class="settingheader2">Color Lights for Direct Sun</p>
-    <p id="yellowlightlisttext">Your Hue color lights will appear here, allowing you to check the lights you want on your yellow rhythm when using the blue sky sunlight simulator.</p></div>
+    <p id="yellowlightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your yellow rhythm when using the blue sky sunlight simulator.</p></div>
     </div>
 
     <div id="autoonlightlist" style="display: block;">
       <p class="settingheader2">Lights to turn on at sunrise</p>
-      <p id="autoonlisttext">Your lights controlled by the demo will appear here, allowing you to check the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights).</p></div>
+      <p id="autoonlisttext">Your lights controlled by the demo will appear here, allowing you to check next to the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights).</p></div>
       </div>
 
     <p onclick="toggleelement('generalpurposesettings'); togglearrow('generalpurposesettingsuparrow'); togglearrow('generalpurposesettingsdownarrow');" class="settingheader1">General Purpose Rhythm Settings<span  id ="generalpurposesettingsuparrow" style="display: inline-block;">⬆</span><span  id ="generalpurposesettingsdownarrow" style="display: none;">⬇</span></p>
@@ -1138,22 +1224,17 @@ Your browser does not support the canvas element.
     <p onclick="toggleelement('generalpurposeimportantsettings'); togglearrow('generalpurposeimportantsettingsuparrow'); togglearrow('generalpurposeimportantsettingsdownarrow')" class="settingheader2">Settings most people may want to change<span  id ="generalpurposeimportantsettingsuparrow" style="display: inline-block;">⬆</span><span  id ="generalpurposeimportantsettingsdownarrow" style="display: none;">⬇</span></p>
     <div id="generalpurposeimportantsettings">
     <input type="time" id="wake_time_var" value="07:00" onchange="lineremover()"> Wake Time</input><br>
-    <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"> Bed Time</input><br>
-    <input type="checkbox" id="blueyellowactive" value="true" onchange="check()">Blue Sky Sunlight Simulator Active</input><br>
-    
-    
+    <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"> Bed Time</input><br>  
     <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()"><div class="tooltip">Maximum Brightness: <span id="max_bright_label"></span> %</input><span class="tooltiptext">The brightest you want your lights to get at midday, which is 100% for most lights.</span></div><br>
-
     <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()"><div class="tooltip">Minimum Brightness: <span id="min_bright_label"></span> %</input><span class="tooltiptext">The dimmest you want your lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack.</span></div><br>
-    
     <input type="range" min="1500" max="10000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()"><div class="tooltip">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><span class="tooltiptext">The coolest (or bluest) you want your lights to get at midday. Higher is cooler, and most lights max out around 6500K.</span></div><br>
     <input type="range" min="1500" max="10000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()"><div class="tooltip">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><span class="tooltiptext">The warmest (or reddest) you want your lights to get in the mornings and evenings. Lower is warmer, and most lights bottom out around 2700K.</span></div><br>
     </div>
 
     <p onclick="toggleelement('generalpurposeoptionalsettings'); togglearrow('generalpurposeoptionalsettingsuparrow'); togglearrow('generalpurposeoptionalsettingsdownarrow')" class="settingheader2">Settings some people may want to change<span  id ="generalpurposeoptionalsettingsuparrow" style="display: none;">⬆</span><span  id ="generalpurposeoptionalsettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="generalpurposeoptionalsettings" style="display: none;">
-    <input type="range" min="0" max="60" value="0" class="slider" id="wake_offset_var" onchange="lineremover()"><div class="tooltip">Wake Offset: <span id="wake_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your wake time should the sunrise start. This should be higher for deep sleepers and lower for light sleepers.</span></div><br>
-    <input type="range" min="0" max="60" value="0" class="slider" id="bed_offset_var" onchange="lineremover()"><div class="tooltip">Bed Offset: <span id="bed_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your bed time should the sunset end. This should be higher for hard sleepers and lower for easy sleepers.</span></div><br>
+    <input type="range" min="0" max="60" value="30" class="slider" id="wake_offset_var" onchange="lineremover()"><div class="tooltip">Wake Offset: <span id="wake_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your wake time should the sunrise start. This should be higher for deep sleepers and lower for light sleepers.</span></div><br>
+    <input type="range" min="0" max="60" value="30" class="slider" id="bed_offset_var" onchange="lineremover()"><div class="tooltip">Bed Offset: <span id="bed_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your bed time should the sunset end. This should be higher for hard sleepers and lower for easy sleepers.</span></div><br>
     <input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or: </input><span class="tooltiptext">How fast your lights get brighter in the morning in minutes from sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get brighter in the morning as a fraction of half of your day length.</span></div><br>
     <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunset Brightness Length: <span id="set_length_bright_label"></span> minutes, or: </input><span class="tooltiptext">How fast your light get dimmer in the evening in minutes from before sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get dimmer in the evening as a fraction of half of your day length.</span></div><br>
     <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_CCT_mult_var" onchange="lineremover()"><div class="tooltip">Sunrise Color Temperature Length: <span id="rise_length_CCT_mult_label"></span>x times half day length, or: </input><span class="tooltiptext">How fast your lights go from warm to cool in the morning as a fraction of half your day length.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_CCT_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_CCT_label"></span> minutes</input><span class="tooltiptext">How fast should your lights go from warm to cool in the morning in minutes from sunrise.</span></div><br>
@@ -1170,8 +1251,9 @@ Your browser does not support the canvas element.
     </div>
     </div>
 
+    
     <p onclick="toggleelement('blueyellowsettings'); togglearrow('blueyellowsettingsuparrow'); togglearrow('blueyellowsettingsdownarrow');" class="settingheader1" style="white-space: nowrap;">Blue Sky Sunlight Simulator Specific Settings <span  id ="blueyellowsettingsuparrow" style="display: none;">⬆</span><span  id ="blueyellowsettingsdownarrow" style="display: inline-block;">⬇</span></p>
-
+    <input type="checkbox" id="blueyellowactive" value="true" onchange="check()">Blue Sky Sunlight Simulator Active</input><br>
     <div id="blueyellowsettings" style="display: none;">
     <p onclick="toggleelement('blueyellowimportantsettings'); togglearrow('blueyellowimportantsettingsuparrow'); togglearrow('blueyellowimportantsettingsdownarrow');" class="settingheader2">Settings most people may want to change<span  id ="blueyellowimportantsettingsuparrow" style="display: inline-block;">⬆</span><span  id ="blueyellowimportantsettingsdownarrow" style="display: none;">⬇</span></p>
     <div id="blueyellowimportantsettings">
@@ -1491,6 +1573,10 @@ Your browser does not support the canvas element.
     set_slope_bright_blue_output.innerHTML = (set_slope_bright_blue_slider.value);
     set_slope_bright_blue_slider.oninput = function() {set_slope_bright_blue_output.innerHTML = (Math.round(this.value));}
     lineremover()
+
+    visualizerscheduler = setInterval(() => {
+      lineremover()
+    }, 300000); 
 
 </script>
 
