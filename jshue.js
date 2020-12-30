@@ -99,7 +99,7 @@ var jsHueAPI = (fetch, Response, JSON, Promise) => {
      * The given request URL generator function should generate a request URL from
      * a single input parameter. For example:
      *
-     * (id) => { return `https://path/to/resource/${id}`; }
+     * (id) => { return `http://path/to/resource/${id}`; }
      *
      * The returned parametrized request function takes this same input parameter
      * plus the remaining parameters of the given request function. For example, a
@@ -162,7 +162,7 @@ var jsHueAPI = (fetch, Response, JSON, Promise) => {
             /**
              * @class jsHueBridge
              */
-            var _baseUrl = `https://${ip}`,
+            var _baseUrl = `http://${ip}`,
                 _bridgeUrl = `${_baseUrl}/api`;
 
             return {
