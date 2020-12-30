@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+.slidecontainer {
+  width: 100%; 
+  margin-top: 20px;
+}
+
+
+.slider {
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 200px; 
+  height: 15px; 
+  border-radius: 5px;
+  background: #d3d3d3; 
+  outline: none; 
+  opacity: 0.7; 
+  -webkit-transition: .2s; 
+  transition: opacity .2s;
+}
+
+
+.slider:hover {
+  opacity: 1; 
+}
+
+.slider:hover:disabled {
+  opacity: 0.7; 
+}
+
+.slider:disabled::-webkit-slider-thumb {
+  background: #666666;
+  cursor: default;  
+}
+
+.slider:disabled::-moz-range-thumb {
+  background: #666666; 
+  cursor: default; 
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 20px; 
+  height: 20px; 
+  border-radius: 50%;
+  background: #4CAF50; 
+  cursor: pointer; 
+}
+
+.slider::-moz-range-thumb {
+  width: 20px; 
+  height: 20px; 
+  border-radius: 50%;
+  background: #4CAF50; 
+  cursor: pointer; 
+}
+
+input[type="range"]:disabled {
+  background: #111111;
+}
+
+.settingheader1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+.settingheader2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+        </style>
+<script type="text/javascript" src="TimeGiver.js"></script>
+<script type="text/javascript" src="xytorgb.js"></script>
+<script>
+
+function blueyellowlinedrawer ({time}) {
+    var wake_time = (document.getElementById("wake_time_var").value);
+    var wake_time_hh = (wake_time.slice(0,2));
+    var wake_time_hh_sixty = (wake_time_hh * 60);
+    var wake_time_mm = wake_time.slice(-2);
+    var wake_time_hm = (Number(wake_time_hh_sixty) + Number(wake_time_mm));
+    var bed_time = (document.getElementById("bed_time_var").value);
+    var bed_time_hh = (bed_time.slice(0,2));
+    var bed_time_hh_sixty = (bed_time_hh * 60);
+    var bed_time_mm = bed_time.slice(-2);
+    var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+    if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
+    if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
+    if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
+    if (Number((document.getElementById("set_length_CCT_var").value)) == 0) {var set_length_CCT_var = ((document.getElementById("set_length_CCT_mult_var").value) + "x")} else {var set_length_CCT_var = (Number (document.getElementById("set_length_CCT_var").value))}  
+    if (Number((document.getElementById("rise_length_scatdist_var").value)) == 0) {var rise_length_scatdist_var = ((document.getElementById("rise_length_scatdist_mult_var").value) + "x")} else {var rise_length_scatdist_var = (Number (document.getElementById("rise_length_scatdist_var").value))} 
+    if (Number((document.getElementById("set_length_scatdist_var").value)) == 0) {var set_length_scatdist_var = ((document.getElementById("set_length_scatdist_mult_var").value) + "x")} else {var set_length_scatdist_var = (Number (document.getElementById("set_length_scatdist_var").value))}  
+    if (Number((document.getElementById("rise_length_scatangshift_mult_var").value)) !== 0) {var rise_length_scatangshift_var = ((document.getElementById("rise_length_scatangshift_mult_var").value) + "x")} else {var rise_length_scatangshift_var = (Number (document.getElementById("rise_length_scatangshift_var").value))} 
+    if (Number((document.getElementById("set_length_scatangshift_mult_var").value)) !== 0) {var set_length_scatangshift_var = ((document.getElementById("set_length_scatangshift_mult_var").value) + "x")} else {var set_length_scatangshift_var = (Number (document.getElementById("set_length_scatangshift_var").value))}
+    if (Number((document.getElementById("rise_length_bright_yellow_mult_var").value)) !== 0) {var rise_length_bright_yellow_var = ((document.getElementById("rise_length_bright_yellow_mult_var").value) + "x")} else {var rise_length_bright_yellow_var = (Number (document.getElementById("rise_length_bright_yellow_var").value))} 
+    if (Number((document.getElementById("set_length_bright_yellow_mult_var").value)) !== 0) {var set_length_bright_yellow_var = ((document.getElementById("set_length_bright_yellow_mult_var").value) + "x")} else {var set_length_bright_yellow_var = (Number (document.getElementById("set_length_bright_yellow_var").value))}
+    if (Number((document.getElementById("rise_length_bright_blue_mult_var").value)) !== 0) {var rise_length_bright_blue_var = ((document.getElementById("rise_length_bright_blue_mult_var").value) + "x")} else {var rise_length_bright_blue_var = (Number (document.getElementById("rise_length_bright_blue_var").value))} 
+    if (Number((document.getElementById("set_length_bright_blue_mult_var").value)) !== 0) {var set_length_bright_blue_var = ((document.getElementById("set_length_bright_blue_mult_var").value) + "x")} else {var set_length_bright_blue_var = (Number (document.getElementById("set_length_bright_blue_var").value))}
+    let lighting_parameters = TimeGiver({time: time, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
+    let rgb_values_blue = xytorgb(lighting_parameters.blue_x_shifted_ret, lighting_parameters.blue_y_shifted_ret, 200)
+    var rgb_final_blue = "rgb("+rgb_values_blue.r_gamma_ret+","+rgb_values_blue.g_gamma_ret+","+rgb_values_blue.b_gamma_ret+")";
+    let rgb_values_yellow = xytorgb(lighting_parameters.yellow_x_shifted_ret, lighting_parameters.yellow_y_shifted_ret, 200)
+    var rgb_final_yellow = "rgb("+rgb_values_yellow.r_gamma_ret+","+rgb_values_yellow.g_gamma_ret+","+rgb_values_yellow.b_gamma_ret+")";
+    var c = document.getElementById("visualizer");
+    var ctx_blue = c.getContext("2d");
+    ctx_blue.beginPath();
+    ctx_blue.strokeStyle = rgb_final_blue;
+    ctx_blue.strokeRect((time/2), ((254 - lighting_parameters.bright_blue_int_ret)/2), 1, (lighting_parameters.bright_blue_int_ret/2));
+    ctx_blue.stroke();
+    var ctx_yellow = c.getContext("2d");
+    ctx_yellow.beginPath();
+    ctx_yellow.strokeStyle = rgb_final_yellow;
+    ctx_yellow.strokeRect((time/2), ((254/2)), 1, (lighting_parameters.bright_yellow_int_ret/2));
+    ctx_yellow.stroke();
+    if (time <= 1440) {blueyellowlinedrawer ({time: (time + 2)})} else {event.preventDefault();}
+}
+
+function linedrawer ({time}) {
+    var wake_time = (document.getElementById("wake_time_var").value);
+    var wake_time_hh = (wake_time.slice(0,2));
+    var wake_time_hh_sixty = (wake_time_hh * 60);
+    var wake_time_mm = wake_time.slice(-2);
+    var wake_time_hm = (Number(wake_time_hh_sixty) + Number(wake_time_mm));
+    var bed_time = (document.getElementById("bed_time_var").value);
+    var bed_time_hh = (bed_time.slice(0,2));
+    var bed_time_hh_sixty = (bed_time_hh * 60);
+    var bed_time_mm = bed_time.slice(-2);
+    var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+    if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
+    if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
+    if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
+    if (Number((document.getElementById("set_length_CCT_var").value)) == 0) {var set_length_CCT_var = ((document.getElementById("set_length_CCT_mult_var").value) + "x")} else {var set_length_CCT_var = (Number (document.getElementById("set_length_CCT_var").value))}  
+    let lighting_parameters = TimeGiver({time: time, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value))})
+    let rgb_values = xytorgb(lighting_parameters.white_x_ret, lighting_parameters.white_y_ret, 200)
+    var rgb_final = "rgb("+rgb_values.r_gamma_ret+","+rgb_values.g_gamma_ret+","+rgb_values.b_gamma_ret+")";
+    var c = document.getElementById("visualizer");
+    var ctx = c.getContext("2d");
+    ctx.beginPath();
+    ctx.strokeStyle = rgb_final;
+    ctx.strokeRect((time/2), (254 - lighting_parameters.bright_int_ret), 1, lighting_parameters.bright_int_ret);
+    ctx.stroke();
+    if (time <= 1440) {linedrawer ({time: (time + 2)})} else {event.preventDefault();}
+}
+
+function check() {
+  if ((document.querySelector('#blueyellowactive:checked') !== null)) {
+    document.getElementById("max_CCT_var").value = 7500;
+    document.getElementById("min_CCT_var").value = 4000;
+    var max_CCT_output = document.getElementById("max_CCT_label");
+    max_CCT_output.innerHTML = (7500);
+    var min_CCT_output = document.getElementById("min_CCT_label");
+    min_CCT_output.innerHTML = (4000);} else if ((document.querySelector('#blueyellowactive:checked') === null)) {
+    document.getElementById("max_CCT_var").value = 6000;
+    document.getElementById("min_CCT_var").value = 2700;
+    var max_CCT_output = document.getElementById("max_CCT_label");
+    max_CCT_output.innerHTML = (6000);
+    var min_CCT_output = document.getElementById("min_CCT_label");
+    min_CCT_output.innerHTML = (2700);}
+  lineremover()}
+
+function lineremover() {
+  var c = document.getElementById("visualizer");
+  var ctx = c.getContext("2d");
+  ctx.clearRect(0, 0, 720, 254);
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 720, 254);
+  if ((document.querySelector('#blueyellowactive:checked') !== null)) {
+    document.getElementById("max_bright_var").disabled = true;
+    document.getElementById("min_bright_var").disabled = true;
+    document.getElementById("rise_length_bright_var").disabled = true;  
+    document.getElementById("rise_length_bright_mult_var").disabled = true; 
+    document.getElementById("set_length_bright_var").disabled = true; 
+    document.getElementById("set_length_bright_mult_var").disabled = true;
+    document.getElementById("rise_slope_bright_var").disabled = true; 
+    document.getElementById("set_slope_bright_var").disabled = true;
+    document.getElementById("max_bright_yellow_var").disabled = false;
+    document.getElementById("min_bright_yellow_var").disabled = false;
+    document.getElementById("max_bright_blue_var").disabled = false;
+    document.getElementById("min_bright_blue_var").disabled = false;
+    document.getElementById("max_scatdist_var").disabled = false;
+    document.getElementById("min_scatdist_var").disabled = false;
+    document.getElementById("max_scatangshift_var").disabled = false;
+    document.getElementById("min_scatangshift_var").disabled = false;    
+    document.getElementById("rise_length_bright_yellow_var").disabled = false;
+    document.getElementById("set_length_bright_yellow_var").disabled = false;
+    document.getElementById("rise_length_bright_blue_var").disabled = false;
+    document.getElementById("set_length_bright_blue_var").disabled = false;
+    document.getElementById("rise_length_scatdist_mult_var").disabled = false;
+    document.getElementById("set_length_scatdist_mult_var").disabled = false;
+    document.getElementById("rise_length_scatangshift_var").disabled = false;
+    document.getElementById("set_length_scatangshift_var").disabled = false;
+    document.getElementById("rise_length_bright_yellow_mult_var").disabled = false;
+    document.getElementById("set_length_bright_yellow_mult_var").disabled = false;
+    document.getElementById("rise_length_bright_blue_mult_var").disabled = false;
+    document.getElementById("set_length_bright_blue_mult_var").disabled = false;
+    document.getElementById("rise_length_scatdist_var").disabled = false;
+    document.getElementById("set_length_scatdist_var").disabled = false;
+    document.getElementById("rise_length_scatangshift_mult_var").disabled = false;
+    document.getElementById("set_length_scatangshift_mult_var").disabled = false;
+    document.getElementById("rise_slope_scatdist_var").disabled = false;
+    document.getElementById("set_slope_scatdist_var").disabled = false;
+    document.getElementById("rise_slope_scatangshift_var").disabled = false;
+    document.getElementById("set_slope_scatangshift_var").disabled = false;
+    document.getElementById("rise_slope_bright_yellow_var").disabled = false;
+    document.getElementById("set_slope_bright_yellow_var").disabled = false;
+    document.getElementById("rise_slope_bright_blue_var").disabled = false;
+    document.getElementById("set_slope_bright_blue_var").disabled = false;
+    blueyellowlinedrawer({time: 0})
+} else if ((document.querySelector('#blueyellowactive:checked') === null)) {
+    document.getElementById("max_bright_var").disabled = false;
+    document.getElementById("min_bright_var").disabled = false;
+    document.getElementById("max_bright_yellow_var").disabled = true;
+    document.getElementById("min_bright_yellow_var").disabled = true;
+    document.getElementById("max_bright_blue_var").disabled = true;
+    document.getElementById("min_bright_blue_var").disabled = true;
+    document.getElementById("max_scatdist_var").disabled = true;
+    document.getElementById("min_scatdist_var").disabled = true;
+    document.getElementById("max_scatangshift_var").disabled = true;
+    document.getElementById("min_scatangshift_var").disabled = true;    
+    document.getElementById("rise_length_bright_yellow_var").disabled = true;
+    document.getElementById("set_length_bright_yellow_var").disabled = true;
+    document.getElementById("rise_length_bright_blue_var").disabled = true;
+    document.getElementById("set_length_bright_blue_var").disabled = true;
+    document.getElementById("rise_length_scatdist_mult_var").disabled = true;
+    document.getElementById("set_length_scatdist_mult_var").disabled = true;
+    document.getElementById("rise_length_scatangshift_var").disabled = true;
+    document.getElementById("set_length_scatangshift_var").disabled = true;
+    document.getElementById("rise_length_bright_yellow_mult_var").disabled = true;
+    document.getElementById("set_length_bright_yellow_mult_var").disabled = true;
+    document.getElementById("rise_length_bright_blue_mult_var").disabled = true;
+    document.getElementById("set_length_bright_blue_mult_var").disabled = true;
+    document.getElementById("rise_length_scatdist_var").disabled = true;
+    document.getElementById("set_length_scatdist_var").disabled = true;
+    document.getElementById("rise_length_scatangshift_mult_var").disabled = true;
+    document.getElementById("set_length_scatangshift_mult_var").disabled = true;
+    document.getElementById("rise_slope_scatdist_var").disabled = true;
+    document.getElementById("set_slope_scatdist_var").disabled = true;
+    document.getElementById("rise_slope_scatangshift_var").disabled = true;
+    document.getElementById("set_slope_scatangshift_var").disabled = true;
+    document.getElementById("rise_slope_bright_yellow_var").disabled = true;
+    document.getElementById("set_slope_bright_yellow_var").disabled = true;
+    document.getElementById("rise_slope_bright_blue_var").disabled = true;
+    document.getElementById("set_slope_bright_blue_var").disabled = true;
+    document.getElementById("rise_length_bright_var").disabled = false;  
+    document.getElementById("rise_length_bright_mult_var").disabled = false; 
+    document.getElementById("set_length_bright_var").disabled = false; 
+    document.getElementById("set_length_bright_mult_var").disabled = false;
+    document.getElementById("rise_slope_bright_var").disabled = false; 
+    document.getElementById("set_slope_bright_var").disabled = false;
+    linedrawer({time: 0})
+    }
+
+
+
+}
+
+
+    </script>
+    
+</head>
+<body>
+
+<canvas id="visualizer" width="720" height="254"
+style="border:1px solid #c3c3c3; position: -webkit-sticky;
+position: sticky;
+top: 20px;
+left: 20px;
+bottom: 20px;
+z-index: 5;">
+Your browser does not support the canvas element.
+</canvas>
+
+
+<div class="slidecontainer">
+    <h1>Welcome to TimeGiver's Visualizer</h1>
+    <p>TimeGiver is an open-source, highly-customizable circadian lighting rhythm generator that empowers connected lighting systems to support a healthy cycle of sleep and wakefulness. It takes arguments such as wake time and sunset length and returns an appropriate set of lighting parameters such as brightness and color temperature for the current moment. Rhythms can be generated based on just a few parameters using appropriate defaults or customized extensively according to desired maximums, minimums, rates of change, and slope shapes.  TimeGiver also includes a sunlight simulator that uses multiple colored lights to mimic the natural blue-yellow color gradient of sunlight, producing a unique combination of colors for every time of day that recreates everything from the crisp blue of noontime to the golden hues of late afternoon and mellow blues of dusk, all without compromising color rendering.  This visualizer beta demonstrates TimeGiver's potential.  The height of the graph inside the box represents brightness out of the total possible brightness, and the color of the graph represents the real color or color temperature assigned to the lights at each moment.  The following inputs are set to TimeGiver's default settings and can be modified to change the schedule illustration above that is generated live using TimeGiver's actual code.  For more information about the following parameters or to learn how to integrate TimeGiver into a project, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <p class="settingheader1">General Purpose Rhythm Settings</p>
+    <p class="settingheader2">Settings most people may want to change</p>
+    <input type="checkbox" id="blueyellowactive" value="true" onchange="check()">Blue-Yellow Sunlight Simulator Active</input><br>
+    <input type="time" id="wake_time_var" value="07:00" onchange="lineremover()"();> Wake Time</input><br>
+    <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"();> Bed Time</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()">Maximum Brightness: <span id="max_bright_label"></span> %</input><br>
+    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()">Minimum Brightness: <span id="min_bright_label"></span> %</input><br>
+    <input type="range" min="1500" max="10000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><br>
+    <input type="range" min="1500" max="10000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><br>
+    
+    <p class="settingheader2">Settings some people may want to change</p>
+    <input type="range" min="0" max="60" value="0" class="slider" id="wake_offset_var" onchange="lineremover()">Wake Offset: <span id="wake_offset_label"></span> minutes</input><br>
+    <input type="range" min="0" max="60" value="0" class="slider" id="bed_offset_var" onchange="lineremover()">Bed Offset: <span id="bed_offset_label"></span> minutes</input><br>
+    <input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><span id="rise_length_bright_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_var" onchange="lineremover()">Sunset Brightness Length: <span id="set_length_bright_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_mult_var" onchange="lineremover()"><span id="set_length_bright_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_CCT_mult_var" onchange="lineremover()">Sunrise Color Temperature Length: <span id="rise_length_CCT_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_CCT_var" onchange="lineremover()"><span id="rise_length_CCT_label"></span> minutes</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_CCT_mult_var" onchange="lineremover()">Sunset Color Temperature Length: <span id="set_length_CCT_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_CCT_var" onchange="lineremover()"><span id="set_length_CCT_label"></span> minutes</input><br>
+    
+    <p class="settingheader2">Settings few people may want to change</p>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_var" onchange="lineremover()">Sunrise Brightness Slope: <span id="rise_slope_bright_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_var" onchange="lineremover()">Sunset Brightness Slope: <span id="set_slope_bright_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_CCT_var" onchange="lineremover()">Sunrise Color Temperature Slope: <span id="rise_slope_CCT_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_CCT_var" onchange="lineremover()">Sunset Color Temperature Slope: <span id="set_slope_CCT_label"></span></input><br>
+    
+    <p class="settingheader1">Blue-Yellow Sunlight Simulator Specific Settings</p>
+    <p class="settingheader2">Settings most people may want to change</p>
+    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_yellow_var" onchange="lineremover()">Maximum Yellow Brightness: <span id="max_bright_yellow_label"></span> %</input><br>
+    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_yellow_var" onchange="lineremover()">Minimum Yellow Brightness: <span id="min_bright_yellow_label"></span> %</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_blue_var" onchange="lineremover()">Maximum Blue Brightness: <span id="max_bright_blue_label"></span> %</input><br>
+    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_blue_var" onchange="lineremover()">Minimum Blue Brightness: <span id="min_bright_blue_label"></span> %</input><br>
+    <input type="range" min="0" max="4000" value="3000" step = "100" class="slider" id="max_scatdist_var" onchange="lineremover()">Maximum Blue-Yellow Scatter Distance: <span id="max_scatdist_label"></span> K</input><br>
+    <input type="range" min="0" max="4000" value="2000" step = "100" class="slider" id="min_scatdist_var" onchange="lineremover()">Minimum Blue-Yellow Scatter Distance: <span id="min_scatdist_label"></span> K</input><br>
+    <input type="range" min="-30" max="60" value="15" step = "1" class="slider" id="max_scatangshift_var" onchange="lineremover()">Maximum Blue-Yellow Angle Shift: <span id="max_scatangshift_label"></span> degrees</input><br>
+    <input type="range" min="-30" max="60" value="0" step = "1" class="slider" id="min_scatangshift_var" onchange="lineremover()">Minimum Blue-Yellow Angle Shift: <span id="min_scatangshift_label"></span> degrees</input><br>
+    
+    <p class="settingheader2">Settings some people may want to change</p>
+    
+    <input type="range" min="0" max="180" value="30" step = "5" class="slider" id="rise_length_bright_yellow_var" onchange="lineremover()">Sunrise Yellow Brightness Length: <span id="rise_length_bright_yellow_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_yellow_mult_var" onchange="lineremover()"><span id="rise_length_bright_yellow_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="180" value="90" step = "5" class="slider" id="set_length_bright_yellow_var" onchange="lineremover()">Sunset Yellow Brightness Length: <span id="set_length_bright_yellow_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_yellow_mult_var" onchange="lineremover()"><span id="set_length_bright_yellow_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="180" value="60" step = "5" class="slider" id="rise_length_bright_blue_var" onchange="lineremover()">Sunrise Blue Brightness Length: <span id="rise_length_bright_blue_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_blue_mult_var" onchange="lineremover()"><span id="rise_length_bright_blue_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_blue_var" onchange="lineremover()">Sunset Blue Brightness Length: <span id="set_length_bright_blue_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_blue_mult_var" onchange="lineremover()"><span id="set_length_bright_blue_mult_label"></span>x times half day length </input><br>
+    
+    <p class="settingheader2">Settings few people may want to change</p>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_scatdist_mult_var" onchange="lineremover()">Sunrise Blue-Yellow Scatter Distance Length: <span id="rise_length_scatdist_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_scatdist_var" onchange="lineremover()"><span id="rise_length_scatdist_label"></span> minutes</input><br>
+    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_scatdist_mult_var" onchange="lineremover()">Sunset Blue-Yellow Scatter Distance Length: <span id="set_length_scatdist_mult_label"></span>x times half day length, or: </input><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_scatdist_var" onchange="lineremover()"><span id="set_length_scatdist_label"></span> minutes</input><br>
+    <input type="range" min="0" max="300" value="240" step = "5" class="slider" id="rise_length_scatangshift_var" onchange="lineremover()">Sunrise Blue-Yellow Angle Shift Length: <span id="rise_length_scatangshift_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_scatangshift_mult_var" onchange="lineremover()"><span id="rise_length_scatangshift_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="0" max="300" value="240" step = "5" class="slider" id="set_length_scatangshift_var" onchange="lineremover()">Sunset Blue-Yellow Angle Shift Length: <span id="set_length_scatangshift_label"></span> minutes, or: </input><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_scatangshift_mult_var" onchange="lineremover()"><span id="set_length_scatangshift_mult_label"></span>x times half day length </input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatdist_var" onchange="lineremover()">Sunrise Blue-Yellow Scatter Distance Slope: <span id="rise_slope_scatdist_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatdist_var" onchange="lineremover()">Sunset Blue-Yellow Scatter Distance Slope: <span id="set_slope_scatdist_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatangshift_var" onchange="lineremover()">Sunrise Blue-Yellow Angle Shift Slope: <span id="rise_slope_scatangshift_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatangshift_var" onchange="lineremover()">Sunset Blue-Yellow Angle Shift Slope: <span id="set_slope_scatangshift_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_yellow_var" onchange="lineremover()">Sunrise Yellow Brightness Slope: <span id="rise_slope_bright_yellow_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_yellow_var" onchange="lineremover()">Sunset Yellow Brightness Slope: <span id="set_slope_bright_yellow_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_blue_var" onchange="lineremover()">Sunrise Blue Brightness Slope: <span id="rise_slope_bright_blue_label"></span></input><br>
+    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_blue_var" onchange="lineremover()">Sunset Blue Brightness Slope: <span id="set_slope_bright_blue_label"></span></input><br>
+
+    <p class="settingheader1">Attributions</p>
+    <p>TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee, @timotheonpaulonlee on Github or on <a href= "http://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
+</div>
+
+<script>
+    var wake_offset_slider = document.getElementById("wake_offset_var");
+    var wake_offset_output = document.getElementById("wake_offset_label");
+    wake_offset_output.innerHTML = wake_offset_slider.value;
+    wake_offset_slider.oninput = function() {wake_offset_output.innerHTML = this.value;}
+
+    var bed_offset_slider = document.getElementById("bed_offset_var");
+    var bed_offset_output = document.getElementById("bed_offset_label");
+    bed_offset_output.innerHTML = bed_offset_slider.value;
+    bed_offset_slider.oninput = function() {bed_offset_output.innerHTML = this.value;}
+
+    var max_bright_slider = document.getElementById("max_bright_var");
+    var max_bright_output = document.getElementById("max_bright_label");
+    max_bright_output.innerHTML = (max_bright_slider.value * 100);
+    max_bright_slider.oninput = function() {max_bright_output.innerHTML = (Math.round(this.value * 100));}
+
+    var min_bright_slider = document.getElementById("min_bright_var");
+    var min_bright_output = document.getElementById("min_bright_label");
+    min_bright_output.innerHTML = (min_bright_slider.value * 100);
+    min_bright_slider.oninput = function() {min_bright_output.innerHTML = (Math.round(this.value * 100));}
+
+    var max_CCT_slider = document.getElementById("max_CCT_var");
+    var max_CCT_output = document.getElementById("max_CCT_label");
+    max_CCT_output.innerHTML = (max_CCT_slider.value);
+    max_CCT_slider.oninput = function() {max_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var min_CCT_slider = document.getElementById("min_CCT_var");
+    var min_CCT_output = document.getElementById("min_CCT_label");
+    min_CCT_output.innerHTML = (min_CCT_slider.value);
+    min_CCT_slider.oninput = function() {min_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var rise_length_bright_slider = document.getElementById("rise_length_bright_var");
+    var rise_length_bright_output = document.getElementById("rise_length_bright_label");
+    rise_length_bright_output.innerHTML = rise_length_bright_slider.value;
+    rise_length_bright_slider.oninput = function() {rise_length_bright_output.innerHTML = this.value;}
+
+    var rise_length_bright_mult_slider = document.getElementById("rise_length_bright_mult_var");
+    var rise_length_bright_mult_output = document.getElementById("rise_length_bright_mult_label");
+    rise_length_bright_mult_output.innerHTML = rise_length_bright_mult_slider.value;
+    rise_length_bright_mult_slider.oninput = function() {rise_length_bright_mult_output.innerHTML = this.value;}
+
+    var set_length_bright_slider = document.getElementById("set_length_bright_var");
+    var set_length_bright_output = document.getElementById("set_length_bright_label");
+    set_length_bright_output.innerHTML = set_length_bright_slider.value;
+    set_length_bright_slider.oninput = function() {set_length_bright_output.innerHTML = this.value;}
+
+    var set_length_bright_mult_slider = document.getElementById("set_length_bright_mult_var");
+    var set_length_bright_mult_output = document.getElementById("set_length_bright_mult_label");
+    set_length_bright_mult_output.innerHTML = set_length_bright_mult_slider.value;
+    set_length_bright_mult_slider.oninput = function() {set_length_bright_mult_output.innerHTML = this.value;}
+
+    var rise_length_CCT_slider = document.getElementById("rise_length_CCT_var");
+    var rise_length_CCT_output = document.getElementById("rise_length_CCT_label");
+    rise_length_CCT_output.innerHTML = rise_length_CCT_slider.value;
+    rise_length_CCT_slider.oninput = function() {rise_length_CCT_output.innerHTML = this.value;}
+
+    var rise_length_CCT_mult_slider = document.getElementById("rise_length_CCT_mult_var");
+    var rise_length_CCT_mult_output = document.getElementById("rise_length_CCT_mult_label");
+    rise_length_CCT_mult_output.innerHTML = rise_length_CCT_mult_slider.value;
+    rise_length_CCT_mult_slider.oninput = function() {rise_length_CCT_mult_output.innerHTML = this.value;}
+
+    var set_length_CCT_slider = document.getElementById("set_length_CCT_var");
+    var set_length_CCT_output = document.getElementById("set_length_CCT_label");
+    set_length_CCT_output.innerHTML = set_length_CCT_slider.value;
+    set_length_CCT_slider.oninput = function() {set_length_CCT_output.innerHTML = this.value;}
+
+    var set_length_CCT_mult_slider = document.getElementById("set_length_CCT_mult_var");
+    var set_length_CCT_mult_output = document.getElementById("set_length_CCT_mult_label");
+    set_length_CCT_mult_output.innerHTML = set_length_CCT_mult_slider.value;
+    set_length_CCT_mult_slider.oninput = function() {set_length_CCT_mult_output.innerHTML = this.value;}
+
+    var rise_slope_bright_slider = document.getElementById("rise_slope_bright_var");
+    var rise_slope_bright_output = document.getElementById("rise_slope_bright_label");
+    rise_slope_bright_output.innerHTML = (rise_slope_bright_slider.value);
+    rise_slope_bright_slider.oninput = function() {rise_slope_bright_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_bright_slider = document.getElementById("set_slope_bright_var");
+    var set_slope_bright_output = document.getElementById("set_slope_bright_label");
+    set_slope_bright_output.innerHTML = (set_slope_bright_slider.value);
+    set_slope_bright_slider.oninput = function() {set_slope_bright_output.innerHTML = (Math.round(this.value));}
+
+    var rise_slope_CCT_slider = document.getElementById("rise_slope_CCT_var");
+    var rise_slope_CCT_output = document.getElementById("rise_slope_CCT_label");
+    rise_slope_CCT_output.innerHTML = (rise_slope_CCT_slider.value);
+    rise_slope_CCT_slider.oninput = function() {rise_slope_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_CCT_slider = document.getElementById("set_slope_CCT_var");
+    var set_slope_CCT_output = document.getElementById("set_slope_CCT_label");
+    set_slope_CCT_output.innerHTML = (set_slope_CCT_slider.value);
+    set_slope_CCT_slider.oninput = function() {set_slope_CCT_output.innerHTML = (Math.round(this.value));}
+
+    var max_scatdist_slider = document.getElementById("max_scatdist_var");
+    var max_scatdist_output = document.getElementById("max_scatdist_label");
+    max_scatdist_output.innerHTML = (max_scatdist_slider.value);
+    max_scatdist_slider.oninput = function() {max_scatdist_output.innerHTML = (Math.round(this.value));}
+
+    var min_scatdist_slider = document.getElementById("min_scatdist_var");
+    var min_scatdist_output = document.getElementById("min_scatdist_label");
+    min_scatdist_output.innerHTML = (min_scatdist_slider.value);
+    min_scatdist_slider.oninput = function() {min_scatdist_output.innerHTML = (Math.round(this.value));}
+
+    var max_scatangshift_slider = document.getElementById("max_scatangshift_var");
+    var max_scatangshift_output = document.getElementById("max_scatangshift_label");
+    max_scatangshift_output.innerHTML = (max_scatangshift_slider.value);
+    max_scatangshift_slider.oninput = function() {max_scatangshift_output.innerHTML = (Math.round(this.value));}
+
+    var min_scatangshift_slider = document.getElementById("min_scatangshift_var");
+    var min_scatangshift_output = document.getElementById("min_scatangshift_label");
+    min_scatangshift_output.innerHTML = (min_scatangshift_slider.value);
+    min_scatangshift_slider.oninput = function() {min_scatangshift_output.innerHTML = (Math.round(this.value));}
+
+    var max_bright_yellow_slider = document.getElementById("max_bright_yellow_var");
+    var max_bright_yellow_output = document.getElementById("max_bright_yellow_label");
+    max_bright_yellow_output.innerHTML = (max_bright_yellow_slider.value * 100);
+    max_bright_yellow_slider.oninput = function() {max_bright_yellow_output.innerHTML = (Math.round(this.value * 100));}
+
+    var min_bright_yellow_slider = document.getElementById("min_bright_yellow_var");
+    var min_bright_yellow_output = document.getElementById("min_bright_yellow_label");
+    min_bright_yellow_output.innerHTML = (min_bright_yellow_slider.value * 100);
+    min_bright_yellow_slider.oninput = function() {min_bright_yellow_output.innerHTML = (Math.round(this.value * 100));}
+
+    var max_bright_blue_slider = document.getElementById("max_bright_blue_var");
+    var max_bright_blue_output = document.getElementById("max_bright_blue_label");
+    max_bright_blue_output.innerHTML = (max_bright_blue_slider.value * 100);
+    max_bright_blue_slider.oninput = function() {max_bright_blue_output.innerHTML = (Math.round(this.value * 100));}
+
+    var min_bright_blue_slider = document.getElementById("min_bright_blue_var");
+    var min_bright_blue_output = document.getElementById("min_bright_blue_label");
+    min_bright_blue_output.innerHTML = (min_bright_blue_slider.value * 100);
+    min_bright_blue_slider.oninput = function() {min_bright_blue_output.innerHTML = (Math.round(this.value * 100));}
+
+    var rise_length_scatdist_slider = document.getElementById("rise_length_scatdist_var");
+    var rise_length_scatdist_output = document.getElementById("rise_length_scatdist_label");
+    rise_length_scatdist_output.innerHTML = rise_length_scatdist_slider.value;
+    rise_length_scatdist_slider.oninput = function() {rise_length_scatdist_output.innerHTML = this.value;}
+
+    var rise_length_scatdist_mult_slider = document.getElementById("rise_length_scatdist_mult_var");
+    var rise_length_scatdist_mult_output = document.getElementById("rise_length_scatdist_mult_label");
+    rise_length_scatdist_mult_output.innerHTML = rise_length_scatdist_mult_slider.value;
+    rise_length_scatdist_mult_slider.oninput = function() {rise_length_scatdist_mult_output.innerHTML = this.value;}
+
+    var set_length_scatdist_slider = document.getElementById("set_length_scatdist_var");
+    var set_length_scatdist_output = document.getElementById("set_length_scatdist_label");
+    set_length_scatdist_output.innerHTML = set_length_scatdist_slider.value;
+    set_length_scatdist_slider.oninput = function() {set_length_scatdist_output.innerHTML = this.value;}
+
+    var set_length_scatdist_mult_slider = document.getElementById("set_length_scatdist_mult_var");
+    var set_length_scatdist_mult_output = document.getElementById("set_length_scatdist_mult_label");
+    set_length_scatdist_mult_output.innerHTML = set_length_scatdist_mult_slider.value;
+    set_length_scatdist_mult_slider.oninput = function() {set_length_scatdist_mult_output.innerHTML = this.value;}
+
+    var rise_length_scatangshift_slider = document.getElementById("rise_length_scatangshift_var");
+    var rise_length_scatangshift_output = document.getElementById("rise_length_scatangshift_label");
+    rise_length_scatangshift_output.innerHTML = rise_length_scatangshift_slider.value;
+    rise_length_scatangshift_slider.oninput = function() {rise_length_scatangshift_output.innerHTML = this.value;}
+
+    var rise_length_scatangshift_mult_slider = document.getElementById("rise_length_scatangshift_mult_var");
+    var rise_length_scatangshift_mult_output = document.getElementById("rise_length_scatangshift_mult_label");
+    rise_length_scatangshift_mult_output.innerHTML = rise_length_scatangshift_mult_slider.value;
+    rise_length_scatangshift_mult_slider.oninput = function() {rise_length_scatangshift_mult_output.innerHTML = this.value;}
+
+    var set_length_scatangshift_slider = document.getElementById("set_length_scatangshift_var");
+    var set_length_scatangshift_output = document.getElementById("set_length_scatangshift_label");
+    set_length_scatangshift_output.innerHTML = set_length_scatangshift_slider.value;
+    set_length_scatangshift_slider.oninput = function() {set_length_scatangshift_output.innerHTML = this.value;}
+
+    var set_length_scatangshift_mult_slider = document.getElementById("set_length_scatangshift_mult_var");
+    var set_length_scatangshift_mult_output = document.getElementById("set_length_scatangshift_mult_label");
+    set_length_scatangshift_mult_output.innerHTML = set_length_scatangshift_mult_slider.value;
+    set_length_scatangshift_mult_slider.oninput = function() {set_length_scatangshift_mult_output.innerHTML = this.value;}
+
+    var rise_length_bright_yellow_slider = document.getElementById("rise_length_bright_yellow_var");
+    var rise_length_bright_yellow_output = document.getElementById("rise_length_bright_yellow_label");
+    rise_length_bright_yellow_output.innerHTML = rise_length_bright_yellow_slider.value;
+    rise_length_bright_yellow_slider.oninput = function() {rise_length_bright_yellow_output.innerHTML = this.value;}
+
+    var rise_length_bright_yellow_mult_slider = document.getElementById("rise_length_bright_yellow_mult_var");
+    var rise_length_bright_yellow_mult_output = document.getElementById("rise_length_bright_yellow_mult_label");
+    rise_length_bright_yellow_mult_output.innerHTML = rise_length_bright_yellow_mult_slider.value;
+    rise_length_bright_yellow_mult_slider.oninput = function() {rise_length_bright_yellow_mult_output.innerHTML = this.value;}
+
+    var set_length_bright_yellow_slider = document.getElementById("set_length_bright_yellow_var");
+    var set_length_bright_yellow_output = document.getElementById("set_length_bright_yellow_label");
+    set_length_bright_yellow_output.innerHTML = set_length_bright_yellow_slider.value;
+    set_length_bright_yellow_slider.oninput = function() {set_length_bright_yellow_output.innerHTML = this.value;}
+
+    var set_length_bright_yellow_mult_slider = document.getElementById("set_length_bright_yellow_mult_var");
+    var set_length_bright_yellow_mult_output = document.getElementById("set_length_bright_yellow_mult_label");
+    set_length_bright_yellow_mult_output.innerHTML = set_length_bright_yellow_mult_slider.value;
+    set_length_bright_yellow_mult_slider.oninput = function() {set_length_bright_yellow_mult_output.innerHTML = this.value;}
+
+    var rise_length_bright_blue_slider = document.getElementById("rise_length_bright_blue_var");
+    var rise_length_bright_blue_output = document.getElementById("rise_length_bright_blue_label");
+    rise_length_bright_blue_output.innerHTML = rise_length_bright_blue_slider.value;
+    rise_length_bright_blue_slider.oninput = function() {rise_length_bright_blue_output.innerHTML = this.value;}
+
+    var rise_length_bright_blue_mult_slider = document.getElementById("rise_length_bright_blue_mult_var");
+    var rise_length_bright_blue_mult_output = document.getElementById("rise_length_bright_blue_mult_label");
+    rise_length_bright_blue_mult_output.innerHTML = rise_length_bright_blue_mult_slider.value;
+    rise_length_bright_blue_mult_slider.oninput = function() {rise_length_bright_blue_mult_output.innerHTML = this.value;}
+
+    var set_length_bright_blue_slider = document.getElementById("set_length_bright_blue_var");
+    var set_length_bright_blue_output = document.getElementById("set_length_bright_blue_label");
+    set_length_bright_blue_output.innerHTML = set_length_bright_blue_slider.value;
+    set_length_bright_blue_slider.oninput = function() {set_length_bright_blue_output.innerHTML = this.value;}
+
+    var set_length_bright_blue_mult_slider = document.getElementById("set_length_bright_blue_mult_var");
+    var set_length_bright_blue_mult_output = document.getElementById("set_length_bright_blue_mult_label");
+    set_length_bright_blue_mult_output.innerHTML = set_length_bright_blue_mult_slider.value;
+    set_length_bright_blue_mult_slider.oninput = function() {set_length_bright_blue_mult_output.innerHTML = this.value;}
+    
+    var rise_slope_scatdist_slider = document.getElementById("rise_slope_scatdist_var");
+    var rise_slope_scatdist_output = document.getElementById("rise_slope_scatdist_label");
+    rise_slope_scatdist_output.innerHTML = (rise_slope_scatdist_slider.value);
+    rise_slope_scatdist_slider.oninput = function() {rise_slope_scatdist_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_scatdist_slider = document.getElementById("set_slope_scatdist_var");
+    var set_slope_scatdist_output = document.getElementById("set_slope_scatdist_label");
+    set_slope_scatdist_output.innerHTML = (set_slope_scatdist_slider.value);
+    set_slope_scatdist_slider.oninput = function() {set_slope_scatdist_output.innerHTML = (Math.round(this.value));}
+    
+    var rise_slope_scatangshift_slider = document.getElementById("rise_slope_scatangshift_var");
+    var rise_slope_scatangshift_output = document.getElementById("rise_slope_scatangshift_label");
+    rise_slope_scatangshift_output.innerHTML = (rise_slope_scatangshift_slider.value);
+    rise_slope_scatangshift_slider.oninput = function() {rise_slope_scatangshift_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_scatangshift_slider = document.getElementById("set_slope_scatangshift_var");
+    var set_slope_scatangshift_output = document.getElementById("set_slope_scatangshift_label");
+    set_slope_scatangshift_output.innerHTML = (set_slope_scatangshift_slider.value);
+    set_slope_scatangshift_slider.oninput = function() {set_slope_scatangshift_output.innerHTML = (Math.round(this.value));}
+
+    var rise_slope_bright_yellow_slider = document.getElementById("rise_slope_bright_yellow_var");
+    var rise_slope_bright_yellow_output = document.getElementById("rise_slope_bright_yellow_label");
+    rise_slope_bright_yellow_output.innerHTML = (rise_slope_bright_yellow_slider.value);
+    rise_slope_bright_yellow_slider.oninput = function() {rise_slope_bright_yellow_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_bright_yellow_slider = document.getElementById("set_slope_bright_yellow_var");
+    var set_slope_bright_yellow_output = document.getElementById("set_slope_bright_yellow_label");
+    set_slope_bright_yellow_output.innerHTML = (set_slope_bright_yellow_slider.value);
+    set_slope_bright_yellow_slider.oninput = function() {set_slope_bright_yellow_output.innerHTML = (Math.round(this.value));}
+
+    var rise_slope_bright_blue_slider = document.getElementById("rise_slope_bright_blue_var");
+    var rise_slope_bright_blue_output = document.getElementById("rise_slope_bright_blue_label");
+    rise_slope_bright_blue_output.innerHTML = (rise_slope_bright_blue_slider.value);
+    rise_slope_bright_blue_slider.oninput = function() {rise_slope_bright_blue_output.innerHTML = (Math.round(this.value));}
+
+    var set_slope_bright_blue_slider = document.getElementById("set_slope_bright_blue_var");
+    var set_slope_bright_blue_output = document.getElementById("set_slope_bright_blue_label");
+    set_slope_bright_blue_output.innerHTML = (set_slope_bright_blue_slider.value);
+    set_slope_bright_blue_slider.oninput = function() {set_slope_bright_blue_output.innerHTML = (Math.round(this.value));}
+    lineremover()
+
+</script>
+
+</body>
+</html>
