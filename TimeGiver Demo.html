@@ -8,7 +8,7 @@ body {
 
 p {
   max-width: 1000px;
-  font-size: 20px;
+  font-size: medium;
   font-family: 'Times New Roman', Times, serif;
   margin-left: 7px;
   margin-top: 20px;
@@ -87,14 +87,14 @@ input[type="range"]:disabled {
 }
 
 .settingheader1 {
-  font-size: 24px;
+  font-size: x-large;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 15px;
   cursor: pointer; 
 }
 .settingheader2 {
-  font-size: 20px;
+  font-size: large;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 15px;
@@ -701,7 +701,7 @@ async function gethuebridgeaddressnocookie (){
 
 async function gethueusername(huebridgeaddress){
     var bridge = await hue.bridge(huebridgeaddress);
-    return bridge.createUser('myApp#testdevice').then(data => {
+    return bridge.createUser('TimeGiverDemo#WebBrowser').then(data => {
       //extract bridge-generated username from returned data
       var username = data[0].success.username;
       var huebridgeusername = username;
@@ -979,7 +979,7 @@ function blueyellowlinedrawer ({time}) {
       var ctx_blue = c.getContext("2d");
       ctx_blue.beginPath();
       ctx_blue.stroke();
-      ctx_blue.font = "30px Helvetica";
+      ctx_blue.font = "30px Arial";
       ctx_blue.fillStyle = "black";
       ctx_blue.fillText("🌞", ((wake_time_hm/2)-20), (137-(lighting_parameters.bright_blue_int_ret/2)));
       ctx_blue.fillText("🌝", ((bed_time_hm/2)-25), (132-(lighting_parameters2.bright_blue_int_ret/2)));
@@ -987,7 +987,7 @@ function blueyellowlinedrawer ({time}) {
       var ctx_yellow = c.getContext("2d");
       ctx_yellow.beginPath();
       ctx_yellow.strokeStyle = rgb_final_yellow;
-      ctx_yellow.font = "30px Helvetica";
+      ctx_yellow.font = "30px Arial";
       ctx_yellow.fillStyle = "black";
       ctx_yellow.fillText("🌞", ((wake_time_hm/2)-20), (137+(lighting_parameters.bright_yellow_int_ret/2)));
       ctx_yellow.fillText("🌝", ((bed_time_hm/2)-25), (152+(lighting_parameters2.bright_yellow_int_ret/2)));
@@ -1049,7 +1049,7 @@ function linedrawer ({time}) {
       var c = document.getElementById("visualizer");
       var ctx = c.getContext("2d");
       ctx.beginPath();
-      ctx.font = "30px Helvetica";
+      ctx.font = "30px Arial";
       ctx.fillStyle = "black";
       ctx.fillText("🌞", ((wake_time_hm/2)-20), (274-lighting_parameters.bright_int_ret));
       ctx.fillText("🌝", ((bed_time_hm/2)-25), (274-lighting_parameters2.bright_int_ret));
@@ -1196,7 +1196,7 @@ Your browser does not support the canvas element.
 <div class="slidecontainer">
     <h1>Welcome to TimeGiver's demo for Philips Hue smart lights</h1>
     <p>TimeGiver is a piece of computer code that builds smart lighting rhythms: 24-hour schedules that tell the lights how to change during the day to copy the sun. The rhythm tells the lights when to rise in the morning, how to get cooler around noon and warmer in the afternoon, and when to set in the evening. In nature, these kinds of changes in sunlight tell our brains when to have energy and when to feel sleepy. But humans today spend most of our time indoors, so our brains may get confused about when to be awake and when to be tired. By building a rhythm for indoor lights around your daily schedule, TimeGiver may help you feel more alert during the day and sleep better at night. TimeGiver also has a blue sky simulator that uses two sets of color lights, one to copy the yellow of the sun and the other to copy the blue of the sky, making for a more natural-feeling light. The simulator can copy everything from the crisp blue of midday to the golden hour of late afternoon and mellow blues of dusk, all while making colors look natural.</p>
-    <p>TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the lists of lights that show up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <p>TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person raising hands shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the lists of lights that show up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
     <button type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
     <button type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
 
