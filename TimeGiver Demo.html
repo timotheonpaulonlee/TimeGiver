@@ -19,6 +19,40 @@ h1 {
   margin-left: 7px;
   margin-top: 20px;
   margin-bottom: 15px;
+  font-size: x-large;
+}
+
+canvas {
+  border:1px solid #003366; position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  z-index: 5;
+  box-shadow: 5px 5px 8px gray;
+}
+
+.settingheader1 {
+  font-size: large;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  cursor: pointer; 
+}
+
+.settingheader2 {
+  font-size: medium;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  cursor: pointer; 
+}
+
+.settingheader3 {
+  font-size: medium;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 15px;
 }
 
 .slidecontainer {
@@ -32,7 +66,7 @@ h1 {
 .slider {
   -webkit-appearance: none;  
   appearance: none;
-  width: 200px; 
+  width: 20em; 
   height: 15px; 
   border-radius: 5px;
   background: #66FF99; 
@@ -82,45 +116,25 @@ h1 {
   cursor: pointer; 
 }
 
-input[type="range"]:disabled {
-  background: #111111;
-}
-
-.settingheader1 {
-  font-size: x-large;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 15px;
-  cursor: pointer; 
-}
-.settingheader2 {
-  font-size: large;
-  font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 15px;
-  cursor: pointer; 
-}
-
-canvas {
-  border:1px solid #003366; position: -webkit-sticky;
-  position: sticky;
-  top: 20px;
-  left: 20px;
-  bottom: 20px;
-  z-index: 5;
-  box-shadow: 5px 5px 8px gray;
-}
-
 input {
   margin-left: 7px;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
+input[type="time"] {
+  font-size: small;
+}
+
+input[type="range"]:disabled {
+  background: #111111;
+}
+
 button {
   margin-left: 7px;
   margin-top: 20px;
   margin-bottom: 10px;
+  font-size: small;
 }
 
 /* Tooltip container */
@@ -129,7 +143,7 @@ button {
   display: inline-block;
   margin-top: 20px;
   margin-bottom: 0px;
-  font-size: 20px;
+  font-size: medium;
   display: inline-block;
   /*border-bottom: 1px dotted black;*/ /* If you want dots under the hoverable text */
 }
@@ -141,7 +155,7 @@ button {
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 500px;
+  width: 20em;
   background-color: white;
   color: black;
   text-align: left;
@@ -1200,21 +1214,21 @@ Your browser does not support the canvas element.
     <button type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
     <button type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
 
-    <div id="listlist" style="display: block;">
-    <p class="settingheader2">White Lights</p>
+    <div id="lightlist" style="display: block;">
+    <p class="settingheader3">White Lights</p>
     <div id="whitelightlist"><p>Your Hue lights will appear here, allowing you to check next to the lights you want on your rhythm.</p></div>
     
     <div id="bluelightlist" style="display: none;">
-    <p class="settingheader2">Color Lights for Blue Sky</p>
+    <p class="settingheader3">Color Lights for Blue Sky</p>
     <p id="bluelightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your blue rhythm when using the blue sky sunlight simulator.</p></div>
 
     <div id="yellowlightlist" style="display: none;">
-    <p class="settingheader2">Color Lights for Direct Sun</p>
+    <p class="settingheader3">Color Lights for Direct Sun</p>
     <p id="yellowlightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your yellow rhythm when using the blue sky sunlight simulator.</p></div>
     </div>
 
     <div id="autoonlightlist" style="display: block;">
-      <p class="settingheader2">Lights to turn on at sunrise</p>
+      <p class="settingheader3">Lights to turn on at sunrise</p>
       <p id="autoonlisttext">Your lights controlled by the demo will appear here, allowing you to check next to the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights).</p></div>
       </div>
 
