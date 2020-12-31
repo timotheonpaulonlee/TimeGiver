@@ -269,7 +269,7 @@ function togglearrow(elementid) {
 }
 
 function toggleautoonlightlistitem(name_esc) {
-  console.log ("toggle has been triggered for: " + name_esc)
+  //console.log ("toggle has been triggered for: " + name_esc)
   var autoondiv = ("autoondiv_" + name_esc)
   var whitecheckboxchecked = ("#whitelightcheckbox_" + name_esc + ":checked")
   var bluecheckboxchecked = ("#bluelightcheckbox_" + name_esc + ":checked")
@@ -283,7 +283,7 @@ function toggleautoonlightlistitem(name_esc) {
 }
 
 function toggleoverridelistitem(lightname_esc) {
-  console.log ("toggle has been triggered for: " + lightname_esc)
+  //console.log ("toggle has been triggered for: " + lightname_esc)
   var autoondiv = ("autoondiv_" + lightname_esc)
   var whitecheckboxchecked = ("#whitelightcheckbox_" + lightname_esc + ":checked")
   var bluecheckboxchecked = ("#bluelightcheckbox_" + lightname_esc + ":checked")
@@ -757,7 +757,7 @@ async function gethuebridgeaddresscookie (){
         bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
         bridges.forEach(b => {setCookie("huebridgeaddress", escape (b.internalipaddress), 365)});
         bridges.forEach(b => huebridgeaddress = (b.internalipaddress));
-        console.log ("Hue bridge found: " + huebridgeaddress)
+        //console.log ("Hue bridge found: " + huebridgeaddress)
         return huebridgeaddress;}
     }).catch(e => {console.log("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.", e)});
     }
@@ -776,7 +776,7 @@ async function gethuebridgeaddressnocookie (){
         bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
         bridges.forEach(b => {setCookie("huebridgeaddress", escape (b.internalipaddress), 365)});
         bridges.forEach(b => huebridgeaddress = (b.internalipaddress));
-        console.log ("Hue bridge found: " + huebridgeaddress)
+        //console.log ("Hue bridge found: " + huebridgeaddress)
         return huebridgeaddress;}
     }).catch(e => {console.log("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.", e)});
     }
@@ -813,29 +813,27 @@ async function startdemo (){
   if (huebridgeaddress.length > 3) {
     //alert (huebridgeaddress + " is being used as address")
     var usernamecookie = getCookie ("huebridgeusername");
-    if (usernamecookie.length > 3) {huebridgeusername = unescape(usernamecookie); /*alert ("Username cookie found");*/ console.log (usernamecookie)} else {
+    if (usernamecookie.length > 3) {huebridgeusername = unescape(usernamecookie); /*console.log (usernamecookie)*/} else {
       var huebridgeusername = await gethueusername(huebridgeaddress);
       console.log ("Hue bridge username is: " + huebridgeusername);
     }
     if (huebridgeusername.length > 3){
-      //alert ("username found")
-      console.log (huebridgeaddress);
-      console.log (huebridgeusername);
+      //console.log (huebridgeaddress);
+      //console.log (huebridgeusername);
       var user = await bridge.user(huebridgeusername);
       if (user) {console.log("Usable username found")} else {
         var huebridgeusername = await gethueusername(huebridgeaddress);
-        console.log ("Hue bridge username is: " + test);
         var user = await bridge.user(huebridgeusername);
         }
     
       await user.getLights()
         .then(function(result) {
-          console.log(result); // "initResolve"
-          console.log(result[1].state.on)
+          //console.log(result); // "initResolve"
+          //console.log(result[1].state.on)
           return result;
         })
         .then(function(result) {
-          console.log(result); // "normalReturn"
+          //console.log(result); // "normalReturn"
         });
 
       lights = await user.getLights();
@@ -912,7 +910,7 @@ async function startdemo (){
       document.getElementById("startdemobutton").disabled = true;
       document.getElementById("stopdemobutton").disabled = false;
     } else { alert ("The demo didn't start because your link button was not pressed or the demo was not able to establish secure communication with your Hue bridge. Make sure that you have a bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. Then press the link button on the top of the bridge, refresh this page, and restart the demo.")}
-  } else {alert ("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge, and then refresh the page and restart the demo. This demo does not currently support controlling Hue lights remotely."); console.log (huebridgeaddress)}
+  } else {alert ("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge, and then refresh the page and restart the demo. This demo does not currently support controlling Hue lights remotely.");}
 }
 
 async function lightchanger (huebridgeaddress, huebridgeusername) {
@@ -947,7 +945,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
   if (Number((document.getElementById("rise_length_bright_blue_mult_var").value)) !== 0) {var rise_length_bright_blue_var = ((document.getElementById("rise_length_bright_blue_mult_var").value) + "x")} else {var rise_length_bright_blue_var = (Number (document.getElementById("rise_length_bright_blue_var").value))} 
   if (Number((document.getElementById("set_length_bright_blue_mult_var").value)) !== 0) {var set_length_bright_blue_var = ((document.getElementById("set_length_bright_blue_mult_var").value) + "x")} else {var set_length_bright_blue_var = (Number (document.getElementById("set_length_bright_blue_var").value))}
   let lighting_parameters = TimeGiver({wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
-  console.log ("Scheduler is running!")
+  //console.log ("Scheduler is running!")
 
   var bridge = await hue.bridge(huebridgeaddress);
   var user = await bridge.user(huebridgeusername);
@@ -981,7 +979,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
       var dimmer = productname.includes("Hue dimmer switch");
       if (dimmer) {
         var buttonevent = switchesupdate[i].state.buttonevent;
-        console.log (buttonevent)
+        //console.log (buttonevent)
         var buttonupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
         var timeoffset = now.getTimezoneOffset();
         var nowUTC = (Date.parse(now) + (timeoffset*60*1000));
@@ -992,7 +990,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
           var lightname_esc = (lightname_esc.replace(/'/g, ''))
           var overridelightcheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
           if (buttonevent < 3999 && buttonevent > 1900 && timesincebuttonupdate <3600000 && (document.querySelector(overridelightcheckboxchecked)) !== null && (document.querySelector(overridecheckboxchecked)) !== null) {
-            console.log ("override activated");
+            //console.log ("override activated");
             lights[i].overrideactivated = true;
             //console.log (lights[i].overrideactivated)
           } //else if (buttonevent > 3999 || buttonevent < 1900 || timesincebuttonupdate >3600000 || (document.querySelector(overridecheckboxchecked)) === null){console.log ("Override not activated"); lights[i].overrideactivated = null; }
@@ -1014,7 +1012,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var yellowcheckboxchecked = ("#yellowlightcheckbox_" + lightname_esc + ":checked");
     var yellowcheckbox = ("yellowlightcheckbox_" + lightname_esc);
     var override = lights[i].overrideactivated;
-    console.log (override)
+    //console.log (override)
     if (override === true) {console.log ("override activated");} else {
       if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
         //console.log ("autoon activated for: " + lightname_esc)
@@ -1055,7 +1053,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
           }
         } else {
           if (document.querySelector(whitecheckboxchecked) !== null){
-            console.log ("lights should be changing")
+            //console.log ("lights should be changing")
             user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})}
         }
       }
