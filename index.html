@@ -307,6 +307,27 @@ function toggleoverridelistitem(lightname_esc) {
   }
 }
 
+function toggleoverridelist() {
+  for (i in switches){
+    //console.log ("toggle has been triggered for: " + sensorname_esc)
+    var sensorname = (switches[i].name);
+    var sensorname_esc = (sensorname.replace(/\s+/g, ''));
+    var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
+    var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
+    var overridecheckbox = ("overridecheckbox_" + sensorname_esc)
+    var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
+    var overridecheckboxlistchecked = ("#overridecheckbox_" + sensorname_esc + ":checked")
+    var x = document.getElementById(overridecheckboxlist);
+    if (x){
+      if (document.querySelector(overridecheckboxlistchecked) !== null){
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  }
+}
+
 function listswitch(color, name){
   if (color.includes("blue")){
     //console.log (color)
@@ -844,6 +865,8 @@ async function startdemo (){
         }
       }
 
+      document.getElementById("overridesensorlist").innerHTML = null;
+
       await user.getSensors()
         .then(function(result) {
           //console.log(result); // "initResolve"
@@ -855,8 +878,6 @@ async function startdemo (){
         });
 
       switches = await user.getSensors();
-
-      document.getElementById("overridesensorlist").innerHTML = null;
 
       for (i in switches){
         var sensorname = (switches[i].name);
@@ -870,7 +891,7 @@ async function startdemo (){
           if (dimmer) {
             //console.log ("Dimmer created");
             //console.log (document.getElementById("overridesensorlisttext").innerHTML)
-            document.getElementById("overridesensorlisttext").innerHTML = (document.getElementById("overridesensorlisttext").innerHTML + "<div class='level4element' style='display:block' id='overridesensordiv_" + sensorname_esc + "'><input onclick='toggleelement(\"overridecheckboxlist_" + sensorname_esc + "\");' type='checkbox' id='overridecheckbox_" + sensorname_esc + "'>" + switches[i].name + "<ul style='display:none' id='overridecheckboxlist_" + sensorname_esc + "'></ul></input></div>")
+            document.getElementById("overridesensorlist").innerHTML = (document.getElementById("overridesensorlist").innerHTML + "<div class='level4element' style='display:block' id='overridesensordiv_" + sensorname_esc + "'><input onclick='toggleoverridelist();' type='checkbox' id='overridecheckbox_" + sensorname_esc + "'>" + switches[i].name + "<ul style='display:none' id='overridecheckboxlist_" + sensorname_esc + "'></ul></input></div>")
             for (i in lights){
               var lightname = (lights[i].name);
               var lightname_esc = (lightname.replace(/\s+/g, ''));
@@ -1381,7 +1402,7 @@ Your browser does not support the canvas element.
     <div id="autoonlightlisttext"><p>Your lights controlled by the demo will appear here, allowing you to check next to the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights). The lights will only turn on automatically if they have power and are accessible from the app. Always set a backup alarm when using this feature, as a precaution.<div id="autoonlightlist"></div></p></div>
     
     <p class="settingheader3" onclick="toggleelement('overridesensorlisttext'); togglearrow('overridesensorlistuparrow'); togglearrow('overridesensorlistdownarrow');">Override Switches<span  id ="overridesensorlistuparrow" style="display: none;">⬆</span><span  id ="overridesensorlistdownarrow" style="display: inline-block;">⬇</span></p>
-    <div id="overridesensorlisttext" style="display: none;"><p>Your Hue Dimmer Switches will appear here. Checking next to a switch will show you all the active lights on your rhythm, allowing you to check next to the lights you want to override with that switch. Pressing the up or down buttons on that switch will set those lights into an override mode, allowing the lights to be turned up or down as needed until the on or off button is pressed or an hour has passed.<div id="overridesensorlist" style="display: none;"></div></div></p>
+    <div id="overridesensorlisttext" style="display: none;"><p>Your Hue Dimmer Switches will appear here. Checking next to a switch will show you all the active lights on your rhythm, allowing you to check next to the lights you want to override with that switch. Pressing the up or down buttons on that switch will set those lights into an override mode, allowing the lights to be turned up or down as needed until the on or off button is pressed or an hour has passed.<div id="overridesensorlist"></div></p></div>
 
     <input type="time" id="wake_time_var" value="07:00" onchange="lineremover()"><div class="tooltip"> Wake Time</input><span class="tooltiptext">The time you actually plan to be awake and ready to get out of bed, allowing some time for the lights to wake you up.</span></div><br>
     <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"><div class="tooltip"> Bed Time</input><span class="tooltiptext">The time you actually plan to be in bed, allowing some time for the lights be dim before you go to bed.</span></div><br>  
