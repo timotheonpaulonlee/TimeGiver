@@ -965,6 +965,10 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
 
   switchesupdate = await user.getSensors(); 
 
+  for (i in lights){
+    lights[i].overrideactivated = false;
+  }
+
   for (i in switchesupdate) {
     var sensorname = (switchesupdate[i].name);
     var sensorname_esc = (sensorname.replace(/\s+/g, ''));
@@ -976,23 +980,22 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
       var dimmer = productname.includes("Hue dimmer switch");
       if (dimmer) {
         var buttonevent = switchesupdate[i].state.buttonevent;
+        console.log (buttonevent)
         var buttonupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
         var timeoffset = now.getTimezoneOffset();
         var nowUTC = (Date.parse(now) + (timeoffset*60*1000));
         var timesincebuttonupdate = (nowUTC - buttonupdateUTC)
-        if (buttonevent < 3999 && buttonevent > 2500 && timesincebuttonupdate <3600000) {
-          for (j in lights){
-            var lightname = (lights[j].name);
-            var lightname_esc = (lightname.replace(/\s+/g, ''))
-            var lightname_esc = (lightname_esc.replace(/'/g, ''))
-            var overridecheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
-            if ((document.querySelector(overridecheckboxchecked)) !== null) {
-              lights[j].overrideactivated = true;
-              console.log ("override activated");
-            } else {lights[j].overrideactivated = false; console.log ("Override not activated")}
-          }
-          switchesupdate[i].state.override = true;
-        } else {switchesupdate[i].state.override = false;}
+        for (i in lights){
+          var lightname = (lights[i].name);
+          var lightname_esc = (lightname.replace(/\s+/g, ''))
+          var lightname_esc = (lightname_esc.replace(/'/g, ''))
+          var overridecheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
+          if (buttonevent < 3999 && buttonevent > 1900 && timesincebuttonupdate <3600000 && (document.querySelector(overridecheckboxchecked)) !== null) {
+            console.log ("override activated");
+            lights[i].overrideactivated = true;
+            //console.log (lights[i].overrideactivated)
+          } //else if (buttonevent > 3999 || buttonevent < 1900 || timesincebuttonupdate >3600000 || (document.querySelector(overridecheckboxchecked)) === null){console.log ("Override not activated"); lights[i].overrideactivated = null; }
+        }
       }
     }
   }
@@ -1010,7 +1013,8 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var yellowcheckboxchecked = ("#yellowlightcheckbox_" + lightname_esc + ":checked");
     var yellowcheckbox = ("yellowlightcheckbox_" + lightname_esc);
     var override = lights[i].overrideactivated;
-    if (override) {console.log ("override activated");} else {
+    console.log (override)
+    if (override === true) {console.log ("override activated");} else {
       if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
         //console.log ("autoon activated for: " + lightname_esc)
         if ((document.querySelector('#blueyellowactive:checked') !== null)) {
