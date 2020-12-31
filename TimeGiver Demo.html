@@ -10,16 +10,43 @@ p {
   max-width: 1000px;
   font-size: medium;
   font-family: 'Times New Roman', Times, serif;
-  margin-left: 7px;
   margin-top: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
+  margin-left: 4rem;
 }
 
-h1 {
-  margin-left: 7px;
+p.topleveltext {
+  max-width: 1000px;
+  font-size: medium;
+  font-family: 'Times New Roman', Times, serif;
   margin-top: 20px;
-  margin-bottom: 15px;
+  margin-bottom: 0px;
+  margin-left: 0.5rem;
+}
+
+.topleveltext {
+  margin-left: 0.5rem;
+  margin-top: 30px;
+}
+
+.header {
+  margin-left: 0.5rem;
+  margin-top: 20px;
+  margin-bottom: 0px;
   font-size: x-large;
+  font-weight: bold;
+}
+
+ul {
+  margin-top: 0px;
+  margin-block-start: 0px;
+  margin-bottom: 0px;
+  margin-block-end: 0px;
+}
+
+li {
+  margin-block-start: 0px;
+  margin-left: 0px;
 }
 
 canvas {
@@ -28,6 +55,7 @@ canvas {
   top: 20px;
   left: 20px;
   bottom: 20px;
+  margin-left: 0.5rem;
   z-index: 5;
   box-shadow: 5px 5px 8px gray;
 }
@@ -35,33 +63,48 @@ canvas {
 .settingheader1 {
   font-size: large;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 0.5rem;
   cursor: pointer; 
 }
 
 .settingheader2 {
   font-size: medium;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 1.6rem;
   cursor: pointer; 
 }
 
 .settingheader3 {
-  font-size: medium;
+  font-size: small;
   font-weight: bold;
-  margin-top: 20px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 2.8rem;
+  cursor: pointer; 
 }
 
 .slidecontainer {
   width: 100%; 
-  margin-left: 7px;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: 0px;
+  margin-left: 2.8em;
 }
 
+.level0element {
+  margin-left: 0rem;
+}
+
+.level4element {
+  margin-left: 4rem;
+}
+
+.level5element {
+  margin-left: 5.2rem;
+}
 
 .slider {
   -webkit-appearance: none;  
@@ -74,11 +117,9 @@ canvas {
   opacity: 0.7; 
   -webkit-transition: .2s; 
   transition: opacity .2s;
-  margin-left: 7px;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
-
 
 .slider:hover {
   opacity: 1; 
@@ -117,13 +158,17 @@ canvas {
 }
 
 input {
-  margin-left: 7px;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
 input[type="time"] {
   font-size: small;
+  margin-left: 2.8rem;
+}
+
+input.topleveltext[type="checkbox"] {
+  margin-left: 0.5rem;
 }
 
 input[type="range"]:disabled {
@@ -131,7 +176,7 @@ input[type="range"]:disabled {
 }
 
 button {
-  margin-left: 7px;
+  margin-left: 2.8rem;
   margin-top: 20px;
   margin-bottom: 10px;
   font-size: small;
@@ -141,7 +186,7 @@ button {
 .tooltip {
   position: relative;
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: 0px;
   font-size: medium;
   display: inline-block;
@@ -223,7 +268,8 @@ function togglearrow(elementid) {
   }
 }
 
-function togglelistitem(name_esc) {
+function toggleautoonlightlistitem(name_esc) {
+  console.log ("toggle has been triggered for: " + name_esc)
   var autoondiv = ("autoondiv_" + name_esc)
   var whitecheckboxchecked = ("#whitelightcheckbox_" + name_esc + ":checked")
   var bluecheckboxchecked = ("#bluelightcheckbox_" + name_esc + ":checked")
@@ -233,6 +279,31 @@ function togglelistitem(name_esc) {
     x.style.display = "block";
   } else {
     x.style.display = "none";
+  }
+}
+
+function toggleoverridelistitem(lightname_esc) {
+  console.log ("toggle has been triggered for: " + lightname_esc)
+  var autoondiv = ("autoondiv_" + lightname_esc)
+  var whitecheckboxchecked = ("#whitelightcheckbox_" + lightname_esc + ":checked")
+  var bluecheckboxchecked = ("#bluelightcheckbox_" + lightname_esc + ":checked")
+  var yellowcheckboxchecked = ("#yellowlightcheckbox_" + lightname_esc + ":checked")
+  for (i in switches){
+    var sensorname = (switches[i].name);
+    var sensorname_esc = (sensorname.replace(/\s+/g, ''));
+    var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
+    var productname = switches[i].productname;
+    var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
+    var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
+    var overridecheckbox = (overridesensordiv + "_light_" + lightname_esc)
+    var x = document.getElementById(overridecheckbox);
+    if (x){
+      if (document.querySelector(bluecheckboxchecked) !== null || document.querySelector(yellowcheckboxchecked) !== null || document.querySelector(whitecheckboxchecked) !== null){
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
   }
 }
 
@@ -772,45 +843,66 @@ async function startdemo (){
       for (i in lights){
         if (lights[i].capabilities.control.colorgamuttype) {
           colorlights[i] = lights[i]
-          //colorlights[i] = lights[i];
         }
       }
 
       await user.getSensors()
         .then(function(result) {
-          console.log(result); // "initResolve"
-          console.log(result[1].state.on)
+          //console.log(result); // "initResolve"
+          //console.log(result[1].state.on)
           return result;
         })
         .then(function(result) {
-          console.log(result); // "normalReturn"
+          //console.log(result); // "normalReturn"
         });
 
       switches = await user.getSensors();
 
+      document.getElementById("overridesensorlist").innerHTML = null;
+
       for (i in switches){
-        console.log (switches[i].name)
+        var sensorname = (switches[i].name);
+        var sensorname_esc = (sensorname.replace(/\s+/g, ''));
+        var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
+        var productname = switches[i].productname;
+        var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
+        var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
+        if (productname) {
+          var dimmer = productname.includes("Hue dimmer switch");
+          if (dimmer) {
+            //console.log ("Dimmer created");
+            //console.log (document.getElementById("overridesensorlisttext").innerHTML)
+            document.getElementById("overridesensorlisttext").innerHTML = (document.getElementById("overridesensorlisttext").innerHTML + "<div class='level4element' style='display:block' id='overridesensordiv_" + sensorname_esc + "'><input onclick='toggleelement(\"overridecheckboxlist_" + sensorname_esc + "\");' type='checkbox' id='overridecheckbox_" + sensorname_esc + "'>" + switches[i].name + "<ul style='display:none' id='overridecheckboxlist_" + sensorname_esc + "'></ul></input></div>")
+            for (i in lights){
+              var lightname = (lights[i].name);
+              var lightname_esc = (lightname.replace(/\s+/g, ''));
+              var lightname_esc = (lightname_esc.replace(/'/g, ''));
+              document.getElementById(overridecheckboxlist).innerHTML = (document.getElementById(overridecheckboxlist).innerHTML + "<li style='display:none' id='" + overridesensordiv + "_light_" + lightname_esc + "'><input type='checkbox' id='" + overridesensordiv + "_lightcheckbox_" + lightname_esc + "'>" + lights[i].name + "</input></li></div>")
+            }
+          }
+        }
       }
       
 
-      document.getElementById("whitelightlist").innerHTML = null
-      document.getElementById("bluelightlisttext").innerHTML = null
-      document.getElementById("yellowlightlisttext").innerHTML = null
+      document.getElementById("whitelightlist").innerHTML = null;
+      document.getElementById("bluelightlist").innerHTML = null;
+      document.getElementById("yellowlightlist").innerHTML = null;
+      document.getElementById("autoonlightlist").innerHTML = null;
 
       for (i in lights) {
-        var name = (lights[i].name);
-        var name_esc = (name.replace(/\s+/g, ''))
-        var name_esc = (name_esc.replace(/'/g, ''))
-        document.getElementById("whitelightlist").innerHTML = (document.getElementById("whitelightlist").innerHTML + "<input type='checkbox' id='whitelightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"white\", \"lightcheckbox_" + name_esc + "\")'>" + lights[i].name + "</input><br>")
-        document.getElementById("autoonlisttext").innerHTML = (document.getElementById("autoonlisttext").innerHTML + "<div style='display:none' id='autoondiv_" + name_esc + "'><input type='checkbox' id='autooncheckbox_" + name_esc + "'>" + lights[i].name + "</input></div>")
+        var lightname = (lights[i].name);
+        var lightname_esc = (lightname.replace(/\s+/g, ''))
+        var lightname_esc = (lightname_esc.replace(/'/g, ''))
+        document.getElementById("whitelightlist").innerHTML = (document.getElementById("whitelightlist").innerHTML + "<input class='level4element' type='checkbox' id='whitelightcheckbox_" + lightname_esc + "' onclick='toggleoverridelistitem(\"" + lightname_esc + "\"); toggleautoonlightlistitem(\"" + lightname_esc + "\"); listswitch(\"white\", \"lightcheckbox_" + lightname_esc + "\")'>" + lights[i].name + "</input><br>")
+        document.getElementById("autoonlightlist").innerHTML = (document.getElementById("autoonlightlist").innerHTML + "<div style='display:none' id='autoondiv_" + lightname_esc + "'><input class='level4element' type='checkbox' id='autooncheckbox_" + lightname_esc + "'>" + lights[i].name + "</input></div>")
       }
 
       for (i in colorlights){
-        var name = (colorlights[i].name);
-        var name_esc = (name.replace(/\s+/g, ''))
-        var name_esc = (name_esc.replace(/'/g, ''))
-        document.getElementById("bluelightlisttext").innerHTML = (document.getElementById("bluelightlisttext").innerHTML + "<input type='checkbox' id='bluelightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
-        document.getElementById("yellowlightlisttext").innerHTML = (document.getElementById("yellowlightlisttext").innerHTML + "<input type='checkbox' id='yellowlightcheckbox_" + name_esc + "' onclick='togglelistitem(\"" + name_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + name_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        var colorlightname = (colorlights[i].name);
+        var colorlightname_esc = (colorlightname.replace(/\s+/g, ''))
+        var colorlightname_esc = (colorlightname_esc.replace(/'/g, ''))
+        document.getElementById("bluelightlist").innerHTML = (document.getElementById("bluelightlist").innerHTML + "<input class='level4element' type='checkbox' id='bluelightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + lightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        document.getElementById("yellowlightlist").innerHTML = (document.getElementById("yellowlightlist").innerHTML + "<input class='level4element' type='checkbox' id='yellowlightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + lightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
       }
 
       scheduler = setInterval(() => {
@@ -819,7 +911,7 @@ async function startdemo (){
       }, 3000); 
       document.getElementById("startdemobutton").disabled = true;
       document.getElementById("stopdemobutton").disabled = false;
-    } else { alert ("The demo didn't start because it was not able to establish secure communication with your Hue bridge. Make sure that you have a bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. Then press the link button on the top of the router, refresh this page, and restart the demo.")}
+    } else { alert ("The demo didn't start because your link button was not pressed or the demo was not able to establish secure communication with your Hue bridge. Make sure that you have a bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. Then press the link button on the top of the bridge, refresh this page, and restart the demo.")}
   } else {alert ("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge, and then refresh the page and restart the demo. This demo does not currently support controlling Hue lights remotely."); console.log (huebridgeaddress)}
 }
 
@@ -861,59 +953,106 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
   var user = await bridge.user(huebridgeusername);
   //console.log ("username is " + huebridgeusername)
 
-  for (i in lights) {
-    var name = (lights[i].name);
-    var name_esc = (name.replace(/\s+/g, ''))
-    var name_esc = (name_esc.replace(/'/g, ''))
-    var autooncheckboxchecked = ("#autooncheckbox_" + name_esc + ":checked")
-    var autooncheckbox = ("autooncheckbox_" + name_esc)
-    var whitecheckbox = ("whitelightcheckbox_" + name_esc)
-    var whitecheckboxchecked = ("#whitelightcheckbox_" + name_esc + ":checked")
-    var bluecheckboxchecked = ("#bluelightcheckbox_" + name_esc + ":checked")
-    var bluecheckbox = ("bluelightcheckbox_" + name_esc)
-    var yellowcheckboxchecked = ("#yellowlightcheckbox_" + name_esc + ":checked")
-    var yellowcheckbox = ("yellowlightcheckbox_" + name_esc)
-    if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
-      //console.log ("autoon activated for: " + name_esc)
-      if ((document.querySelector('#blueyellowactive:checked') !== null)) {
-        if (document.querySelector(bluecheckboxchecked) !== null){
-          user.setLightState(i, {on: true, bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
-          document.getElementById(yellowcheckbox).checked = false
-          document.getElementById(whitecheckbox).checked = false
-        }
-        if (document.querySelector(yellowcheckboxchecked) !== null){
-          user.setLightState(i, {on: true, bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
-          document.getElementById(bluecheckbox).checked = false
-          document.getElementById(whitecheckbox).checked = false
-        }
-        if (document.querySelector(whitecheckboxchecked) !== null){
-          user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
-        }
-      } else {
-      
-        if (document.querySelector(whitecheckboxchecked) !== null){
-          user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})}
+  await user.getSensors()
+        .then(function(result) {
+          //console.log(result); // "initResolve"
+          //console.log(result[1].state.on)
+          return result;
+        })
+        .then(function(result) {
+          //console.log(result); // "normalReturn"
+        });
+
+  switchesupdate = await user.getSensors(); 
+
+  for (i in switchesupdate) {
+    var sensorname = (switchesupdate[i].name);
+    var sensorname_esc = (sensorname.replace(/\s+/g, ''));
+    var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
+    var productname = switchesupdate[i].productname;
+    var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
+    var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
+    if (productname) {
+      var dimmer = productname.includes("Hue dimmer switch");
+      if (dimmer) {
+        var buttonevent = switchesupdate[i].state.buttonevent;
+        var buttonupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
+        var timeoffset = now.getTimezoneOffset();
+        var nowUTC = (Date.parse(now) + (timeoffset*60*1000));
+        var timesincebuttonupdate = (nowUTC - buttonupdateUTC)
+        if (buttonevent < 3999 && buttonevent > 2500 && timesincebuttonupdate <3600000) {
+          for (j in lights){
+            var lightname = (lights[j].name);
+            var lightname_esc = (lightname.replace(/\s+/g, ''))
+            var lightname_esc = (lightname_esc.replace(/'/g, ''))
+            var overridecheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
+            if ((document.querySelector(overridecheckboxchecked)) !== null) {
+              lights[j].overrideactivated = true;
+              console.log ("override activated");
+            } else {lights[j].overrideactivated = false; console.log ("Override not activated")}
+          }
+          switchesupdate[i].state.override = true;
+        } else {switchesupdate[i].state.override = false;}
       }
-    } else {
-      //console.log ("autoon not activated")
-      if ((document.querySelector('#blueyellowactive:checked') !== null)) {
-        if (document.querySelector(bluecheckboxchecked) !== null){
-          user.setLightState(i, {bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
-          document.getElementById(yellowcheckbox).checked = false
-          document.getElementById(whitecheckbox).checked = false
-        }
-        if (document.querySelector(yellowcheckboxchecked) !== null){
-          user.setLightState(i, {bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
-          document.getElementById(bluecheckbox).checked = false
-          document.getElementById(whitecheckbox).checked = false
-        }
-        if (document.querySelector(whitecheckboxchecked) !== null){
-          user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+    }
+  }
+
+  for (i in lights) {
+    var lightname = (lights[i].name);
+    var lightname_esc = (lightname.replace(/\s+/g, ''));
+    var lightname_esc = (lightname_esc.replace(/'/g, ''));
+    var autooncheckboxchecked = ("#autooncheckbox_" + lightname_esc + ":checked");
+    var autooncheckbox = ("autooncheckbox_" + lightname_esc);
+    var whitecheckbox = ("whitelightcheckbox_" + lightname_esc);
+    var whitecheckboxchecked = ("#whitelightcheckbox_" + lightname_esc + ":checked");
+    var bluecheckboxchecked = ("#bluelightcheckbox_" + lightname_esc + ":checked");
+    var bluecheckbox = ("bluelightcheckbox_" + lightname_esc);
+    var yellowcheckboxchecked = ("#yellowlightcheckbox_" + lightname_esc + ":checked");
+    var yellowcheckbox = ("yellowlightcheckbox_" + lightname_esc);
+    var override = lights[i].overrideactivated;
+    if (override) {console.log ("override activated");} else {
+      if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
+        //console.log ("autoon activated for: " + lightname_esc)
+        if ((document.querySelector('#blueyellowactive:checked') !== null)) {
+          if (document.querySelector(bluecheckboxchecked) !== null){
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
+            document.getElementById(yellowcheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+          }
+          if (document.querySelector(yellowcheckboxchecked) !== null){
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
+            document.getElementById(bluecheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+          }
+          if (document.querySelector(whitecheckboxchecked) !== null){
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+          }
+        } else {
+        
+          if (document.querySelector(whitecheckboxchecked) !== null){
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})}
         }
       } else {
-        if (document.querySelector(whitecheckboxchecked) !== null){
-          console.log ("lights should be changing")
-          user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})}
+        //console.log ("autoon not activated")
+        if ((document.querySelector('#blueyellowactive:checked') !== null)) {
+          if (document.querySelector(bluecheckboxchecked) !== null){
+            user.setLightState(i, {bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
+            document.getElementById(yellowcheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+          }
+          if (document.querySelector(yellowcheckboxchecked) !== null){
+            user.setLightState(i, {bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
+            document.getElementById(bluecheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+          }
+          if (document.querySelector(whitecheckboxchecked) !== null){
+            user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+          }
+        } else {
+          if (document.querySelector(whitecheckboxchecked) !== null){
+            console.log ("lights should be changing")
+            user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})}
+        }
       }
     }
   }
@@ -1082,6 +1221,14 @@ function check() {
     document.getElementById("blueyellowsettings").style.display = "block";
     document.getElementById("blueyellowsettingsuparrow").style.display = "inline-block";
     document.getElementById("blueyellowsettingsdownarrow").style.display = "none";
+    document.getElementById("bluelightlisttext").style.display = "block";
+    document.getElementById("bluelightlist").style.display = "block";
+    document.getElementById("bluelightlistuparrow").style.display = "inline-block";
+    document.getElementById("bluelightlistdownarrow").style.display = "none";
+    document.getElementById("yellowlightlisttext").style.display = "block";
+    document.getElementById("yellowlightlist").style.display = "block";
+    document.getElementById("yellowlightlistuparrow").style.display = "inline-block";
+    document.getElementById("yellowlightlistdownarrow").style.display = "none";
     document.getElementById("bluelightlist").style.display = "inline-block";
     document.getElementById("yellowlightlist").style.display = "inline-block";} else if ((document.querySelector('#blueyellowactive:checked') === null)) {
     document.getElementById("max_CCT_var").value = 6000;
@@ -1093,8 +1240,12 @@ function check() {
     document.getElementById("blueyellowsettings").style.display = "none";
     document.getElementById("blueyellowsettingsuparrow").style.display = "none";
     document.getElementById("blueyellowsettingsdownarrow").style.display = "inline-block";
-    document.getElementById("bluelightlist").style.display = "none";
-    document.getElementById("yellowlightlist").style.display = "none";}
+    document.getElementById("bluelightlist").style.display = "block";
+    document.getElementById("bluelightlistuparrow").style.display = "none";
+    document.getElementById("bluelightlistdownarrow").style.display = "inline-block";
+    document.getElementById("yellowlightlist").style.display = "block";
+    document.getElementById("yellowlightlistuparrow").style.display = "none";
+    document.getElementById("yellowlightlistdownarrow").style.display = "inline-block";}
   lineremover()}
 
 function lineremover() {
@@ -1207,129 +1358,127 @@ Your browser does not support the canvas element.
 </canvas>
 
 
-<div class="slidecontainer">
-    <h1>Welcome to TimeGiver's demo for Philips Hue smart lights</h1>
-    <p>TimeGiver is a piece of computer code that builds smart lighting rhythms: 24-hour schedules that tell the lights how to change during the day to copy the sun. The rhythm tells the lights when to rise in the morning, how to get cooler around noon and warmer in the afternoon, and when to set in the evening. In nature, these kinds of changes in sunlight tell our brains when to have energy and when to feel sleepy. But humans today spend most of our time indoors, so our brains may get confused about when to be awake and when to be tired. By building a rhythm for indoor lights around your daily schedule, TimeGiver may help you feel more alert during the day and sleep better at night. TimeGiver also has a blue sky simulator that uses two sets of color lights, one to copy the yellow of the sun and the other to copy the blue of the sky, making for a more natural-feeling light. The simulator can copy everything from the crisp blue of midday to the golden hour of late afternoon and mellow blues of dusk, all while making colors look natural.</p>
-    <p>TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person raising hands shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the lists of lights that show up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
-    <button type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
-    <button type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
-
-    <div id="lightlist" style="display: block;">
-    <p class="settingheader3">White Lights</p>
-    <div id="whitelightlist"><p>Your Hue lights will appear here, allowing you to check next to the lights you want on your rhythm.</p></div>
-    
-    <div id="bluelightlist" style="display: none;">
-    <p class="settingheader3">Color Lights for Blue Sky</p>
-    <p id="bluelightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your blue rhythm when using the blue sky sunlight simulator.</p></div>
-
-    <div id="yellowlightlist" style="display: none;">
-    <p class="settingheader3">Color Lights for Direct Sun</p>
-    <p id="yellowlightlisttext">Your Hue color lights will appear here, allowing you to check next to the lights you want on your yellow rhythm when using the blue sky sunlight simulator.</p></div>
-    </div>
-
-    <div id="autoonlightlist" style="display: block;">
-      <p class="settingheader3">Lights to turn on at sunrise</p>
-      <p id="autoonlisttext">Your lights controlled by the demo will appear here, allowing you to check next to the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights).</p></div>
-      </div>
+<div>
+    <p class="header">Welcome to TimeGiver's demo for Philips Hue smart lights</p>
+    <p class="topleveltext">TimeGiver is a piece of computer code that builds smart lighting rhythms: 24-hour schedules that tell the lights how to change during the day to copy the sun. The rhythm tells the lights when to rise in the morning, how to get cooler around noon and warmer in the afternoon, and when to set in the evening. In nature, these kinds of changes in sunlight tell our brains when to have energy and when to feel sleepy. But humans today spend most of our time indoors, so our brains may get confused about when to be awake and when to be tired. By building a rhythm for indoor lights around your daily schedule, TimeGiver may help you feel more alert during the day and sleep better at night. TimeGiver also has a blue sky simulator that uses two sets of color lights, one to copy the yellow of the sun and the other to copy the blue of the sky, making for a more natural-feeling light. The simulator can copy everything from the crisp blue of midday to the golden hour of late afternoon and mellow blues of dusk, all while making colors look natural.</p>
+    <p class="topleveltext">TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person raising hands shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the lists of lights that show up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <button class="topleveltext" type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
+    <button class="topleveltext" type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
 
     <p onclick="toggleelement('generalpurposesettings'); togglearrow('generalpurposesettingsuparrow'); togglearrow('generalpurposesettingsdownarrow');" class="settingheader1">General Purpose Rhythm Settings<span  id ="generalpurposesettingsuparrow" style="display: inline-block;">⬆</span><span  id ="generalpurposesettingsdownarrow" style="display: none;">⬇</span></p>
     <div id="generalpurposesettings" style="display: block;">
 
     <p onclick="toggleelement('generalpurposeimportantsettings'); togglearrow('generalpurposeimportantsettingsuparrow'); togglearrow('generalpurposeimportantsettingsdownarrow')" class="settingheader2">Settings most people may want to change<span  id ="generalpurposeimportantsettingsuparrow" style="display: inline-block;">⬆</span><span  id ="generalpurposeimportantsettingsdownarrow" style="display: none;">⬇</span></p>
     <div id="generalpurposeimportantsettings">
+
+    <p class="settingheader3" onclick="toggleelement('whitelightlisttext'); togglearrow('whitelightlistuparrow'); togglearrow('whitelightlistdownarrow');">White Lights<span  id ="whitelightlistuparrow" style="display: inline-block;">⬆</span><span  id ="whitelightlistdownarrow" style="display: none;">⬇</span></p>
+    <div id="whitelightlisttext"><p>Your Hue lights will appear here, allowing you to check next to the lights you want on your general rhythm.<div id="whitelightlist"></div></p></div>
+
+    <p class="settingheader3" onclick="toggleelement('autoonlightlisttext'); togglearrow('autoonlightlistuparrow'); togglearrow('autoonlightlistdownarrow');">Lights to turn on at sunrise<span  id ="autoonlightlistuparrow" style="display: inline-block;">⬆</span><span  id ="autoonlightlistdownarrow" style="display: none;">⬇</span></p>
+    <div id="autoonlightlisttext"><p>Your lights controlled by the demo will appear here, allowing you to check next to the lights you want to turn on automatically at the beginning of your sunrise (i.e. probably your bedroom lights).<div id="autoonlightlist"></div></p></div>
+    
+    <p class="settingheader3" onclick="toggleelement('overridesensorlisttext'); togglearrow('overridesensorlistuparrow'); togglearrow('overridesensorlistdownarrow');">Override Switches<span  id ="overridesensorlistuparrow" style="display: none;">⬆</span><span  id ="overridesensorlistdownarrow" style="display: inline-block;">⬇</span></p>
+    <div id="overridesensorlisttext" style="display: none;"><p>Your Hue Dimmer Panels will appear here, allowing you to check the ones you want to use as override switches when you need more light and then check the lights you want to override with each switch.<div id="overridesensorlist" style="display: none;"></div></div></p>
+
     <input type="time" id="wake_time_var" value="07:00" onchange="lineremover()"> Wake Time</input><br>
     <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"> Bed Time</input><br>  
-    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()"><div class="tooltip">Maximum Brightness: <span id="max_bright_label"></span> %</input><span class="tooltiptext">The brightest you want your lights to get at midday, which is 100% for most lights.</span></div><br>
-    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()"><div class="tooltip">Minimum Brightness: <span id="min_bright_label"></span> %</input><span class="tooltiptext">The dimmest you want your lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack.</span></div><br>
-    <input type="range" min="1500" max="10000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()"><div class="tooltip">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><span class="tooltiptext">The coolest (or bluest) you want your lights to get at midday. Higher is cooler, and most lights max out around 6500K.</span></div><br>
-    <input type="range" min="1500" max="10000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()"><div class="tooltip">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><span class="tooltiptext">The warmest (or reddest) you want your lights to get in the mornings and evenings. Lower is warmer, and most lights bottom out around 2700K.</span></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()"><div class="tooltip">Maximum Brightness: <span id="max_bright_label"></span> %</input><span class="tooltiptext">The brightest you want your lights to get at midday, which is 100% for most lights.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()"><div class="tooltip">Minimum Brightness: <span id="min_bright_label"></span> %</input><span class="tooltiptext">The dimmest you want your lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="1500" max="10000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()"><div class="tooltip">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><span class="tooltiptext">The coolest (or bluest) you want your lights to get at midday. Higher is cooler, and most lights max out around 6500K.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="1500" max="10000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()"><div class="tooltip">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><span class="tooltiptext">The warmest (or reddest) you want your lights to get in the mornings and evenings. Lower is warmer, and most lights bottom out around 2700K.</span></div></div><br>
     </div>
 
     <p onclick="toggleelement('generalpurposeoptionalsettings'); togglearrow('generalpurposeoptionalsettingsuparrow'); togglearrow('generalpurposeoptionalsettingsdownarrow')" class="settingheader2">Settings some people may want to change<span  id ="generalpurposeoptionalsettingsuparrow" style="display: none;">⬆</span><span  id ="generalpurposeoptionalsettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="generalpurposeoptionalsettings" style="display: none;">
-    <input type="range" min="0" max="60" value="30" class="slider" id="wake_offset_var" onchange="lineremover()"><div class="tooltip">Wake Offset: <span id="wake_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your wake time should the sunrise start. This should be higher for deep sleepers and lower for light sleepers.</span></div><br>
-    <input type="range" min="0" max="60" value="30" class="slider" id="bed_offset_var" onchange="lineremover()"><div class="tooltip">Bed Offset: <span id="bed_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your bed time should the sunset end. This should be higher for hard sleepers and lower for easy sleepers.</span></div><br>
-    <input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or: </input><span class="tooltiptext">How fast your lights get brighter in the morning in minutes from sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get brighter in the morning as a fraction of half of your day length.</span></div><br>
-    <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunset Brightness Length: <span id="set_length_bright_label"></span> minutes, or: </input><span class="tooltiptext">How fast your light get dimmer in the evening in minutes from before sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get dimmer in the evening as a fraction of half of your day length.</span></div><br>
-    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_CCT_mult_var" onchange="lineremover()"><div class="tooltip">Sunrise Color Temperature Length: <span id="rise_length_CCT_mult_label"></span>x times half day length, or: </input><span class="tooltiptext">How fast your lights go from warm to cool in the morning as a fraction of half your day length.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_CCT_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_CCT_label"></span> minutes</input><span class="tooltiptext">How fast should your lights go from warm to cool in the morning in minutes from sunrise.</span></div><br>
-    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_CCT_mult_var" onchange="lineremover()"><div class="tooltip">Sunset Color Temperature Length: <span id="set_length_CCT_mult_label"></span>x times half day length, or: </input><span class="tooltiptext">How fast your lights go from cool back to warm in the evening as a fraction of half your day length.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_CCT_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_CCT_label"></span> minutes</input><span class="tooltiptext">How fast should your lights go from cool back to warm in the afternoon in minutes from before sunset.</span></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="60" value="30" class="slider" id="wake_offset_var" onchange="lineremover()"><div class="tooltip">Wake Offset: <span id="wake_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your wake time should the sunrise start. This should be higher for deep sleepers and lower for light sleepers.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="60" value="30" class="slider" id="bed_offset_var" onchange="lineremover()"><div class="tooltip">Bed Offset: <span id="bed_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your bed time should the sunset end. This should be higher for hard sleepers and lower for easy sleepers.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your lights get brighter in the morning in minutes from sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get brighter in the morning as a fraction of half of your day length.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunset Brightness Length: <span id="set_length_bright_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your light get dimmer in the evening in minutes from before sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get dimmer in the evening as a fraction of half of your day length.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_CCT_mult_var" onchange="lineremover()"><div class="tooltip">Sunrise Color Temperature Length: <span id="rise_length_CCT_mult_label"></span>x times half day length, or:   </input><span class="tooltiptext">How fast your lights go from warm to cool in the morning as a fraction of half your day length.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_CCT_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_CCT_label"></span> minutes</input><span class="tooltiptext">How fast should your lights go from warm to cool in the morning in minutes from sunrise.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_CCT_mult_var" onchange="lineremover()"><div class="tooltip">Sunset Color Temperature Length: <span id="set_length_CCT_mult_label"></span>x times half day length, or:   </input><span class="tooltiptext">How fast your lights go from cool back to warm in the evening as a fraction of half your day length.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_CCT_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_CCT_label"></span> minutes</input><span class="tooltiptext">How fast should your lights go from cool back to warm in the afternoon in minutes from before sunset.</span></div></div><br>
     </div>
 
     
     <p onclick="toggleelement('generalpurposeadvancedsettings'); togglearrow('generalpurposeadvanceduparrow'); togglearrow('generalpurposeadvanceddownarrow');" class="settingheader2">Settings few people may want to change<span  id ="generalpurposeadvanceduparrow" style="display: none;">⬆</span><span  id ="generalpurposeadvanceddownarrow" style="display: inline-block;">⬇</span></p>
     <div id="generalpurposeadvancedsettings" style="display: none;">
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Slope: <span id="rise_slope_bright_label"></span></input><span class="tooltiptext">How fast your lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_var" onchange="lineremover()"><div class="tooltip">Sunset Brightness Slope: <span id="set_slope_bright_label"></span></input><span class="tooltiptext">How fast your lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_CCT_var" onchange="lineremover()"><div class="tooltip">Sunrise Color Temperature Slope: <span id="rise_slope_CCT_label"></span></input><span class="tooltiptext">How fast your lights get cooler early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_CCT_var" onchange="lineremover()"><div class="tooltip">Sunset Color Temperature Slope: <span id="set_slope_CCT_label"></span></input><span class="tooltiptext">How fast your lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Slope: <span id="rise_slope_bright_label"></span></input><span class="tooltiptext">How fast your lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_var" onchange="lineremover()"><div class="tooltip">Sunset Brightness Slope: <span id="set_slope_bright_label"></span></input><span class="tooltiptext">How fast your lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_CCT_var" onchange="lineremover()"><div class="tooltip">Sunrise Color Temperature Slope: <span id="rise_slope_CCT_label"></span></input><span class="tooltiptext">How fast your lights get cooler early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_CCT_var" onchange="lineremover()"><div class="tooltip">Sunset Color Temperature Slope: <span id="set_slope_CCT_label"></span></input><span class="tooltiptext">How fast your lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
     </div>
     </div>
 
-    
+    <input class="topleveltext" type="checkbox" id="blueyellowactive" value="true" onchange="check()">Blue Sky Sunlight Simulator Active</input><br>
     <p onclick="toggleelement('blueyellowsettings'); togglearrow('blueyellowsettingsuparrow'); togglearrow('blueyellowsettingsdownarrow');" class="settingheader1" style="white-space: nowrap;">Blue Sky Sunlight Simulator Specific Settings <span  id ="blueyellowsettingsuparrow" style="display: none;">⬆</span><span  id ="blueyellowsettingsdownarrow" style="display: inline-block;">⬇</span></p>
-    <input type="checkbox" id="blueyellowactive" value="true" onchange="check()">Blue Sky Sunlight Simulator Active</input><br>
     <div id="blueyellowsettings" style="display: none;">
     <p onclick="toggleelement('blueyellowimportantsettings'); togglearrow('blueyellowimportantsettingsuparrow'); togglearrow('blueyellowimportantsettingsdownarrow');" class="settingheader2">Settings most people may want to change<span  id ="blueyellowimportantsettingsuparrow" style="display: inline-block;">⬆</span><span  id ="blueyellowimportantsettingsdownarrow" style="display: none;">⬇</span></p>
     <div id="blueyellowimportantsettings">
-    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Maximum Yellow Brightness: <span id="max_bright_yellow_label"></span> %</input><span class="tooltiptext">The brightest you want your yellow lights to get at midday, which is 100% for most lights. Setting this higher than the maximum blue brightness mimics direct sunlight at midday.</span></div><br>
-    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Minimum Yellow Brightness: <span id="min_bright_yellow_label"></span> %</input><span class="tooltiptext">The dimmest you want your yellow lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum blue brightness mimics direct sunlight in the late evening.</span></div><br>
-    <input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_blue_var" onchange="lineremover()"><div class="tooltip">Maximum Blue Brightness: <span id="max_bright_blue_label"></span> %</input><span class="tooltiptext">The brightest you want your blue lights to get at midday, which is 100% for most lights. Setting this higher than the maximum yellow brightness mimics indirect sunlight at midday.</span></div><br>
-    <input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_blue_var" onchange="lineremover()"><div class="tooltip">Minimum Blue Brightness: <span id="min_bright_blue_label"></span> %</input><span class="tooltiptext">The dimmest you want your blue lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum yellow brightness mimics indirect sunlight in the late evening.</span></div><br>
-    <input type="range" min="0" max="4000" value="3000" step = "100" class="slider" id="max_scatdist_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Scatter Distance: <span id="max_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be at midday. Higher numbers make for more saturated colors at midday.</span></div><br>
-    <input type="range" min="0" max="4000" value="2000" step = "100" class="slider" id="min_scatdist_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Scatter Distance: <span id="min_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be in the early morning and late evening. Higher numbers make for more saturated colors at sunrise and sunset.</span></div><br>
-    <input type="range" min="-30" max="60" value="15" step = "1" class="slider" id="max_scatangshift_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Angle Shift: <span id="max_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues in the early morning and late evening. Higher numbers make for more yellow sunsets, but numbers too high can bring out greens and purples beyond a typical sunset. Lower numbers make for more white or pink sunsets.</span></div><br>
-    <input type="range" min="-30" max="60" value="0" step = "1" class="slider" id="min_scatangshift_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Angle Shift: <span id="min_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues around midday. Higher numbers make for more dramatic, colorful middays, as in the region around a wildfire. This should usually be left at 0.</span></div><br>
+    
+    <p class="settingheader3" onclick="toggleelement('bluelightlisttext'); togglearrow('bluelightlistuparrow'); togglearrow('bluelightlistdownarrow');">Color Lights for Blue Sky<span  id ="bluelightlistuparrow" style="display: none;">⬆</span><span  id ="bluelightlistdownarrow" style="display: inline-block;">⬇</span></p>
+    <p id="bluelightlisttext" style="display: none;">Your Hue color lights will appear here, allowing you to check next to the lights you want on your blue rhythm when using the blue sky sunlight simulator.<div id="bluelightlist" style="display: none;"></div></p>
+
+    <p class="settingheader3" onclick="toggleelement('yellowlightlisttext'); togglearrow('yellowlightlistuparrow'); togglearrow('yellowlightlistdownarrow');">Color Lights for Direct Sun<span  id ="yellowlightlistuparrow" style="display: none;">⬆</span><span  id ="yellowlightlistdownarrow" style="display: inline-block;">⬇</span></p>
+    <p id="yellowlightlisttext" style="display: none;">Your Hue color lights will appear here, allowing you to check next to the lights you want on your yellow rhythm when using the blue sky sunlight simulator. <div id="yellowlightlist" style="display: none;"></div></p>
+
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Maximum Yellow Brightness: <span id="max_bright_yellow_label"></span> %</input><span class="tooltiptext">The brightest you want your yellow lights to get at midday, which is 100% for most lights. Setting this higher than the maximum blue brightness mimics direct sunlight at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Minimum Yellow Brightness: <span id="min_bright_yellow_label"></span> %</input><span class="tooltiptext">The dimmest you want your yellow lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum blue brightness mimics direct sunlight in the late evening.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_blue_var" onchange="lineremover()"><div class="tooltip">Maximum Blue Brightness: <span id="max_bright_blue_label"></span> %</input><span class="tooltiptext">The brightest you want your blue lights to get at midday, which is 100% for most lights. Setting this higher than the maximum yellow brightness mimics indirect sunlight at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_blue_var" onchange="lineremover()"><div class="tooltip">Minimum Blue Brightness: <span id="min_bright_blue_label"></span> %</input><span class="tooltiptext">The dimmest you want your blue lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum yellow brightness mimics indirect sunlight in the late evening.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="4000" value="3000" step = "100" class="slider" id="max_scatdist_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Scatter Distance: <span id="max_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be at midday. Higher numbers make for more saturated colors at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="4000" value="2000" step = "100" class="slider" id="min_scatdist_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Scatter Distance: <span id="min_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be in the early morning and late evening. Higher numbers make for more saturated colors at sunrise and sunset.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-30" max="60" value="15" step = "1" class="slider" id="max_scatangshift_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Angle Shift: <span id="max_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues in the early morning and late evening. Higher numbers make for more yellow sunsets, but numbers too high can bring out greens and purples beyond a typical sunset. Lower numbers make for more white or pink sunsets.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-30" max="60" value="0" step = "1" class="slider" id="min_scatangshift_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Angle Shift: <span id="min_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues around midday. Higher numbers make for more dramatic, colorful middays, as in the region around a wildfire. This should usually be left at 0.</span></div></div><br>
     </div>
 
     <p onclick="toggleelement('blueyellowoptionalsettings'); togglearrow('blueyellowoptionalsettingsuparrow'); togglearrow('blueyellowoptionalsettingsdownarrow');" class="settingheader2">Settings some people may want to change<span  id ="blueyellowoptionalsettingsuparrow" style="display: none;">⬆</span><span  id ="blueyellowoptionalsettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="blueyellowoptionalsettings" style="display: none;">
-    <input type="range" min="0" max="180" value="30" step = "5" class="slider" id="rise_length_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunrise Yellow Brightness Length: <span id="rise_length_bright_yellow_label"></span> minutes, or: </input><span class="tooltiptext">How fast your yellow lights get brighter in the morning in minutes from sunrise. Setting this lower than the sunrise blue brightness length makes for a more dramatic golden hour around sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_yellow_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_yellow_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your yellow lights get brighter in the morning as a fraction of the half day length. Setting this lower than the sunrise blue brightness length makes for a more dramatic golden hour around sunrise.</span></div><br>
-    <input type="range" min="0" max="180" value="90" step = "5" class="slider" id="set_length_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunset Yellow Brightness Length: <span id="set_length_bright_yellow_label"></span> minutes, or: </input><span class="tooltiptext">How fast your yellow lights get dimmer in the evening in minutes from before sunset. Setting this lower than the sunset blue brightness length makes for a more dramatic golden hour around sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_yellow_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_yellow_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your yellow lights get dimmer in the evening as a fraction of the half day length. Setting this lower than the sunset blue brightness length makes for a more dramatic golden hour around sunset.</span></div><br>
-    <input type="range" min="0" max="180" value="60" step = "5" class="slider" id="rise_length_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue Brightness Length: <span id="rise_length_bright_blue_label"></span> minutes, or: </input><span class="tooltiptext">How fast your blue lights get brighter in the morning in minutes from sunrise. Setting this higher than the sunrise yellow brightness length makes for a more dramatic golden hour around sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_blue_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_blue_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your blue lights get brighter in the morning as a fraction of the half day length. Setting this higher than the sunrise yellow brightness length makes for a more dramatic golden hour around sunrise.</span></div><br>
-    <input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunset Blue Brightness Length: <span id="set_length_bright_blue_label"></span> minutes, or: </input><span class="tooltiptext">How fast your blue lights get dimmer in the evening in minutes from before sunset. Setting this higher than the sunset yellow brightness length makes for a more dramatic golden hour around sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_blue_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_blue_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your blue lights get dimmer in the evening in minutes as a fraction of the half day length. Setting this higher than the sunset yellow brightness length makes for a more dramatic golden hour around sunset.</span></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="30" step = "5" class="slider" id="rise_length_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunrise Yellow Brightness Length: <span id="rise_length_bright_yellow_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your yellow lights get brighter in the morning in minutes from sunrise. Setting this lower than the sunrise blue brightness length makes for a more dramatic golden hour around sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_yellow_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_yellow_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your yellow lights get brighter in the morning as a fraction of the half day length. Setting this lower than the sunrise blue brightness length makes for a more dramatic golden hour around sunrise.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="90" step = "5" class="slider" id="set_length_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunset Yellow Brightness Length: <span id="set_length_bright_yellow_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your yellow lights get dimmer in the evening in minutes from before sunset. Setting this lower than the sunset blue brightness length makes for a more dramatic golden hour around sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_yellow_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_yellow_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your yellow lights get dimmer in the evening as a fraction of the half day length. Setting this lower than the sunset blue brightness length makes for a more dramatic golden hour around sunset.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="60" step = "5" class="slider" id="rise_length_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue Brightness Length: <span id="rise_length_bright_blue_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your blue lights get brighter in the morning in minutes from sunrise. Setting this higher than the sunrise yellow brightness length makes for a more dramatic golden hour around sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_blue_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_blue_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your blue lights get brighter in the morning as a fraction of the half day length. Setting this higher than the sunrise yellow brightness length makes for a more dramatic golden hour around sunrise.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="180" value="180" step = "5" class="slider" id="set_length_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunset Blue Brightness Length: <span id="set_length_bright_blue_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your blue lights get dimmer in the evening in minutes from before sunset. Setting this higher than the sunset yellow brightness length makes for a more dramatic golden hour around sunset.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_bright_blue_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_bright_blue_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast your blue lights get dimmer in the evening in minutes as a fraction of the half day length. Setting this higher than the sunset yellow brightness length makes for a more dramatic golden hour around sunset.</span></div></div><br>
     </div>
 
     <p onclick="toggleelement('blueyellowadvancedsettings'); togglearrow('blueyellowadvancedsettingsuparrow'); togglearrow('blueyellowadvancedsettingsdownarrow');" class="settingheader2">Settings few people may want to change<span  id ="blueyellowadvancedsettingsuparrow" style="display: none;">⬆</span><span  id ="blueyellowadvancedsettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="blueyellowadvancedsettings" style="display: none;">
-    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_scatdist_mult_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Scatter Distance Length: <span id="rise_length_scatdist_mult_label"></span>x times half day length, or: </input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme in the morning as a fraction of half day length. Higher numbers make for a smoother transition between the saturated colors of sunrise and the paler colors of midday.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_scatdist_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_scatdist_label"></span> minutes</input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme in the morning in minutes from sunrise. Higher numbers make for a smoother transition between the saturated colors of sunrise and sunset and the paler colors of midday.</span></div><br>
-    <input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_scatdist_mult_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Scatter Distance Length: <span id="set_length_scatdist_mult_label"></span>x times half day length, or: </input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme in the evening as a fraction of half day length. Higher numbers make for a smoother transition between the paler colors of midday and the saturated colors of sunset.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_scatdist_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_scatdist_label"></span> minutes</input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme in the evening in minutes from before sunset. Higher numbers make for a smoother transition between the paler colors of midday and the saturated colors of sunset.</span></div><br>
-    <input type="range" min="0" max="300" value="240" step = "5" class="slider" id="rise_length_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Angle Shift Length: <span id="rise_length_scatangshift_label"></span> minutes, or: </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues fades in the morning in minutes from sunrise. Higher numbers make for a longer morning golden hour.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_scatangshift_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_scatangshift_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues fades in the morning as a fraction of half day length. Higher numbers make for a longer morning golden hour.</span></div><br>
-    <input type="range" min="0" max="300" value="240" step = "5" class="slider" id="set_length_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Angle Shift Length: <span id="set_length_scatangshift_label"></span> minutes, or: </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases in the evening in minutes from before sunset. Higher numbers make for a longer afternoon golden hour.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_scatangshift_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_scatangshift_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases in the evening as a fraction of half day length. Higher numbers make for a longer afternoon golden hour.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatdist_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Scatter Distance Slope: <span id="rise_slope_scatdist_label"></span></input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme early in the morning compared to later. Higher numbers mean more pronounced increase in saturation of colors earlier in the morning and less change around midday.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatdist_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Scatter Distance Slope: <span id="set_slope_scatdist_label"></span></input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme late in the afternoon compared to earlier. Higher numbers mean more pronounced decrease in saturation of colors later in the evening and less change around midday.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Angle Shift Slope: <span id="rise_slope_scatangshift_label"></span></input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues decreases early in the morning compared to later. Higher numbers mean shorter golden hours in the morning without changing coloration at midday.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Angle Shift Slope: <span id="set_slope_scatangshift_label"></span></input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases late in the evening compared to earlier. Higher numbers mean shorter golden hours in the evening without changing coloration at midday.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunrise Yellow Brightness Slope: <span id="rise_slope_bright_yellow_label"></span></input><span class="tooltiptext">How fast your yellow lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunset Yellow Brightness Slope: <span id="set_slope_bright_yellow_label"></span></input><span class="tooltiptext">How fast your yellow lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue Brightness Slope: <span id="rise_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div><br>
-    <input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunset Blue Brightness Slope: <span id="set_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="rise_length_scatdist_mult_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Scatter Distance Length: <span id="rise_length_scatdist_mult_label"></span>x times half day length, or:   </input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme in the morning as a fraction of half day length. Higher numbers make for a smoother transition between the saturated colors of sunrise and the paler colors of midday.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="rise_length_scatdist_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_scatdist_label"></span> minutes</input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme in the morning in minutes from sunrise. Higher numbers make for a smoother transition between the saturated colors of sunrise and sunset and the paler colors of midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.05" class="slider" id="set_length_scatdist_mult_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Scatter Distance Length: <span id="set_length_scatdist_mult_label"></span>x times half day length, or:   </input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme in the evening as a fraction of half day length. Higher numbers make for a smoother transition between the paler colors of midday and the saturated colors of sunset.</span></div><input type="range" min="0" max="180" value="0" step = "5" class="slider" id="set_length_scatdist_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_scatdist_label"></span> minutes</input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme in the evening in minutes from before sunset. Higher numbers make for a smoother transition between the paler colors of midday and the saturated colors of sunset.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="300" value="240" step = "5" class="slider" id="rise_length_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Angle Shift Length: <span id="rise_length_scatangshift_label"></span> minutes, or:   </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues fades in the morning in minutes from sunrise. Higher numbers make for a longer morning golden hour.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_scatangshift_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_scatangshift_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues fades in the morning as a fraction of half day length. Higher numbers make for a longer morning golden hour.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="300" value="240" step = "5" class="slider" id="set_length_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Angle Shift Length: <span id="set_length_scatangshift_label"></span> minutes, or:   </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases in the evening in minutes from before sunset. Higher numbers make for a longer afternoon golden hour.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="set_length_scatangshift_mult_var" onchange="lineremover()"><div class="tooltip"><span id="set_length_scatangshift_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases in the evening as a fraction of half day length. Higher numbers make for a longer afternoon golden hour.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatdist_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Scatter Distance Slope: <span id="rise_slope_scatdist_label"></span></input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets more extreme early in the morning compared to later. Higher numbers mean more pronounced increase in saturation of colors earlier in the morning and less change around midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatdist_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Scatter Distance Slope: <span id="set_slope_scatdist_label"></span></input><span class="tooltiptext">How fast the contrast between your blue and yellow lights gets less extreme late in the afternoon compared to earlier. Higher numbers mean more pronounced decrease in saturation of colors later in the evening and less change around midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue-Yellow Angle Shift Slope: <span id="rise_slope_scatangshift_label"></span></input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues decreases early in the morning compared to later. Higher numbers mean shorter golden hours in the morning without changing coloration at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_scatangshift_var" onchange="lineremover()"><div class="tooltip">Sunset Blue-Yellow Angle Shift Slope: <span id="set_slope_scatangshift_label"></span></input><span class="tooltiptext">How fast the shift of your yellow lights toward deeper yellows and your blue lights toward deeper blues increases late in the evening compared to earlier. Higher numbers mean shorter golden hours in the evening without changing coloration at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunrise Yellow Brightness Slope: <span id="rise_slope_bright_yellow_label"></span></input><span class="tooltiptext">How fast your yellow lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunset Yellow Brightness Slope: <span id="set_slope_bright_yellow_label"></span></input><span class="tooltiptext">How fast your yellow lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue Brightness Slope: <span id="rise_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunset Blue Brightness Slope: <span id="set_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
     </div>
     </div>
 
-    <button type="button" id="savesettingsbutton" onclick="savesettings()">Save Settings</button>
-    <button type="button" id="restoresettingsbutton" onclick="restoresettings()">Restore Saved Settings</button>
+    <button class="topleveltext" type="button" id="savesettingsbutton" onclick="savesettings()">Save Settings</button>
+    <button class="topleveltext" type="button" id="restoresettingsbutton" onclick="restoresettings()">Restore Saved Settings</button>
 
     <p onclick="toggleelement('attributionssettings'); togglearrow('attributionssettingsuparrow'); togglearrow('attributionssettingsdownarrow');" class="settingheader1">Attributions<span  id="attributionssettingsuparrow" style="display: inline-block;">⬆</span><span  id="attributionssettingsdownarrow" style="display: none;">⬇</span></p>
-    <p id="attributionssettings">TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee on <a href= "https://github.com/timotheonpaulonlee" target="_blank">Github</a> or <a href= "http://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
+    <p class="topleveltext" id="attributionssettings">TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee on <a href= "https://github.com/timotheonpaulonlee" target="_blank">Github</a> or <a href= "http://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
 
     <p onclick="toggleelement('disclaimersettings'); togglearrow('disclaimersettingsuparrow'); togglearrow('disclaimersettingsdownarrow');" class="settingheader1">License & Disclaimer<span  id="disclaimersettingsuparrow" style="display: none;">⬆</span><span  id="disclaimersettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="disclaimersettings" style="display: none;"><p>MIT License Copyright (c) 2020 Timothy Lee</p>
-    <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+    <p class="topleveltext">Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
       in the Software without restriction, including without limitation the rights
       to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
       copies of the Software, and to permit persons to whom the Software is
       furnished to do so, subject to the following conditions:</p>
-    <p>The above copyright notice and this permission notice shall be included in all
+    <p class="topleveltext">The above copyright notice and this permission notice shall be included in all
       copies or substantial portions of the Software.</p>
-    <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    <p class="topleveltext">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
       IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
       FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
       AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
       LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
       OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
       SOFTWARE.</p>
-    <p>This demo also relies heavily on <a href= "https://github.com/timotheonpaulonlee/jshue" target="_blank">jshue</a>, an open-source javascript API wrapper for Philips Hue
+    <p class="topleveltext">This demo also relies heavily on <a href= "https://github.com/timotheonpaulonlee/jshue" target="_blank">jshue</a>, an open-source javascript API wrapper for Philips Hue
       developed by John Peloquin available under the <a href= "https://github.com/blargoner/jshue/blob/master/LICENSE" target="_blank">MIT License</a> as shown above, Copyright 2013 - 2017, John Peloquin 
       and the jsHue contributors.
     </p>
