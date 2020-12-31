@@ -976,6 +976,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var productname = switchesupdate[i].productname;
     var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
     var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
+    var overridecheckboxchecked = ("#overridecheckbox_" + sensorname_esc + ":checked")
     if (productname) {
       var dimmer = productname.includes("Hue dimmer switch");
       if (dimmer) {
@@ -989,8 +990,8 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
           var lightname = (lights[i].name);
           var lightname_esc = (lightname.replace(/\s+/g, ''))
           var lightname_esc = (lightname_esc.replace(/'/g, ''))
-          var overridecheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
-          if (buttonevent < 3999 && buttonevent > 1900 && timesincebuttonupdate <3600000 && (document.querySelector(overridecheckboxchecked)) !== null) {
+          var overridelightcheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
+          if (buttonevent < 3999 && buttonevent > 1900 && timesincebuttonupdate <3600000 && (document.querySelector(overridelightcheckboxchecked)) !== null && (document.querySelector(overridecheckboxchecked)) !== null) {
             console.log ("override activated");
             lights[i].overrideactivated = true;
             //console.log (lights[i].overrideactivated)
