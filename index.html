@@ -1035,7 +1035,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var override = lights[i].overrideactivated;
     //console.log (override)
     if (override === true) {console.log ("override activated");} else {
-      if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
+      if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < 30 && (hm - (wake_time_hm - wake_offset)) > 0) {
         //console.log ("autoon activated for: " + lightname_esc)
         if ((document.querySelector('#blueyellowactive:checked') !== null)) {
           if (document.querySelector(bluecheckboxchecked) !== null){
