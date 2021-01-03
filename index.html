@@ -1050,14 +1050,14 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
           }
           if (document.querySelector(whitecheckboxchecked) !== null){
             if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
             } else {
               user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
             }
           }
         } else {
           if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
           } else {
             user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
           }
@@ -1077,14 +1077,14 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
           }
           if (document.querySelector(whitecheckboxchecked) !== null){
             if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
             } else {
               user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
             }
           }
         } else {
           if (document.querySelector(whitecheckboxchecked) !== null){if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
             } else {
               user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
             }
