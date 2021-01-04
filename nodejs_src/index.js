@@ -123,8 +123,8 @@ exports.TimeGiver = function () //The meaning and use of these arguments is expl
     var set_CCT = ((((bed_time - bed_offset - hm)/set_length_CCT) ** (set_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
     var rise_scatdist = ((((hm - wake_time + wake_offset)/rise_length_scatdist) ** (rise_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var set_scatdist = ((((bed_time - bed_offset - hm)/set_length_scatdist) ** (set_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
-    var rise_scatangshift = (-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift) + max_scatangshift);
-    var set_scatangshift = (-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift) + max_scatangshift);
+    var rise_scatangshift = ((-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
+    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
     var rise_bright_yellow = ((((hm - wake_time + wake_offset)/rise_length_bright_yellow) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var set_bright_yellow = ((((bed_time - bed_offset - hm)/set_length_bright_yellow) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var rise_bright_blue = ((((hm - wake_time + wake_offset)/rise_length_bright_blue) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
@@ -192,10 +192,10 @@ exports.TimeGiver = function () //The meaning and use of these arguments is expl
     var yellow_CCT = (CCT_int - scatdist_int)
 
     //These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
-    if (white_CCT > 1000) {var white_x = x_transform (white_CCT); var white_y = y_transform (white_CCT);
+    if (white_CCT > 1001) {var white_x = x_transform (white_CCT); var white_y = y_transform (white_CCT);
     } else {var white_x = x_transform (1001); var white_y = y_transform (1001)}
 
-    if (yellow_CCT > 1000) {var yellow_x = x_transform (yellow_CCT); var yellow_y = y_transform (yellow_CCT);
+    if (yellow_CCT > 1001) {var yellow_x = x_transform (yellow_CCT); var yellow_y = y_transform (yellow_CCT);
     } else {var yellow_x = x_transform (1001); var yellow_y = y_transform (1001)}
 
     var blue_x = (white_x - (yellow_x - white_x))

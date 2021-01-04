@@ -372,14 +372,14 @@ def TimeGiver ( #The meaning and use of these arguments is explained at length i
     white_CCT_str = str (CCT_int)
     yellow_CCT_str = str (CCT_int - scatdist_int)
 
-    if int (white_CCT_str) > 1000: #These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
+    if int (white_CCT_str) > 1001: #These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
         white_x_flt = float (x_transform_dict.get(white_CCT_str))
         white_y_flt = float (y_transform_dict.get(white_CCT_str))
     else:
         white_x_flt = float (x_transform_dict.get("1001"))
         white_y_flt = float (y_transform_dict.get("1001"))
 
-    if int (yellow_CCT_str) > 1000:
+    if int (yellow_CCT_str) > 1001:
         yellow_x_flt = float (x_transform_dict.get(yellow_CCT_str))
         yellow_y_flt = float (y_transform_dict.get(yellow_CCT_str))
     else:
