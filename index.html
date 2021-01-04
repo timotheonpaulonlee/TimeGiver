@@ -351,6 +351,7 @@ function savesettings(){
   setCookie("min_bright_var_cookie", (document.getElementById("min_bright_var").value), 365);
   setCookie("max_CCT_var_cookie", (document.getElementById("max_CCT_var").value), 365);
   setCookie("min_CCT_var_cookie", (document.getElementById("min_CCT_var").value), 365);
+  setCookie("transtime_var_cookie", (document.getElementById("transtime_var").value), 365);
   setCookie("wake_offset_var_cookie", (document.getElementById("wake_offset_var").value), 365);
   setCookie("bed_offset_var_cookie", (document.getElementById("bed_offset_var").value), 365);
   setCookie("rise_length_bright_var_cookie", (document.getElementById("rise_length_bright_var").value), 365);
@@ -413,6 +414,8 @@ function restoresettings(){
   if (max_CCT_var_cookie) {document.getElementById("max_CCT_var").value = max_CCT_var_cookie;};
   var min_CCT_var_cookie = getCookie ("min_CCT_var_cookie");
   if (min_CCT_var_cookie) {document.getElementById("min_CCT_var").value = min_CCT_var_cookie;};
+  var transtime_var_cookie = getCookie ("transtime_var_cookie");
+  if (transtime_var_cookie) {document.getElementById("transtime_var").value = transtime_var_cookie;};
   var wake_offset_var_cookie = getCookie ("wake_offset_var_cookie");
   if (wake_offset_var_cookie) {document.getElementById("wake_offset_var").value = wake_offset_var_cookie;};
   var bed_offset_var_cookie = getCookie ("bed_offset_var_cookie");
@@ -505,6 +508,11 @@ function restoresettings(){
   if (rise_slope_bright_blue_var_cookie) {document.getElementById("rise_slope_bright_blue_var").value = rise_slope_bright_blue_var_cookie;};
   var set_slope_bright_blue_var_cookie = getCookie ("set_slope_bright_blue_var_cookie");
   if (set_slope_bright_blue_var_cookie) {document.getElementById("set_slope_bright_blue_var").value = set_slope_bright_blue_var_cookie;};
+
+  var transtime_slider = document.getElementById("transtime_var");
+  var transtime_output = document.getElementById("transtime_label");
+  transtime_output.innerHTML = transtime_slider.value;
+  transtime_slider.oninput = function() {transtime_output.innerHTML = this.value;}
 
   var wake_offset_slider = document.getElementById("wake_offset_var");
   var wake_offset_output = document.getElementById("wake_offset_label");
@@ -791,7 +799,7 @@ async function gethuebridgeaddressnocookie (){
   async function discoverbridge() {
       await hue.discover().then(bridges => {
       if(bridges.length === 0) {
-        console.log("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.");
+        alert("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.");
       }
       else {
         bridges.forEach(b => console.log('Bridge found at IP address %s.', b.internalipaddress));
@@ -799,7 +807,7 @@ async function gethuebridgeaddressnocookie (){
         bridges.forEach(b => huebridgeaddress = (b.internalipaddress));
         //console.log ("Hue bridge found: " + huebridgeaddress)
         return huebridgeaddress;}
-    }).catch(e => {console.log("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.", e)});
+    }).catch(e => {alert("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.", e)});
     }
   await discoverbridge();
   return huebridgeaddress;
@@ -1020,6 +1028,9 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     }
   }
 
+  var transtime = ((Number((document.getElementById("transtime_var").value))) * 10);
+  console.log (transtime);
+
   for (i in lights) {
     var lightname = (lights[i].name);
     var lightname_esc = (lightname.replace(/\s+/g, ''));
@@ -1039,54 +1050,54 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
         //console.log ("autoon activated for: " + lightname_esc)
         if ((document.querySelector('#blueyellowactive:checked') !== null)) {
           if (document.querySelector(bluecheckboxchecked) !== null){
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: transtime}).then(data => {})
             document.getElementById(yellowcheckbox).checked = false
             document.getElementById(whitecheckbox).checked = false
           }
           if (document.querySelector(yellowcheckboxchecked) !== null){
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: transtime}).then(data => {})
             document.getElementById(bluecheckbox).checked = false
             document.getElementById(whitecheckbox).checked = false
           }
           if (document.querySelector(whitecheckboxchecked) !== null){
             if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
             } else {
-              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
             }
           }
         } else {
           if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
           } else {
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
           }
         }
       } else {
         //console.log ("autoon not activated")
         if ((document.querySelector('#blueyellowactive:checked') !== null)) {
           if (document.querySelector(bluecheckboxchecked) !== null){
-            user.setLightState(i, {bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: transtime}).then(data => {})
             document.getElementById(yellowcheckbox).checked = false
             document.getElementById(whitecheckbox).checked = false
           }
           if (document.querySelector(yellowcheckboxchecked) !== null){
-            user.setLightState(i, {bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 20}).then(data => {})
+            user.setLightState(i, {bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: transtime}).then(data => {})
             document.getElementById(bluecheckbox).checked = false
             document.getElementById(whitecheckbox).checked = false
           }
           if (document.querySelector(whitecheckboxchecked) !== null){
             if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
             } else {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
             }
           }
         } else {
           if (document.querySelector(whitecheckboxchecked) !== null){if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
             } else {
-              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 20}).then(data => {})
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
             }
           }
         }
@@ -1427,6 +1438,7 @@ Your browser does not support the canvas element.
 
     <p onclick="toggleelement('generalpurposeoptionalsettings'); togglearrow('generalpurposeoptionalsettingsuparrow'); togglearrow('generalpurposeoptionalsettingsdownarrow')" class="settingheader2">Settings some people may want to change<span  id ="generalpurposeoptionalsettingsuparrow" style="display: none;">⬆</span><span  id ="generalpurposeoptionalsettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="generalpurposeoptionalsettings" style="display: none;">
+    <div class="slidecontainer"><input type="range" min="0" max="30" value="2" class="slider" id="transtime_var" onchange="lineremover()"><div class="tooltip">Transition Time: <span id="transtime_label"></span> seconds</input><span class="tooltiptext">The amount of time that it takes for lights to find their place in the schedule in seconds.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="60" value="30" class="slider" id="wake_offset_var" onchange="lineremover()"><div class="tooltip">Wake Offset: <span id="wake_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your wake time should the sunrise start. This should be higher for deep sleepers and lower for light sleepers.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="60" value="30" class="slider" id="bed_offset_var" onchange="lineremover()"><div class="tooltip">Bed Offset: <span id="bed_offset_label"></span> minutes</input><span class="tooltiptext">How soon before your bed time should the sunset end. This should be higher for hard sleepers and lower for easy sleepers.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="180" value="45" step = "5" class="slider" id="rise_length_bright_var" onchange="lineremover()"><div class="tooltip">Sunrise Brightness Length: <span id="rise_length_bright_label"></span> minutes, or:   </input><span class="tooltiptext">How fast your lights get brighter in the morning in minutes from sunrise.</span></div><input type="range" min="0" max="1" value="0" step = "0.05" class="slider" id="rise_length_bright_mult_var" onchange="lineremover()"><div class="tooltip"><span id="rise_length_bright_mult_label"></span>x times half day length </input><span class="tooltiptext">How fast should your lights get brighter in the morning as a fraction of half of your day length.</span></div></div><br>
@@ -1523,6 +1535,11 @@ Your browser does not support the canvas element.
 </div>
 
 <script>
+    var transtime_slider = document.getElementById("transtime_var");
+    var transtime_output = document.getElementById("transtime_label");
+    transtime_output.innerHTML = transtime_slider.value;
+    transtime_slider.oninput = function() {transtime_output.innerHTML = this.value;}
+
     var wake_offset_slider = document.getElementById("wake_offset_var");
     var wake_offset_output = document.getElementById("wake_offset_label");
     wake_offset_output.innerHTML = wake_offset_slider.value;
