@@ -225,6 +225,7 @@ button {
 <script type="text/javascript" src="TimeGiver.js"></script>
 <script type="text/javascript" src="xytorgb.js"></script>
 <script type= "text/javascript" src="jshue.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 var hue = jsHue();
 
@@ -813,6 +814,47 @@ async function gethuebridgeaddressnocookie (){
   return huebridgeaddress;
 }
 
+function testbridgeaddress(url) {
+    var encodedURL = encodeURIComponent(url);
+    var isValid = false;
+
+    $.ajax({
+      url: "http://" + encodedURL + "/api",
+      type: "get",
+      async: false,
+      dataType: "json",
+      success: function(data) {
+        isValid = true;
+      },
+      error: function(){
+        isValid = false;
+      }
+    });
+
+    return isValid;
+}
+
+function testusername(url, username) {
+    var encodedURL = encodeURIComponent(url);
+    var isValid = false;
+
+    $.ajax({
+      url: "http://" + encodedURL + "/api/" + username,
+      type: "get",
+      async: false,
+      dataType: "json",
+      success: function(data) {
+        var errortype = (data && data[0] && data[0].error && data[0].error.type)
+        if (typeof(errortype) == 'undefined') {isValid = true;} else {isValid = false}   
+      },
+      error: function(){
+        isValid = false;
+      }
+    });
+
+    return isValid;
+}
+
 async function gethueusername(huebridgeaddress){
     var bridge = await hue.bridge(huebridgeaddress);
     return bridge.createUser('TimeGiverDemo#WebBrowser').then(data => {
@@ -835,25 +877,31 @@ function stopdemo (){
 }
 
 async function startdemo (){
-  await gethuebridgeaddresscookie()
-  var bridge = await hue.bridge(huebridgeaddress);
-  if (bridge) {console.log("bridge found")} else {await gethuebridgeaddressnocookie(); var bridge = await hue.bridge(huebridgeaddress); return bridge;}
+  await gethuebridgeaddresscookie();
+  var bridgeaddresstest = testbridgeaddress(huebridgeaddress);
+  //console.log (bridgeaddresstest);
+  if (bridgeaddresstest === false) {await gethuebridgeaddressnocookie(); var bridge = await hue.bridge(huebridgeaddress);} else {console.log("bridge found at " + huebridgeaddress); var bridge = await hue.bridge(huebridgeaddress);}
   //alert (huebridgeaddress)
   if (huebridgeaddress.length > 3) {
     //alert (huebridgeaddress + " is being used as address")
     var usernamecookie = getCookie ("huebridgeusername");
-    if (usernamecookie.length > 3) {huebridgeusername = unescape(usernamecookie); /*console.log (usernamecookie)*/} else {
+    if (usernamecookie.length > 3) {
+      var usernametest = testusername(huebridgeaddress, usernamecookie)
+      console.log(usernametest)
+      if (usernametest === true){
+        huebridgeusername = unescape(usernamecookie);
+        console.log("Usable username found from cookie: "  + huebridgeusername)
+      } else {
+        var huebridgeusername = await gethueusername(huebridgeaddress);
+        console.log ("New username is: " + huebridgeusername);}
+    } else {
       var huebridgeusername = await gethueusername(huebridgeaddress);
-      console.log ("Hue bridge username is: " + huebridgeusername);
+      console.log ("New username is: " + huebridgeusername);
     }
     if (huebridgeusername.length > 3){
       //console.log (huebridgeaddress);
       //console.log (huebridgeusername);
       var user = await bridge.user(huebridgeusername);
-      if (user) {console.log("Usable username found")} else {
-        var huebridgeusername = await gethueusername(huebridgeaddress);
-        var user = await bridge.user(huebridgeusername);
-        }
     
       await user.getLights()
         .then(function(result) {
@@ -892,11 +940,23 @@ async function startdemo (){
         var sensorname_esc = (sensorname.replace(/\s+/g, ''));
         var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
         var productname = switches[i].productname;
+        var producttype = switches[i].type;
         var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
         var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
         if (productname) {
-          var dimmer = productname.includes("Hue dimmer switch");
-          if (dimmer) {
+          var huedimmerswitch = productname.includes("Hue dimmer switch");
+          var lutronaurora = productname.includes("Lutron Aurora");
+          var producttypeincludes = producttype.includes("Rotary");
+          if (producttypeincludes === true && lutronaurora === true) {
+            document.getElementById("overridesensorlist").innerHTML = (document.getElementById("overridesensorlist").innerHTML + "<div class='level4element' style='display:block' id='overridesensordiv_" + sensorname_esc + "'><input onclick='toggleoverridelist();' type='checkbox' id='overridecheckbox_" + sensorname_esc + "'>" + switches[i].name + "<ul style='display:none' id='overridecheckboxlist_" + sensorname_esc + "'></ul></input></div>")
+            for (i in lights){
+              var lightname = (lights[i].name);
+              var lightname_esc = (lightname.replace(/\s+/g, ''));
+              var lightname_esc = (lightname_esc.replace(/'/g, ''));
+              document.getElementById(overridecheckboxlist).innerHTML = (document.getElementById(overridecheckboxlist).innerHTML + "<li style='display:none' id='" + overridesensordiv + "_light_" + lightname_esc + "'><input type='checkbox' id='" + overridesensordiv + "_lightcheckbox_" + lightname_esc + "'>" + lights[i].name + "</input></li></div>")
+            }
+          }
+          if (huedimmerswitch === true) {
             //console.log ("Dimmer created");
             //console.log (document.getElementById("overridesensorlisttext").innerHTML)
             document.getElementById("overridesensorlist").innerHTML = (document.getElementById("overridesensorlist").innerHTML + "<div class='level4element' style='display:block' id='overridesensordiv_" + sensorname_esc + "'><input onclick='toggleoverridelist();' type='checkbox' id='overridecheckbox_" + sensorname_esc + "'>" + switches[i].name + "<ul style='display:none' id='overridecheckboxlist_" + sensorname_esc + "'></ul></input></div>")
@@ -1001,12 +1061,38 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var sensorname_esc = (sensorname.replace(/\s+/g, ''));
     var sensorname_esc = (sensorname_esc.replace(/'/g, ''));
     var productname = switchesupdate[i].productname;
+    var producttype = switchesupdate[i].type;
     var overridesensordiv = ("overridesensordiv_" + sensorname_esc)
     var overridecheckboxlist = ("overridecheckboxlist_" + sensorname_esc)
     var overridecheckboxchecked = ("#overridecheckbox_" + sensorname_esc + ":checked")
     if (productname) {
-      var dimmer = productname.includes("Hue dimmer switch");
-      if (dimmer) {
+      var huedimmerswitch = productname.includes("Hue dimmer switch");
+      var lutronaurora = productname.includes("Lutron Aurora");
+      var producttypeincludes = producttype.includes("Rotary");
+      if (producttypeincludes === true && lutronaurora === true) {
+        //console.log (buttonevent)
+        var j = (1 + Number(i))
+        console.log (switchesupdate[j].state.buttonevent)
+        var rotaryupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
+        var buttonupdateUTC = (Date.parse(switchesupdate[j].state.lastupdated));
+        var timeoffset = now.getTimezoneOffset();
+        var nowUTC = (Date.parse(now) + (timeoffset*60*1000));
+        var timesincerotaryupdate = (nowUTC - rotaryupdateUTC)
+        var timesincebuttonupdate = (nowUTC - buttonupdateUTC)
+        for (i in lights){
+          var lightname = (lights[i].name);
+          var lightname_esc = (lightname.replace(/\s+/g, ''))
+          var lightname_esc = (lightname_esc.replace(/'/g, ''))
+          var overridelightcheckboxchecked = ("#overridesensordiv_" + sensorname_esc + "_lightcheckbox_" + lightname_esc + ":checked")
+          if (timesincerotaryupdate < timesincebuttonupdate && timesincerotaryupdate <3600000 && (document.querySelector(overridelightcheckboxchecked)) !== null && (document.querySelector(overridecheckboxchecked)) !== null) {
+            //console.log ("override activated");
+            lights[i].overrideactivated = true;
+            //console.log (lights[i].overrideactivated)
+          } //else if (buttonevent > 3999 || buttonevent < 1900 || timesincebuttonupdate >3600000 || (document.querySelector(overridecheckboxchecked)) === null){console.log ("Override not activated"); lights[i].overrideactivated = null; }
+        }
+      }
+
+      if (huedimmerswitch === true) {
         var buttonevent = switchesupdate[i].state.buttonevent;
         //console.log (buttonevent)
         var buttonupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
@@ -1029,7 +1115,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
   }
 
   var transtime = ((Number((document.getElementById("transtime_var").value))) * 10);
-  console.log (transtime);
+  //console.log (transtime);
 
   for (i in lights) {
     var lightname = (lights[i].name);
