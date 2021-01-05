@@ -988,8 +988,8 @@ async function startdemo (){
         var colorlightname = (colorlights[i].name);
         var colorlightname_esc = (colorlightname.replace(/\s+/g, ''))
         var colorlightname_esc = (colorlightname_esc.replace(/'/g, ''))
-        document.getElementById("bluelightlist").innerHTML = (document.getElementById("bluelightlist").innerHTML + "<input class='level4element' type='checkbox' id='bluelightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + lightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
-        document.getElementById("yellowlightlist").innerHTML = (document.getElementById("yellowlightlist").innerHTML + "<input class='level4element' type='checkbox' id='yellowlightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + lightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        document.getElementById("bluelightlist").innerHTML = (document.getElementById("bluelightlist").innerHTML + "<input class='level4element' type='checkbox' id='bluelightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + colorlightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"blue\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
+        document.getElementById("yellowlightlist").innerHTML = (document.getElementById("yellowlightlist").innerHTML + "<input class='level4element' type='checkbox' id='yellowlightcheckbox_" + colorlightname_esc + "' onclick='toggleoverridelistitem(\"" + colorlightname_esc + "\");toggleautoonlightlistitem(\"" + colorlightname_esc + "\"); listswitch(\"yellow\", \"lightcheckbox_" + colorlightname_esc + "\")'>" + colorlights[i].name + "</input><br>")
       }
 
       scheduler = setInterval(() => {
