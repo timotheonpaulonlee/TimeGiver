@@ -1020,7 +1020,9 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
   var bed_time_mm = bed_time.slice(-2);
   var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
   var wake_offset = (Number(document.getElementById("wake_offset_var").value));
+  var bed_offset = (Number(document.getElementById("wake_offset_var").value));
   var rise_length_bright = (Number(document.getElementById("rise_length_bright_var").value));
+
   if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
   if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
   if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
@@ -1035,6 +1037,14 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
   if (Number((document.getElementById("set_length_bright_blue_mult_var").value)) !== 0) {var set_length_bright_blue_var = ((document.getElementById("set_length_bright_blue_mult_var").value) + "x")} else {var set_length_bright_blue_var = (Number (document.getElementById("set_length_bright_blue_var").value))}
   let lighting_parameters = TimeGiver({wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
   //console.log ("Scheduler is running!")
+
+  if (wake_time_hm - wake_offset - bed_time_hm + bed_offset > 0 && wake_time_hm - wake_offset - hm > 0) {
+    var hm = (hm + 1440);
+    var bed_time_hm = (bed_time_hm + 1440);
+    } else if (wake_time_hm - wake_offset - bed_time_hm + bed_offset > 0) {var bed_time_hm = (bed_time_hm + 1440)};
+  
+  console.log (hm);
+  console.log (bed_time_hm);
 
   var bridge = await hue.bridge(huebridgeaddress);
   var user = await bridge.user(huebridgeusername);
@@ -1072,7 +1082,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
       if (producttypeincludes === true && lutronaurora === true) {
         //console.log (buttonevent)
         var j = (1 + Number(i))
-        console.log (switchesupdate[j].state.buttonevent)
+        //console.log (switchesupdate[j].state.buttonevent)
         var rotaryupdateUTC = (Date.parse(switchesupdate[i].state.lastupdated));
         var buttonupdateUTC = (Date.parse(switchesupdate[j].state.lastupdated));
         var timeoffset = now.getTimezoneOffset();
@@ -1132,7 +1142,7 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
     var override = lights[i].overrideactivated;
     //console.log (override)
     if (override === true) {console.log ("override activated");} else {
-      if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < 30 && (hm - (wake_time_hm - wake_offset)) > 0) {
+      if ((document.querySelector(autooncheckboxchecked)) !== null && (hm - (wake_time_hm - wake_offset)) < 10 && (hm - (wake_time_hm - wake_offset)) > 0) {
         //console.log ("autoon activated for: " + lightname_esc)
         if ((document.querySelector('#blueyellowactive:checked') !== null)) {
           if (document.querySelector(bluecheckboxchecked) !== null){
@@ -1153,10 +1163,42 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
             }
           }
         } else {
-          if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
-          } else {
-            user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
+          if (document.querySelector(whitecheckboxchecked) !== null) {
+            if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
+              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: transtime}).then(data => {})
+            } else {
+              user.setLightState(i, {on: true, bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: transtime}).then(data => {})
+            }
+          }
+        }
+      } else if ((hm - (wake_time_hm - wake_offset)) < rise_length_bright && (hm - (wake_time_hm - wake_offset)) > 0) {
+        //console.log ("autoon activated for: " + lightname_esc)
+        if ((document.querySelector('#blueyellowactive:checked') !== null)) {
+          if (document.querySelector(bluecheckboxchecked) !== null){
+            user.setLightState(i, {bri: lighting_parameters.bright_blue_int_ret, xy:[lighting_parameters.blue_x_shifted_ret,lighting_parameters.blue_y_shifted_ret], transitiontime: 300}).then(data => {})
+            document.getElementById(yellowcheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+            console.log ("the problem is here");
+          }
+          if (document.querySelector(yellowcheckboxchecked) !== null){
+            user.setLightState(i, {bri: lighting_parameters.bright_yellow_int_ret, xy:[lighting_parameters.yellow_x_shifted_ret,lighting_parameters.yellow_y_shifted_ret], transitiontime: 300}).then(data => {})
+            document.getElementById(bluecheckbox).checked = false
+            document.getElementById(whitecheckbox).checked = false
+          }
+          if (document.querySelector(whitecheckboxchecked) !== null){
+            if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 300}).then(data => {})
+            } else {
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 300}).then(data => {})
+            }
+          }
+        } else {
+          if (document.querySelector(whitecheckboxchecked) !== null) {
+            if (lighting_parameters.CCT_mired_int_ret > 454 || lighting_parameters.CCT_mired_int_ret < 154) {
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, xy:[lighting_parameters.white_x_ret,lighting_parameters.white_y_ret], transitiontime: 300}).then(data => {})
+            } else {
+              user.setLightState(i, {bri: lighting_parameters.bright_int_ret, ct: lighting_parameters.CCT_mired_int_ret, transitiontime: 300}).then(data => {})
+            }
           }
         }
       } else {
