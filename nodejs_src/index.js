@@ -65,7 +65,6 @@ exports.TimeGiver = function () //The meaning and use of these arguments is expl
     if (wake_time - wake_offset - bed_time + bed_offset > 0 && wake_time - wake_offset - hm > 0) { //This conditional statement allows for proper handling of the edge case in which wake_time is greater than bed_time, i.e. when the user is going to bed after midnight.
     var hm = (hm + 1440);
     var bed_time = (bed_time + 1440);
-    var retret = "Wake time is greater than bed time";
     } else if (wake_time - wake_offset - bed_time + bed_offset > 0) {var bed_time = (bed_time + 1440)};
 
     var day_length = ((bed_time - bed_offset) - (wake_time - wake_offset)); //time between wake time and bed time in minutes
