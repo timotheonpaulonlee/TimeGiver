@@ -64,6 +64,18 @@ canvas {
   box-shadow: 5px 5px 8px gray;
 }
 
+canvas#cie1931visualizer {
+  border:1px solid #003366; position: -webkit-sticky;
+  position: static;
+  top: 20px;
+  left: 20px;
+  bottom: 20px;
+  margin-left: 4rem;
+  margin-top: 10px;
+  z-index: 10;
+  box-shadow: 5px 5px 8px gray;
+}
+
 .settingheader1 {
   font-size: large;
   font-weight: bold;
@@ -169,6 +181,7 @@ input {
 input[type="time"] {
   font-size: small;
   margin-left: 2.8rem;
+  margin-right: 0.5rem
 }
 
 input.topleveltext[type="checkbox"] {
@@ -1249,6 +1262,11 @@ function blueyellowlinedrawer ({time}) {
     var bed_time_hh_sixty = (bed_time_hh * 60);
     var bed_time_mm = bed_time.slice(-2);
     var bed_time_hm = (Number(bed_time_hh_sixty) + Number(bed_time_mm));
+    var simulated_time = (document.getElementById("simulated_time_var").value);
+    var simulated_time_hh = (simulated_time.slice(0,2));
+    var simulated_time_hh_sixty = (simulated_time_hh * 60);
+    var simulated_time_mm = simulated_time.slice(-2);
+    var simulated_time_hm = (Number(simulated_time_hh_sixty) + Number(simulated_time_mm));
     if (Number((document.getElementById("rise_length_bright_mult_var").value)) !== 0) {var rise_length_bright_var = ((document.getElementById("rise_length_bright_mult_var").value) + "x")} else {var rise_length_bright_var = (Number (document.getElementById("rise_length_bright_var").value))} 
     if (Number((document.getElementById("set_length_bright_mult_var").value)) !== 0) {var set_length_bright_var = ((document.getElementById("set_length_bright_mult_var").value) + "x")} else {var set_length_bright_var = (Number (document.getElementById("set_length_bright_var").value))}
     if (Number((document.getElementById("rise_length_CCT_var").value)) == 0) {var rise_length_CCT_var = ((document.getElementById("rise_length_CCT_mult_var").value) + "x")} else {var rise_length_CCT_var = (Number (document.getElementById("rise_length_CCT_var").value))} 
@@ -1308,6 +1326,7 @@ function blueyellowlinedrawer ({time}) {
       let lighting_parameters = TimeGiver({time: wake_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
       let lighting_parameters2 = TimeGiver({time: bed_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
       let lighting_parameters3 = TimeGiver({time: hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
+      let lighting_parameters4 = TimeGiver({time: simulated_time_hm, wake_time: wake_time_hm, bed_time: bed_time_hm, wake_offset: (Number (document.getElementById("wake_offset_var").value)), bed_offset: (Number (document.getElementById("bed_offset_var").value)), max_bright: (Number (document.getElementById("max_bright_var").value)), min_bright: (Number (document.getElementById("min_bright_var").value)), max_CCT: (Number (document.getElementById("max_CCT_var").value)), min_CCT: (Number (document.getElementById("min_CCT_var").value)), rise_length_bright: rise_length_bright_var, set_length_bright: set_length_bright_var, rise_length_CCT: rise_length_CCT_var, set_length_CCT: set_length_CCT_var, rise_slope_bright: (Number (document.getElementById("rise_slope_bright_var").value)), set_slope_bright: (Number (document.getElementById("set_slope_bright_var").value)), rise_slope_CCT: (Number (document.getElementById("rise_slope_CCT_var").value)), set_slope_CCT: (Number (document.getElementById("set_slope_CCT_var").value)), max_scatdist: (Number (document.getElementById("max_scatdist_var").value)), min_scatdist: (Number (document.getElementById("min_scatdist_var").value)), max_scatangshift: (Number (document.getElementById("max_scatangshift_var").value)), min_scatangshift: (Number (document.getElementById("min_scatangshift_var").value)), max_bright_blue: (Number (document.getElementById("max_bright_blue_var").value)), min_bright_blue: (Number (document.getElementById("min_bright_blue_var").value)), max_bright_yellow: (Number (document.getElementById("max_bright_yellow_var").value)), min_bright_yellow: (Number (document.getElementById("min_bright_yellow_var").value)), rise_length_scatdist: rise_length_scatdist_var, set_length_scatdist: set_length_scatdist_var, rise_length_scatangshift: rise_length_scatangshift_var, set_length_scatangshift: set_length_scatangshift_var, rise_length_bright_blue: rise_length_bright_blue_var, set_length_bright_blue: set_length_bright_blue_var, rise_length_bright_yellow: rise_length_bright_yellow_var, set_length_bright_yellow: set_length_bright_yellow_var, rise_slope_scatdist: (Number (document.getElementById("rise_slope_scatdist_var").value)), set_slope_scatdist: (Number (document.getElementById("set_slope_scatdist_var").value)), rise_slope_scatangshift: (Number (document.getElementById("rise_slope_scatangshift_var").value)), set_slope_scatangshift: (Number (document.getElementById("set_slope_scatangshift_var").value)), rise_slope_bright_yellow: (Number (document.getElementById("rise_slope_bright_yellow_var").value)), set_slope_bright_yellow: (Number (document.getElementById("set_slope_bright_yellow_var").value)), rise_slope_bright_blue: (Number (document.getElementById("rise_slope_bright_blue_var").value)), set_slope_bright_blue: (Number (document.getElementById("set_slope_bright_blue_var").value))})
       var c = document.getElementById("visualizer");
       var ctx_blue = c.getContext("2d");
       ctx_blue.beginPath();
@@ -1325,6 +1344,21 @@ function blueyellowlinedrawer ({time}) {
       ctx_yellow.fillText("🌞", ((wake_time_hm/2)-20), (137+(lighting_parameters.bright_yellow_int_ret/2)));
       ctx_yellow.fillText("🌝", ((bed_time_hm/2)-25), (152+(lighting_parameters2.bright_yellow_int_ret/2)));
       ctx_yellow.fillText("🙌", ((hm/2)), (137+(lighting_parameters3.bright_yellow_int_ret/2)));
+      var xyvis_white_x = (((805 * lighting_parameters4.white_x_ret) + 45) * (2/3))
+      var xyvis_white_y = (((-711.111 * lighting_parameters4.white_y_ret) + 680) * (2/3))
+      var xyvis_yellow_x = (((805 * lighting_parameters4.yellow_x_shifted_ret) + 45) * (2/3))
+      var xyvis_yellow_y = (((-711.111 * lighting_parameters4.yellow_y_shifted_ret) + 680) * (2/3))
+      var xyvis_blue_x = (((805 * lighting_parameters4.blue_x_shifted_ret) + 45) * (2/3))
+      var xyvis_blue_y = (((-711.111 * lighting_parameters4.blue_y_shifted_ret) + 680) * (2/3))
+      var xyvis = document.getElementById("cie1931visualizer");
+      var ctx_xyvis = xyvis.getContext("2d");
+      var img = document.getElementById("cie1931visualizerpng");
+      ctx_xyvis.drawImage(img, 0, 0, 480, 499);
+      ctx_xyvis.font = "30px Arial";
+      ctx_xyvis.fillStyle = "black";
+      ctx_xyvis.fillText("📍", xyvis_white_x, xyvis_white_y);
+      ctx_xyvis.fillText("📍", xyvis_yellow_x, xyvis_yellow_y);
+      ctx_xyvis.fillText("📍", xyvis_blue_x, xyvis_blue_y);
       return;}
 }
 
@@ -1387,6 +1421,13 @@ function linedrawer ({time}) {
       ctx.fillText("🌞", ((wake_time_hm/2)-20), (274-lighting_parameters.bright_int_ret));
       ctx.fillText("🌝", ((bed_time_hm/2)-25), (274-lighting_parameters2.bright_int_ret));
       ctx.fillText("🙌", ((hm/2)), (284-lighting_parameters3.bright_int_ret));
+
+      var xyvis = document.getElementById("cie1931visualizer");
+      var ctx_xyvis = xyvis.getContext("2d");
+      var img = document.getElementById("cie1931visualizerpng");
+      ctx_xyvis.drawImage(img, 0, 0, 480, 499);
+      ctx_xyvis.fillStyle = "rgba(10, 10, 10, 0.5)";
+      ctx_xyvis.fillRect(0, 0, 480, 499);
       return;}
 }
 
@@ -1398,6 +1439,7 @@ function check() {
     max_CCT_output.innerHTML = (7500);
     var min_CCT_output = document.getElementById("min_CCT_label");
     min_CCT_output.innerHTML = (4000);
+    console.log (document.getElementById("cie1931vizualizer"))
     document.getElementById("blueyellowsettings").style.display = "block";
     document.getElementById("blueyellowsettingsuparrow").style.display = "inline-block";
     document.getElementById("blueyellowsettingsdownarrow").style.display = "none";
@@ -1633,6 +1675,12 @@ Your browser does not support the canvas element.
     <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Sunset Yellow Brightness Slope: <span id="set_slope_bright_yellow_label"></span></input><span class="tooltiptext">How fast your yellow lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="rise_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunrise Blue Brightness Slope: <span id="rise_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get brighter early in the morning compared to later. Higher numbers mean fast early sunrises that slow down later.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="-100" max="100" value="0" step = "1" class="slider" id="set_slope_bright_blue_var" onchange="lineremover()"><div class="tooltip">Sunset Blue Brightness Slope: <span id="set_slope_bright_blue_label"></span></input><span class="tooltiptext">How fast your blue lights get dimmer later in the evening compared to earlier. Higher numbers mean slow early sunsets that speed up later.</span></div></div><br>
+    
+    <p onclick="toggleelement('cie1931vizualizersettings'); togglearrow('cie1931vizualizersettingsuparrow'); togglearrow('cie1931vizualizersettingsdownarrow');" class="settingheader3">CIE 1931 Chromaticity Diagram Visualizer<span  id ="cie1931vizualizersettingsuparrow" style="display: none;">⬆</span><span  id ="cie1931vizualizersettingsdownarrow" style="display: inline-block;">⬇</span></p>
+    <div id="cie1931vizualizersettings" style="display: none;">
+    <img id="cie1931visualizerpng" src="cie1931visualizer480.png" alt="CIE 1931 XY diagram" width="480" height="499" style="display: none;">
+    <canvas class="canvas" id="cie1931visualizer" width="480" height="499" style="display: inline-block;">Your browser does not support the canvas element.</canvas><br>
+    <input type="time" id="simulated_time_var" value="00:00" onchange="lineremover()" style="display: inline-block; margin-left: 4rem;"><div class="tooltip">  Visualizer Time</input><span class="tooltiptext">The simulated time for use with the CIE 1931 Visualizer, which shows the xy coordinates of the blue point on the left, a white point in the middle, and the yellow point on the right for your understanding of how the sunlight simulator works.</span></div><br></div>
     </div>
     </div>
 
@@ -1643,7 +1691,7 @@ Your browser does not support the canvas element.
     <p class="topleveltext" id="attributionssettings">TimeGiver is based on the research and development work of Timothy Lee, a 3rd-year medical student at Mayo Clinic Alix School of Medicine with strong interests in circadian rhythm disorders and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee on <a href= "https://github.com/timotheonpaulonlee" target="_blank">Github</a> or <a href= "http://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
 
     <p onclick="toggleelement('disclaimersettings'); togglearrow('disclaimersettingsuparrow'); togglearrow('disclaimersettingsdownarrow');" class="settingheader1">License & Disclaimer<span  id="disclaimersettingsuparrow" style="display: none;">⬆</span><span  id="disclaimersettingsdownarrow" style="display: inline-block;">⬇</span></p>
-    <div id="disclaimersettings" style="display: none;"><p>MIT License Copyright (c) 2020 Timothy Lee</p>
+    <div id="disclaimersettings" style="display: none;"><p class="topleveltext">MIT License Copyright (c) 2020 Timothy Lee</p>
     <p class="topleveltext">Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
       in the Software without restriction, including without limitation the rights
@@ -1662,7 +1710,7 @@ Your browser does not support the canvas element.
     <p class="topleveltext">This demo also relies heavily on <a href= "https://github.com/timotheonpaulonlee/jshue" target="_blank">jshue</a>, an open-source javascript API wrapper for Philips Hue
       developed by John Peloquin available under the <a href= "https://github.com/blargoner/jshue/blob/master/LICENSE" target="_blank">MIT License</a> as shown above, Copyright 2013 - 2017, John Peloquin 
       and the jsHue contributors.
-    </p>
+    <p class="topleveltext">The CIE 1931 Chromaticity Diagram was created and shared on Wikimedia by <a href= "https://en.wikipedia.org/wiki/User:Paulschou" target="_blank">Paulschou</a> in 2009 and is available under the GNU Free Documentation License described on its <a href= "https://commons.wikimedia.org/wiki/File:Chromaticity_diagram_full.pdf" target="_blank">Wikimedia page</a>.</p>
     </div>
 </div>
 
