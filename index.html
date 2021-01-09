@@ -1439,7 +1439,7 @@ function check() {
     max_CCT_output.innerHTML = (7500);
     var min_CCT_output = document.getElementById("min_CCT_label");
     min_CCT_output.innerHTML = (4000);
-    console.log (document.getElementById("cie1931vizualizer"))
+    document.getElementById("simulated_time_var").disabled = "true";
     document.getElementById("blueyellowsettings").style.display = "block";
     document.getElementById("blueyellowsettingsuparrow").style.display = "inline-block";
     document.getElementById("blueyellowsettingsdownarrow").style.display = "none";
@@ -1459,6 +1459,7 @@ function check() {
     max_CCT_output.innerHTML = (6000);
     var min_CCT_output = document.getElementById("min_CCT_label");
     min_CCT_output.innerHTML = (2700);
+    document.getElementById("simulated_time_var").disabled = "true";
     document.getElementById("blueyellowsettings").style.display = "none";
     document.getElementById("blueyellowsettingsuparrow").style.display = "none";
     document.getElementById("blueyellowsettingsdownarrow").style.display = "inline-block";
@@ -1969,6 +1970,7 @@ Your browser does not support the canvas element.
     var set_slope_bright_blue_output = document.getElementById("set_slope_bright_blue_label");
     set_slope_bright_blue_output.innerHTML = (set_slope_bright_blue_slider.value);
     set_slope_bright_blue_slider.oninput = function() {set_slope_bright_blue_output.innerHTML = (Math.round(this.value));}
+    document.getElementById("simulated_time_var").disabled = "true";
     lineremover()
 
     visualizerscheduler = setInterval(() => {
