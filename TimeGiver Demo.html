@@ -1359,6 +1359,30 @@ function blueyellowlinedrawer ({time}) {
       ctx_xyvis.fillText("📍", xyvis_white_x, xyvis_white_y);
       ctx_xyvis.fillText("📍", xyvis_yellow_x, xyvis_yellow_y);
       ctx_xyvis.fillText("📍", xyvis_blue_x, xyvis_blue_y);
+      ctx_xyvis.beginPath();
+      ctx_xyvis.lineWidth = 2;
+      ctx_xyvis.strokeStyle = "blue";
+      ctx_xyvis.moveTo(121, 121);
+      ctx_xyvis.lineTo(400, 304);
+      ctx_xyvis.lineTo(110, 432);
+      ctx_xyvis.lineTo(121, 121);
+      ctx_xyvis.stroke();
+      ctx_xyvis.beginPath();
+      ctx_xyvis.lineWidth = 2;
+      ctx_xyvis.strokeStyle = "red";
+      ctx_xyvis.moveTo(247, 209);
+      ctx_xyvis.lineTo(387, 302);
+      ctx_xyvis.lineTo(119, 434);
+      ctx_xyvis.lineTo(247, 209);
+      ctx_xyvis.stroke();
+      ctx_xyvis.beginPath();
+      ctx_xyvis.lineWidth = 2;
+      ctx_xyvis.strokeStyle = "black";
+      ctx_xyvis.moveTo(143, 117);
+      ctx_xyvis.lineTo(411, 316);
+      ctx_xyvis.lineTo(102, 415);
+      ctx_xyvis.lineTo(143, 117);
+      ctx_xyvis.stroke();
       return;}
 }
 
@@ -1607,8 +1631,8 @@ Your browser does not support the canvas element.
     <input type="time" id="bed_time_var" value="22:00" onchange="lineremover()"><div class="tooltip"> Bed Time</input><span class="tooltiptext">The time you actually plan to be in bed, allowing some time for the lights be dim before you go to bed.</span></div><br>  
     <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_var" onchange="lineremover()"><div class="tooltip">Maximum Brightness: <span id="max_bright_label"></span> %</input><span class="tooltiptext">The brightest you want your lights to get at midday, which is 100% for most lights.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="1" value="0.05" step = "0.01" class="slider" id="min_bright_var" onchange="lineremover()"><div class="tooltip">Minimum Brightness: <span id="min_bright_label"></span> %</input><span class="tooltiptext">The dimmest you want your lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack.</span></div></div><br>
-    <div class="slidecontainer"><input type="range" min="1000" max="12000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()"><div class="tooltip">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><span class="tooltiptext">The coolest (or bluest) you want your lights to get at midday. Higher is cooler, and most lights max out around 6500K.</span></div></div><br>
-    <div class="slidecontainer"><input type="range" min="1000" max="12000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()"><div class="tooltip">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><span class="tooltiptext">The warmest (or reddest) you want your lights to get in the mornings and evenings. Lower is warmer, and most lights bottom out around 2700K.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="1000" max="20000" value="6000" step = "100" class="slider" id="max_CCT_var" onchange="lineremover()"><div class="tooltip">Maximum Color Temperature: <span id="max_CCT_label"></span> K</input><span class="tooltiptext">The coolest (or bluest) you want your lights to get at midday. Higher is cooler, and most lights max out around 6500K.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="1000" max="20000" value="2700" step = "100" class="slider" id="min_CCT_var" onchange="lineremover()"><div class="tooltip">Minimum Color Temperature: <span id="min_CCT_label"></span> K</input><span class="tooltiptext">The warmest (or reddest) you want your lights to get in the mornings and evenings. Lower is warmer, and most lights bottom out around 2700K.</span></div></div><br>
     </div>
 
     <p onclick="toggleelement('generalpurposeoptionalsettings'); togglearrow('generalpurposeoptionalsettingsuparrow'); togglearrow('generalpurposeoptionalsettingsdownarrow')" class="settingheader2">Settings some people may want to change<span  id ="generalpurposeoptionalsettingsuparrow" style="display: none;">⬆</span><span  id ="generalpurposeoptionalsettingsdownarrow" style="display: inline-block;">⬇</span></p>
@@ -1648,8 +1672,8 @@ Your browser does not support the canvas element.
     <div class="slidecontainer"><input type="range" min="0" max="1" value="0.15" step = "0.01" class="slider" id="min_bright_yellow_var" onchange="lineremover()"><div class="tooltip">Minimum Yellow Brightness: <span id="min_bright_yellow_label"></span> %</input><span class="tooltiptext">The dimmest you want your yellow lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum blue brightness mimics direct sunlight in the late evening.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="1" value="1" step = "0.01" class="slider" id="max_bright_blue_var" onchange="lineremover()"><div class="tooltip">Maximum Blue Brightness: <span id="max_bright_blue_label"></span> %</input><span class="tooltiptext">The brightest you want your blue lights to get at midday, which is 100% for most lights. Setting this higher than the maximum yellow brightness mimics indirect sunlight at midday.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="0" max="1" value="0.10" step = "0.01" class="slider" id="min_bright_blue_var" onchange="lineremover()"><div class="tooltip">Minimum Blue Brightness: <span id="min_bright_blue_label"></span> %</input><span class="tooltiptext">The dimmest you want your blue lights to get in the late evening and overnight. Think of this as your nightlight level, just enough light to safely use the bathroom or grab a snack. Setting this higher than the minimum yellow brightness mimics indirect sunlight in the late evening.</span></div></div><br>
-    <div class="slidecontainer"><input type="range" min="0" max="8000" value="4800" step = "100" class="slider" id="max_scatdist_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Scatter Distance: <span id="max_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be at midday. Higher numbers make for more saturated colors at midday.</span></div></div><br>
-    <div class="slidecontainer"><input type="range" min="0" max="8000" value="2000" step = "100" class="slider" id="min_scatdist_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Scatter Distance: <span id="min_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be in the early morning and late evening. Higher numbers make for more saturated colors at sunrise and sunset.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="20000" value="4800" step = "100" class="slider" id="max_scatdist_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Scatter Distance: <span id="max_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be at midday. Higher numbers make for more saturated colors at midday.</span></div></div><br>
+    <div class="slidecontainer"><input type="range" min="0" max="20000" value="2000" step = "100" class="slider" id="min_scatdist_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Scatter Distance: <span id="min_scatdist_label"></span> K</input><span class="tooltiptext">How extreme the contrast between your blue and yellow lights will be in the early morning and late evening. Higher numbers make for more saturated colors at sunrise and sunset.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="-30" max="60" value="20" step = "1" class="slider" id="max_scatangshift_var" onchange="lineremover()"><div class="tooltip">Maximum Blue-Yellow Angle Shift: <span id="max_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues in the early morning and late evening. Higher numbers make for more yellow sunsets, but numbers too high can bring out greens and purples beyond a typical sunset. Lower numbers make for more white or pink sunsets.</span></div></div><br>
     <div class="slidecontainer"><input type="range" min="-30" max="60" value="0" step = "1" class="slider" id="min_scatangshift_var" onchange="lineremover()"><div class="tooltip">Minimum Blue-Yellow Angle Shift: <span id="min_scatangshift_label"></span> degrees</input><span class="tooltiptext">How much the yellow lights are shifted toward deeper yellows and your blue lights are shifted toward deeper blues around midday. Higher numbers make for more dramatic, colorful middays, as in the region around a wildfire. This should usually be left at 0.</span></div></div><br>
     </div>
