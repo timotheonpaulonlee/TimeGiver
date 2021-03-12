@@ -1249,6 +1249,8 @@ async function lightchanger (huebridgeaddress, huebridgeusername) {
       }
     }
   }
+  var myMusic= document.getElementById("soundeffect");
+  myMusic.play();
 }
 
 function blueyellowlinedrawer ({time}) {
@@ -1737,7 +1739,13 @@ Your browser does not support the canvas element.
       and the jsHue contributors.
     <p class="topleveltext">The CIE 1931 Chromaticity Diagram was created and shared on Wikimedia by <a href= "https://en.wikipedia.org/wiki/User:Paulschou" target="_blank">Paulschou</a> in 2009 and is available under the GNU Free Documentation License described on its <a href= "https://commons.wikimedia.org/wiki/File:Chromaticity_diagram_full.pdf" target="_blank">Wikimedia page</a>.</p>
     </div>
+    <audio id="soundeffect">
+      <source src="soundeffect.ogg" type="audio/ogg">
+      <source src="soundeffect.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
 </div>
+
 
 <script>
     var transtime_slider = document.getElementById("transtime_var");
