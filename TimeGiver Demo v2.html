@@ -396,11 +396,12 @@ function toggleautoonlightlistitem(name_esc) {
   var autoondiv = ("autoondiv_" + name_esc)
   var autooffdiv = ("autooffdiv_" + name_esc)
   var whitecheckboxchecked = ("#whitelightcheckbox_" + name_esc + ":checked")
+  var combcheckboxchecked = ("#comblightcheckbox_" + name_esc + ":checked")
   var bluecheckboxchecked = ("#bluelightcheckbox_" + name_esc + ":checked")
   var yellowcheckboxchecked = ("#yellowlightcheckbox_" + name_esc + ":checked")
   var x = document.getElementById(autoondiv);
   var y = document.getElementById(autooffdiv);
-  if (document.querySelector(bluecheckboxchecked) !== null || document.querySelector(yellowcheckboxchecked) !== null || document.querySelector(whitecheckboxchecked) !== null){
+  if (document.querySelector(bluecheckboxchecked) !== null || document.querySelector(yellowcheckboxchecked) !== null || document.querySelector(whitecheckboxchecked) !== null || document.querySelector(combcheckboxchecked) !== null){
     x.style.display = "block";
     y.style.display = "block";
   } else {
