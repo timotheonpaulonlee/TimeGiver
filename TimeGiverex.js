@@ -86,8 +86,16 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
       var time_offset = (eq_time + (4 * long) - (-1 * now.getTimezoneOffset()))
       var true_solar_time = (hm + time_offset)
       var solar_hour_angle = ((true_solar_time / 4) - 180)
+      var solar_hour_angle_sunrise = Math.acos(((Math.cos(degreestoradians(90.833)))/(Math.cos(degreestoradians(lat))*Math.cos(decl)))-(Math.tan(degreestoradians(lat))*Math.tan(decl)))
+      var solar_hour_angle_sunset = -1 * Math.acos(((Math.cos(degreestoradians(90.833)))/(Math.cos(degreestoradians(lat))*Math.cos(decl)))-(Math.tan(degreestoradians(lat))*Math.tan(decl)))
       var solar_zenith_angle = radianstodegrees(Math.acos ((Math.sin (degreestoradians(lat)) * Math.sin (decl)) + (Math.cos (degreestoradians(lat)) * Math.cos(decl) * Math.cos (degreestoradians(solar_hour_angle)))))
       var solar_noon = (720 - (4 * long) - eq_time - (now.getTimezoneOffset()))
+      var solar_rise = (720 - (4 * (long + radianstodegrees(solar_hour_angle_sunrise))) - eq_time - (now.getTimezoneOffset()))
+      if (solar_rise < 1440 && solar_rise > 0) {var sunrise = solar_rise} else if (solar_rise < 0) {var sunrise = 1440 + solar_rise} else if (solar_rise > 1440) {var sunrise = solar_rise - 1440}
+      var solar_set = (720 - (4 * (long + radianstodegrees(solar_hour_angle_sunset))) - eq_time - (now.getTimezoneOffset()))
+      if (solar_set < 1440 && solar_set > 0) {var sunset = solar_set} else if (solar_set < 0) {var sunset = 1440 + solar_set} else if (solar_set > 1440) {var sunset = solar_set - 1440}
+      var sunrise = (720 - (4 * (long + solar_hour_angle)) - eq_time - (now.getTimezoneOffset()))
+      var sunset = (720 - (4 * (long + solar_hour_angle)) - eq_time - (now.getTimezoneOffset()))
       if (solar_noon > 0) {} else {var solar_noon = (1440 + solar_noon)}
       if ((solar_noon - 720) > 0) {solar_midnight = solar_noon - 720} else {solar_midnight = 720 + solar_noon}
       var sun_altitude = radianstodegrees(Math.asin ((Math.sin (degreestoradians(lat)) * Math.sin (decl)) + (Math.cos (degreestoradians(lat)) * Math.cos(decl) * Math.cos (degreestoradians(solar_hour_angle)))))
@@ -110,8 +118,14 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
       var time_offset = (eq_time + (4 * long) - (-1 * now.getTimezoneOffset()))
       var true_solar_time = (hm + (now.getSeconds()/60) + time_offset)
       var solar_hour_angle = ((true_solar_time / 4) - 180)
+      var solar_hour_angle_sunrise = Math.acos(((Math.cos(degreestoradians(90.833)))/(Math.cos(degreestoradians(lat))*Math.cos(decl)))-(Math.tan(degreestoradians(lat))*Math.tan(decl)))
+      var solar_hour_angle_sunset = -1 * Math.acos(((Math.cos(degreestoradians(90.833)))/(Math.cos(degreestoradians(lat))*Math.cos(decl)))-(Math.tan(degreestoradians(lat))*Math.tan(decl)))
       var solar_zenith_angle = radianstodegrees(Math.acos ((Math.sin (degreestoradians(lat)) * Math.sin (decl)) + (Math.cos (degreestoradians(lat)) * Math.cos(decl) * Math.cos (degreestoradians(solar_hour_angle)))))
       var solar_noon = (720 - (4 * long) - eq_time - (now.getTimezoneOffset()))
+      var solar_rise = (720 - (4 * (long + radianstodegrees(solar_hour_angle_sunrise))) - eq_time - (now.getTimezoneOffset()))
+      if (solar_rise < 1440 && solar_rise > 0) {var sunrise = solar_rise} else if (solar_rise < 0) {var sunrise = 1440 + solar_rise} else if (solar_rise > 1440) {var sunrise = solar_rise - 1440}
+      var solar_set = (720 - (4 * (long + radianstodegrees(solar_hour_angle_sunset))) - eq_time - (now.getTimezoneOffset()))
+      if (solar_set < 1440 && solar_set > 0) {var sunset = solar_set} else if (solar_set < 0) {var sunset = 1440 + solar_set} else if (solar_set > 1440) {var sunset = solar_set - 1440}
       if (solar_noon > 0) {} else {var solar_noon = (1440 + solar_noon)}
       if ((solar_noon - 720) > 0) {solar_midnight = solar_noon - 720} else {solar_midnight = 720 + solar_noon}
       var sun_altitude = radianstodegrees(Math.asin ((Math.sin (degreestoradians(lat)) * Math.sin (decl)) + (Math.cos (degreestoradians(lat)) * Math.cos(decl) * Math.cos (degreestoradians(solar_hour_angle)))))
@@ -180,18 +194,18 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var set_slope_bright_blue_exp2 = set_slope_bright_blue_exp1/-100;
 
     //These are the final formulas that define the lighting parameters during periods of change
-    var rise_bright = ((((hm - wake_time + wake_offset)/rise_length_bright) ** (rise_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
+    var rise_bright = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright) ** (rise_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
     var rise_CCT = ((((hm - wake_time + wake_offset)/rise_length_CCT) ** (rise_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
-    var set_bright = ((((bed_time - bed_offset - hm)/set_length_bright) ** (set_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
-    var set_CCT = ((((bed_time - bed_offset - hm)/set_length_CCT) ** (set_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
+    var set_bright = ((((bed_time - bed_offset - hm - (sun_dist/10))/set_length_bright) ** (set_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
+    /*var set_CCT = ((((bed_time - bed_offset - hm)/set_length_CCT) ** (set_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
     var rise_scatdist = ((((hm - wake_time + wake_offset)/rise_length_scatdist) ** (rise_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var set_scatdist = ((((bed_time - bed_offset - hm)/set_length_scatdist) ** (set_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var rise_scatangshift = ((-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
-    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
-    var rise_bright_yellow = ((((hm - wake_time + wake_offset)/rise_length_bright_yellow) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
-    var set_bright_yellow = ((((bed_time - bed_offset - hm)/set_length_bright_yellow) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
-    var rise_bright_blue = ((((hm - wake_time + wake_offset)/rise_length_bright_blue) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
-    var set_bright_blue = ((((bed_time - bed_offset - hm)/set_length_bright_blue) ** (set_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
+    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);*/
+    var rise_bright_yellow = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright_yellow) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
+    var set_bright_yellow = ((((bed_time - bed_offset - hm - (sun_dist/10))/set_length_bright_yellow) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
+    var rise_bright_blue = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright_blue) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
+    var set_bright_blue = ((((bed_time - bed_offset - hm - (sun_dist/10))/set_length_bright_blue) ** (set_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
 
     //This section takes the outputs from the formulas above and the arguments and converts it into the form and data type needed for the final output
     var max_bright_int = Math.round(max_bright * 254); //Brightness values in decimal are multiplied by 254 for use in control systems that specify brightness values using 1 byte of data, a widely used industry standard.
@@ -199,7 +213,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var set_bright_int = Math.round(set_bright * 254);
     var min_bright_int = Math.round(min_bright * 254);
 
-    var max_CCT_int = Math.round(max_CCT);
+    /*var max_CCT_int = Math.round(max_CCT);
     var rise_CCT_int = Math.round(rise_CCT);
     var set_CCT_int = Math.round(set_CCT);
     var min_CCT_int = Math.round(min_CCT);
@@ -207,7 +221,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var max_scatdist_int = Math.round(max_scatdist);
     var rise_scatdist_int = Math.round(rise_scatdist);
     var set_scatdist_int = Math.round(set_scatdist);
-    var min_scatdist_int = Math.round(min_scatdist);
+    var min_scatdist_int = Math.round(min_scatdist);*/
 
     var max_bright_yellow_int = Math.round(max_bright_yellow * 254);
     var rise_bright_yellow_int = Math.round(rise_bright_yellow * 254);
@@ -221,11 +235,11 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     //This next part consists of most of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
     //Setting bright_int to appropriate value based on day segment
-    if (hm - wake_time + wake_offset <= 0) {bright_int = min_bright_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright <= 0) {bright_int = rise_bright_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright > 0 && hm - bed_time + bed_offset + set_length_bright <= 0) {bright_int = max_bright_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright > 0 && hm - bed_time + bed_offset + set_length_bright > 0 && hm - bed_time + bed_offset <= 0) {bright_int = set_bright_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright > 0 && hm - bed_time + bed_offset + set_length_bright > 0 && hm - bed_time + bed_offset > 0) {bright_int = min_bright_int}
+    if (hm - wake_time + wake_offset - (sun_dist/10) <= 0) {bright_int = min_bright_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright - (sun_dist/10) <= 0) {bright_int = rise_bright_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright + (sun_dist/10) <= 0) {bright_int = max_bright_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) <= 0) {bright_int = set_bright_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) > 0) {bright_int = min_bright_int}
 
     //Setting CCT_int to appropriate value based on day segment
     /*if (hm - wake_time + wake_offset <= 0) {CCT_int = min_CCT_int
@@ -248,12 +262,27 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift > 0 && hm - bed_time + bed_offset <= 0) {scatangshift = set_scatangshift
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift > 0 && hm - bed_time + bed_offset > 0) {scatangshift = max_scatangshift}*/
 
+    //This next part consists of more of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
+    //Setting bright_yellow_int to appropriate value based on day segment
+    if (hm - wake_time + wake_offset - (sun_dist/10) <= 0) {bright_yellow_int = min_bright_yellow_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow - (sun_dist/10) <= 0) {bright_yellow_int = rise_bright_yellow_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_yellow + (sun_dist/10) <= 0) {bright_yellow_int = max_bright_yellow_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_yellow + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) <= 0) {bright_yellow_int = set_bright_yellow_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_yellow + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) > 0) {bright_yellow_int = min_bright_yellow_int}
+
+    //Setting bright_blue_int to appropriate value based on day segment
+    if (hm - wake_time + wake_offset - (sun_dist/10) <= 0) {bright_blue_int = min_bright_blue_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_blue - (sun_dist/10) <= 0) {bright_blue_int = rise_bright_blue_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_blue - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_blue + (sun_dist/10) <= 0) {bright_blue_int = max_bright_blue_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_blue - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_blue + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) <= 0) {bright_blue_int = set_bright_blue_int
+    } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright_blue - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright_blue + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) > 0) {bright_blue_int = min_bright_blue_int}
+
     if (sun_altitude > 30) {var scatangshift_blue = ((min_scatangshift) + ((min_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))} else if (sun_altitude <= 30 && sun_altitude > -30) {var scatangshift_blue = ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) + ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))} else {var scatangshift_blue = ((max_scatangshift) + ((max_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))}; 
     if (sun_altitude > 30) {var scatangshift_yellow = ((min_scatangshift) + ((min_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))} else if (sun_altitude <= 30 && sun_altitude > -30) {var scatangshift_yellow = ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) + ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))} else {var scatangshift_yellow = ((max_scatangshift) + ((max_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))}; 
     if (sun_altitude > -10) {var scatdist_int = Math.round((((sun_altitude + 10)/100) * (max_scatdist - min_scatdist)) + min_scatdist)} else {var scatdist_int = min_scatdist};
     if (sun_altitude > -10) {var CCT_int = Math.round((((sun_altitude + 10)/100) * (max_CCT - min_CCT)) + min_CCT)} else {var CCT_int = min_CCT};
   
-    if (sun_azimuth <= 180) {
+    /*if (sun_azimuth <= 180) {
       if (sun_altitude > rise_max_bright_blue_alt) {bright_blue_int = Math.round((max_bright_blue) * 254)} else if (sun_altitude <= rise_max_bright_blue_alt && sun_altitude > (((rise_max_bright_blue_alt - rise_min_bright_blue_alt)/2)+rise_min_bright_blue_alt)) {
         var min_bright_blue2 = ((((sun_altitude - rise_min_bright_blue_alt)/(rise_max_bright_blue_alt-rise_min_bright_blue_alt)) * (max_bright_blue - min_bright_blue)) + min_bright_blue); 
         var max_bright_blue2 = max_bright_blue
@@ -278,7 +307,21 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
         var range_bright_yellow = (max_bright_yellow3 - min_bright_yellow3)
         var bright_yellow_int = Math.round((max_bright_yellow3 - ((sun_dist/180) * range_bright_yellow)) * 254)
       } else {
-        var bright_yellow_int = Math.round((min_bright_yellow) * 254)}}
+        var bright_yellow_int = Math.round((min_bright_yellow) * 254)}
+      
+      if (sun_altitude > rise_max_bright_blue_alt) {bright_white_int = Math.round((max_bright) * 254)} else if (sun_altitude <= rise_max_bright_blue_alt && sun_altitude > (((rise_max_bright_blue_alt - rise_min_bright_blue_alt)/2)+rise_min_bright_blue_alt)) {
+        var min_bright_white2 = ((((sun_altitude - rise_min_bright_blue_alt)/(rise_max_bright_blue_alt-rise_min_bright_blue_alt)) * (max_bright - min_bright)) + min_bright); 
+        var max_bright_white2 = max_bright
+        var range_bright_white = (max_bright_white2 - min_bright_white2)
+        var bright_white_int = Math.round((max_bright_white2 - ((sun_dist/180) * range_bright_white)) * 254)} else if (sun_altitude <= (((rise_max_bright_blue_alt - rise_min_bright_blue_alt)/2)+rise_min_bright_blue_alt) && sun_altitude > rise_min_bright_blue_alt) {
+  
+        var min_bright_white3 = ((((sun_altitude - rise_min_bright_blue_alt)/(rise_max_bright_blue_alt-rise_min_bright_blue_alt)) * (max_bright - min_bright)) + min_bright); 
+        var max_bright_white3 = ((((sun_altitude - rise_min_bright_blue_alt)/((rise_max_bright_blue_alt-rise_min_bright_blue_alt)/2)) * (max_bright - min_bright)) + min_bright)
+        var range_bright_white = (max_bright_white3 - min_bright_white3)
+        var bright_white_int = Math.round((max_bright_white3 - ((sun_dist/180) * range_bright_white)) * 254)
+      } else {
+        var bright_white_int = Math.round((min_bright) * 254)}
+        }
 
     if (sun_azimuth > 180) {
       if (sun_altitude > set_max_bright_blue_alt) {bright_blue_int = Math.round((max_bright_blue) * 254)} else if (sun_altitude <= set_max_bright_blue_alt && sun_altitude > (((set_max_bright_blue_alt - set_min_bright_blue_alt)/2)+set_min_bright_blue_alt)) {
@@ -305,7 +348,21 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
         var range_bright_yellow = (max_bright_yellow3 - min_bright_yellow3)
         var bright_yellow_int = Math.round((max_bright_yellow3 - ((sun_dist/180) * range_bright_yellow)) * 254)
       } else {
-        var bright_yellow_int = Math.round((min_bright_yellow) * 254)}}
+        var bright_yellow_int = Math.round((min_bright_yellow) * 254)}
+        
+      if (sun_altitude > set_max_bright_blue_alt) {bright_white_int = Math.round((max_bright) * 254)} else if (sun_altitude <= set_max_bright_blue_alt && sun_altitude > (((set_max_bright_blue_alt - set_min_bright_blue_alt)/2)+set_min_bright_blue_alt)) {
+        var min_bright_white2 = ((((sun_altitude - set_min_bright_blue_alt)/(set_max_bright_blue_alt-set_min_bright_blue_alt)) * (max_bright - min_bright)) + min_bright); 
+        var max_bright_white2 = max_bright
+        var range_bright_white = (max_bright_white2 - min_bright_white2)
+        var bright_white_int = Math.round((max_bright_white2 - ((sun_dist/180) * range_bright_white)) * 254)} else if (sun_altitude <= (((set_max_bright_blue_alt - set_min_bright_blue_alt)/2)+set_min_bright_blue_alt) && sun_altitude > set_min_bright_blue_alt) {
+      
+        var min_bright_white3 = ((((sun_altitude - set_min_bright_blue_alt)/(set_max_bright_blue_alt-set_min_bright_blue_alt)) * (max_bright - min_bright)) + min_bright); 
+        var max_bright_white3 = ((((sun_altitude - set_min_bright_blue_alt)/((set_max_bright_blue_alt-set_min_bright_blue_alt)/2)) * (max_bright - min_bright)) + min_bright)
+        var range_bright_white = (max_bright_white3 - min_bright_white3)
+        var bright_white_int = Math.round((max_bright_white3 - ((sun_dist/180) * range_bright_white)) * 254)
+      } else {
+        var bright_white_int = Math.round((min_bright) * 254)}
+      }*/
 
     
     
@@ -336,8 +393,11 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var blue_x_shifted_blue = (blue_x_blue + ((yellow_x_shifted_blue - blue_x_blue) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
     var blue_y_shifted_blue = (blue_y_blue + ((yellow_y_shifted_blue - blue_y_blue) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
 
-    var yellow_x_shifted_yellow = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.cos(degreestoradians(origang_deg + scatangshift_yellow)))) + (white_x)
-    var yellow_y_shifted_yellow = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.sin(degreestoradians(origang_deg + scatangshift_yellow)))) + (white_y)
+    var yellow_x_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.cos(degreestoradians(origang_deg + scatangshift_yellow)))) + (white_x)
+    var yellow_y_shifted = ((Math.sqrt((scatdist_x ** 2) + (scatdist_y ** 2))) * (Math.sin(degreestoradians(origang_deg + scatangshift_yellow)))) + (white_y)
+
+    var yellow_x_shifted_yellow = (yellow_x_shifted + ((yellow_x_shifted - white_x) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
+    var yellow_y_shifted_yellow = (yellow_y_shifted + ((yellow_y_shifted - white_y) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
 
     //var blue_x_yellow = (white_x - (yellow_x_shifted_yellow - white_x))
     //var blue_y_yellow = (white_y - (yellow_y_shifted_yellow - white_y))
@@ -345,9 +405,9 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //var blue_x_shifted_yellow = (blue_x_yellow + ((yellow_x_shifted_yellow - blue_x_yellow) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
     //var blue_y_shifted_yellow = (blue_y_yellow + ((yellow_y_shifted_yellow - blue_y_yellow) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
 
-    if (sun_dist < 1) {comb_x = yellow_x_shifted_yellow; comb_y = yellow_y_shifted_yellow;} else {
-      var comb_x = (blue_x_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_x_shifted_yellow - blue_x_shifted_blue)));
-      var comb_y = (blue_y_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_y_shifted_yellow - blue_y_shifted_blue)));}
+    if (sun_dist < 1) {comb_x = yellow_x_shifted; comb_y = yellow_y_shifted;} else {
+      var comb_x = (blue_x_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_x_shifted - blue_x_shifted_blue)));
+      var comb_y = (blue_y_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_y_shifted - blue_y_shifted_blue)));}
 
     if (sun_dist < 1) {bright_comb_int = bright_yellow_int;} else {
       var bright_comb_int = Math.round(bright_blue_int + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (bright_yellow_int - bright_blue_int)));}
@@ -356,23 +416,8 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     var CCT_mired_int = Math.round((1000000*(1/CCT_int)))
 
-    //This next part consists of more of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
-    //Setting bright_yellow_int to appropriate value based on day segment
-    /*if (hm - wake_time + wake_offset <= 0) {bright_yellow_int = min_bright_yellow_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow <= 0) {bright_yellow_int = rise_bright_yellow_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow > 0 && hm - bed_time + bed_offset + set_length_bright_yellow <= 0) {bright_yellow_int = max_bright_yellow_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow > 0 && hm - bed_time + bed_offset + set_length_bright_yellow > 0 && hm - bed_time + bed_offset <= 0) {bright_yellow_int = set_bright_yellow_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_yellow > 0 && hm - bed_time + bed_offset + set_length_bright_yellow > 0 && hm - bed_time + bed_offset > 0) {bright_yellow_int = min_bright_yellow_int}
-
-    //Setting bright_blue_int to appropriate value based on day segment
-    if (hm - wake_time + wake_offset <= 0) {bright_blue_int = min_bright_blue_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_blue <= 0) {bright_blue_int = rise_bright_blue_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_blue > 0 && hm - bed_time + bed_offset + set_length_bright_blue <= 0) {bright_blue_int = max_bright_blue_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_blue > 0 && hm - bed_time + bed_offset + set_length_bright_blue > 0 && hm - bed_time + bed_offset <= 0) {bright_blue_int = set_bright_blue_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_bright_blue > 0 && hm - bed_time + bed_offset + set_length_bright_blue > 0 && hm - bed_time + bed_offset > 0) {bright_blue_int = min_bright_blue_int}
-    */
     //Here is the final return command for the function that returns a object with the lighting parameters named as follows
-    return {bright_int_ret: bright_int, CCT_mired_int_ret: CCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_comb_int, white_x_ret: white_x, white_y_ret: white_y, yellow_x_shifted_ret: yellow_x_shifted_yellow, yellow_y_shifted_ret: yellow_y_shifted_yellow, blue_x_shifted_ret: blue_x_shifted_blue, blue_y_shifted_ret: blue_y_shifted_blue, comb_x_shifted_ret: comb_x, comb_y_shifted_ret: comb_y, sun_dist_ret: sun_dist, sun_altitude_ret: sun_altitude, sun_azimuth_ret: sun_azimuth}}
+    return {bright_int_ret: bright_int, CCT_mired_int_ret: CCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_blue_int, bright_comb_int_ret: bright_comb_int, white_x_ret: white_x, white_y_ret: white_y, yellow_x_shifted_ret: yellow_x_shifted_yellow, yellow_y_shifted_ret: yellow_y_shifted_yellow, blue_x_shifted_ret: blue_x_shifted_blue, blue_y_shifted_ret: blue_y_shifted_blue, comb_x_shifted_ret: comb_x, comb_y_shifted_ret: comb_y, sun_dist_ret: sun_dist, sun_altitude_ret: sun_altitude, sun_azimuth_ret: sun_azimuth, sunrise_ret:sunrise, sunset_ret:sunset}}
 
 //CCT to XY Transformer - Converts CCT values stored as integers in kelvin into CIE 1931 Color Diagram X and Y coordinates specifying the location of that color temperature in that master color space.
 
