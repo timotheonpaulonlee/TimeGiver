@@ -6,7 +6,7 @@ Check out our live demo for Philips Hue Lights at [TimeGiverDemo.com](http://tim
 
 The following gif shows a very simple light rhythm generated on the fly using TimeGiver applied to real smart lights from sunrise to sunset, and the graphs below show the brightness and color temperature over time according to that schedule.
 
-![Animation of a simple daily rhythm created with TimeGiver](/images/illustrations/TimeGiverDemo20sec.gif)
+![Animation of a simple daily rhythm created with TimeGiver](/images/illustrations/BedroomTimeGiverDemo.gif)
 ![Graph showing brightness over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoBrightness.png)
 ![Graph showing color temperature over the course of the day used in the schedule from the gif above](/images/illustrations/TimeGiverDemoCCT.png)
 
