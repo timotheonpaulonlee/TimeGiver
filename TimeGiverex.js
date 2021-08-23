@@ -19,16 +19,22 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     bed_offset = 0, 
     max_bright = 1, 
     min_bright = 0.05, 
-    max_CCT = 6500, 
-    min_CCT = 2700,  
+    max_whiteCCT = 6500, 
+    min_whiteCCT = 2700,  
+    max_colorCCT = 6500, 
+    min_colorCCT = 2700,  
     rise_length_bright = 45, 
     set_length_bright = 180, 
-    rise_length_CCT = null, 
-    set_length_CCT = null, 
+    rise_length_whiteCCT = null, 
+    set_length_whiteCCT = null, 
+    rise_length_colorCCT = null, 
+    set_length_colorCCT = null, 
     rise_slope_bright = 0, 
     set_slope_bright = 0, 
-    rise_slope_CCT = 0, 
-    set_slope_CCT = 0, 
+    rise_slope_whiteCCT = 0, 
+    set_slope_whiteCCT = 0, 
+    rise_slope_colorCCT = 0, 
+    set_slope_colorCCT = 0, 
     max_scatdist = 3000, 
     min_scatdist = 2000, 
     max_scatangshift = 15, 
@@ -68,7 +74,8 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     set_max_bright_blue_alt = 25,
     set_min_bright_blue_alt = -5,
     set_max_bright_yellow_alt = 20,
-    set_min_bright_yellow_alt = 0
+    set_min_bright_yellow_alt = 0,
+    localvalues = 1
 }) {
   
     if (time !== null) {var hm = time; //This conditional statement allows users to pass a simulated time variable that will override the real current time for all times greater than or equal to 1
@@ -155,8 +162,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //This next set of conditional statements allows these variables to default to half of day length when it is appropriate or to be set to half of day length when null is passed.
     if (rise_length_bright === null) {var rise_length_bright = half_day_length} else if ((typeof (rise_length_bright)) === "string") {var rise_length_bright_fact = rise_length_bright.slice(0, -1); var rise_length_bright = (half_day_length * rise_length_bright_fact);} else {var rise_length_bright = rise_length_bright};
     if (set_length_bright === null) {var set_length_bright = half_day_length} else if ((typeof (set_length_bright)) === "string") {var set_length_bright_fact = set_length_bright.slice(0, -1); var set_length_bright = (half_day_length * set_length_bright_fact);} else {var set_length_bright = set_length_bright};
-    if (rise_length_CCT === null) {var rise_length_CCT = half_day_length} else if ((typeof (rise_length_CCT)) === "string") {var rise_length_CCT_fact = rise_length_CCT.slice(0, -1); var rise_length_CCT = (half_day_length * rise_length_CCT_fact);} else {var rise_length_CCT = rise_length_CCT};
-    if (set_length_CCT === null) {var set_length_CCT = half_day_length} else if ((typeof (set_length_CCT)) === "string") {var set_length_CCT_fact = set_length_CCT.slice(0, -1); var set_length_CCT = (half_day_length * set_length_CCT_fact);} else {var set_length_CCT = set_length_CCT};
+    if (rise_length_whiteCCT === null) {var rise_length_whiteCCT = half_day_length} else if ((typeof (rise_length_whiteCCT)) === "string") {var rise_length_whiteCCT_fact = rise_length_whiteCCT.slice(0, -1); var rise_length_whiteCCT = (half_day_length * rise_length_whiteCCT_fact);} else {var rise_length_whiteCCT = rise_length_whiteCCT};
+    if (set_length_whiteCCT === null) {var set_length_whiteCCT = half_day_length} else if ((typeof (set_length_whiteCCT)) === "string") {var set_length_whiteCCT_fact = set_length_whiteCCT.slice(0, -1); var set_length_whiteCCT = (half_day_length * set_length_whiteCCT_fact);} else {var set_length_whiteCCT = set_length_whiteCCT};
+    if (rise_length_colorCCT === null) {var rise_length_colorCCT = half_day_length} else if ((typeof (rise_length_colorCCT)) === "string") {var rise_length_colorCCT_fact = rise_length_colorCCT.slice(0, -1); var rise_length_colorCCT = (half_day_length * rise_length_colorCCT_fact);} else {var rise_length_colorCCT = rise_length_colorCCT};
+    if (set_length_colorCCT === null) {var set_length_colorCCT = half_day_length} else if ((typeof (set_length_colorCCT)) === "string") {var set_length_colorCCT_fact = set_length_colorCCT.slice(0, -1); var set_length_colorCCT = (half_day_length * set_length_colorCCT_fact);} else {var set_length_colorCCT = set_length_colorCCT};
     if (rise_length_scatdist === null) {var rise_length_scatdist = half_day_length} else if ((typeof (rise_length_scatdist)) === "string") {var rise_length_scatdist_fact = rise_length_scatdist.slice(0, -1); var rise_length_scatdist = (half_day_length * rise_length_scatdist_fact);} else {var rise_length_scatdist = rise_length_scatdist};
     if (set_length_scatdist === null) {var set_length_scatdist = half_day_length} else if ((typeof (set_length_scatdist)) === "string") {var set_length_scatdist_fact = set_length_scatdist.slice(0, -1); var set_length_scatdist = (half_day_length * set_length_scatdist_fact);} else {var set_length_scatdist = set_length_scatdist};
     if (rise_length_scatangshift === null) {var rise_length_scatangshift = half_day_length} else if ((typeof (rise_length_scatangshift)) === "string") {var rise_length_scatangshift_fact = rise_length_scatangshift.slice(0, -1); var rise_length_scatangshift = (half_day_length * rise_length_scatangshift_fact);} else {var rise_length_scatangshift = rise_length_scatangshift};
@@ -169,8 +178,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //This part consists of intermediate variables that are only defined to make the final math formulas easier to read and change if needed
     var rise_slope_bright_exp1 = rise_slope_bright - 100;
     var rise_slope_bright_exp2 = rise_slope_bright_exp1/-100;
-    var rise_slope_CCT_exp1 = rise_slope_CCT - 100;
-    var rise_slope_CCT_exp2 = rise_slope_CCT_exp1/-100;
+    var rise_slope_whiteCCT_exp1 = rise_slope_whiteCCT - 100;
+    var rise_slope_whiteCCT_exp2 = rise_slope_whiteCCT_exp1/-100;
+    var rise_slope_colorCCT_exp1 = rise_slope_colorCCT - 100;
+    var rise_slope_colorCCT_exp2 = rise_slope_colorCCT_exp1/-100;
     var rise_slope_scatdist_exp1 = rise_slope_scatdist - 100;
     var rise_slope_scatdist_exp2 = rise_slope_scatdist_exp1/-100;
     var rise_slope_scatangshift_exp1 = rise_slope_scatangshift - 100;
@@ -182,8 +193,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     var set_slope_bright_exp1 = set_slope_bright - 100;
     var set_slope_bright_exp2 = set_slope_bright_exp1/-100;
-    var set_slope_CCT_exp1 = set_slope_CCT - 100;
-    var set_slope_CCT_exp2 = set_slope_CCT_exp1/-100;
+    var set_slope_whiteCCT_exp1 = set_slope_whiteCCT - 100;
+    var set_slope_whiteCCT_exp2 = set_slope_whiteCCT_exp1/-100;
+    var set_slope_colorCCT_exp1 = set_slope_colorCCT - 100;
+    var set_slope_colorCCT_exp2 = set_slope_colorCCT_exp1/-100;
     var set_slope_scatdist_exp1 = set_slope_scatdist - 100;
     var set_slope_scatdist_exp2 = set_slope_scatdist_exp1/-100;
     var set_slope_scatangshift_exp1 = set_slope_scatangshift - 100;
@@ -195,13 +208,15 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     //These are the final formulas that define the lighting parameters during periods of change
     var rise_bright = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright) ** (rise_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
-    var rise_CCT = ((((hm - wake_time + wake_offset)/rise_length_CCT) ** (rise_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
+    var rise_whiteCCT = ((((hm - wake_time + wake_offset)/rise_length_whiteCCT) ** (rise_slope_whiteCCT_exp2)) * (max_whiteCCT - min_whiteCCT) + min_whiteCCT);
+    var rise_colorCCT = ((((hm - wake_time + wake_offset)/rise_length_colorCCT) ** (rise_slope_colorCCT_exp2)) * (max_colorCCT - min_colorCCT) + min_colorCCT);
     var set_bright = ((((bed_time - bed_offset - hm - (sun_dist/10))/set_length_bright) ** (set_slope_bright_exp2)) * (max_bright - min_bright) + min_bright);
-    /*var set_CCT = ((((bed_time - bed_offset - hm)/set_length_CCT) ** (set_slope_CCT_exp2)) * (max_CCT - min_CCT) + min_CCT);
+    var set_whiteCCT = ((((bed_time - bed_offset - hm)/set_length_whiteCCT) ** (set_slope_whiteCCT_exp2)) * (max_whiteCCT - min_whiteCCT) + min_whiteCCT);
+    var set_colorCCT = ((((bed_time - bed_offset - hm)/set_length_colorCCT) ** (set_slope_colorCCT_exp2)) * (max_colorCCT - min_colorCCT) + min_colorCCT);
     var rise_scatdist = ((((hm - wake_time + wake_offset)/rise_length_scatdist) ** (rise_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var set_scatdist = ((((bed_time - bed_offset - hm)/set_length_scatdist) ** (set_slope_scatdist_exp2)) * (max_scatdist - min_scatdist) + min_scatdist);
     var rise_scatangshift = ((-1 * ((((hm - wake_time + wake_offset)/rise_length_scatangshift) ** (rise_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
-    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);*/
+    var set_scatangshift = ((-1 * ((((bed_time - bed_offset - hm)/set_length_scatangshift) ** (set_slope_scatangshift_exp2)) * (max_scatangshift - min_scatangshift) + min_scatangshift)) + max_scatangshift + min_scatangshift);
     var rise_bright_yellow = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright_yellow) ** (rise_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var set_bright_yellow = ((((bed_time - bed_offset - hm - (sun_dist/10))/set_length_bright_yellow) ** (set_slope_bright_yellow_exp2)) * (max_bright_yellow - min_bright_yellow) + min_bright_yellow);
     var rise_bright_blue = ((((hm - wake_time + wake_offset - (sun_dist/10))/rise_length_bright_blue) ** (rise_slope_bright_blue_exp2)) * (max_bright_blue - min_bright_blue) + min_bright_blue);
@@ -213,15 +228,20 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     var set_bright_int = Math.round(set_bright * 254);
     var min_bright_int = Math.round(min_bright * 254);
 
-    /*var max_CCT_int = Math.round(max_CCT);
-    var rise_CCT_int = Math.round(rise_CCT);
-    var set_CCT_int = Math.round(set_CCT);
-    var min_CCT_int = Math.round(min_CCT);
+    var max_whiteCCT_int = Math.round(max_whiteCCT);
+    var rise_whiteCCT_int = Math.round(rise_whiteCCT);
+    var set_whiteCCT_int = Math.round(set_whiteCCT);
+    var min_whiteCCT_int = Math.round(min_whiteCCT);
+
+    var max_colorCCT_int = Math.round(max_colorCCT);
+    var rise_colorCCT_int = Math.round(rise_colorCCT);
+    var set_colorCCT_int = Math.round(set_colorCCT);
+    var min_colorCCT_int = Math.round(min_colorCCT);
 
     var max_scatdist_int = Math.round(max_scatdist);
     var rise_scatdist_int = Math.round(rise_scatdist);
     var set_scatdist_int = Math.round(set_scatdist);
-    var min_scatdist_int = Math.round(min_scatdist);*/
+    var min_scatdist_int = Math.round(min_scatdist);
 
     var max_bright_yellow_int = Math.round(max_bright_yellow * 254);
     var rise_bright_yellow_int = Math.round(rise_bright_yellow * 254);
@@ -242,11 +262,18 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     } else if (hm - wake_time + wake_offset - (sun_dist/10) > 0 && hm - wake_time + wake_offset - rise_length_bright - (sun_dist/10) > 0 && hm - bed_time + bed_offset + set_length_bright + (sun_dist/10) > 0 && hm - bed_time + bed_offset + (sun_dist/10) > 0) {bright_int = min_bright_int}
 
     //Setting CCT_int to appropriate value based on day segment
-    /*if (hm - wake_time + wake_offset <= 0) {CCT_int = min_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT <= 0) {CCT_int = rise_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT <= 0) {CCT_int = max_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT > 0 && hm - bed_time + bed_offset <= 0) {CCT_int = set_CCT_int
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_CCT > 0 && hm - bed_time + bed_offset + set_length_CCT > 0 && hm - bed_time + bed_offset > 0) {CCT_int = min_CCT_int}
+    if (hm - wake_time + wake_offset <= 0) {var whiteCCT = min_whiteCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_whiteCCT <= 0) {var whiteCCT = rise_whiteCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_whiteCCT > 0 && hm - bed_time + bed_offset + set_length_whiteCCT <= 0) {var whiteCCT = max_whiteCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_whiteCCT > 0 && hm - bed_time + bed_offset + set_length_whiteCCT > 0 && hm - bed_time + bed_offset <= 0) {var whiteCCT = set_whiteCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_whiteCCT > 0 && hm - bed_time + bed_offset + set_length_whiteCCT > 0 && hm - bed_time + bed_offset > 0) {var whiteCCT = min_whiteCCT_int}
+
+    //Setting CCT_int to appropriate value based on day segment
+    if (hm - wake_time + wake_offset <= 0) {var colorCCT = min_colorCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_colorCCT <= 0) {var colorCCT = rise_colorCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_colorCCT > 0 && hm - bed_time + bed_offset + set_length_colorCCT <= 0) {var colorCCT = max_colorCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_colorCCT > 0 && hm - bed_time + bed_offset + set_length_colorCCT > 0 && hm - bed_time + bed_offset <= 0) {var colorCCT = set_colorCCT_int
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_colorCCT > 0 && hm - bed_time + bed_offset + set_length_colorCCT > 0 && hm - bed_time + bed_offset > 0) {var colorCCT = min_colorCCT_int}
 
     //Setting scatdist_int to appropriate value based on day segment
     if (hm - wake_time + wake_offset <= 0) {scatdist_int = min_scatdist_int;
@@ -260,7 +287,7 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift <= 0) {scatangshift = rise_scatangshift
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift <= 0) {scatangshift = min_scatangshift
     } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift > 0 && hm - bed_time + bed_offset <= 0) {scatangshift = set_scatangshift
-    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift > 0 && hm - bed_time + bed_offset > 0) {scatangshift = max_scatangshift}*/
+    } else if (hm - wake_time + wake_offset > 0 && hm - wake_time + wake_offset - rise_length_scatangshift > 0 && hm - bed_time + bed_offset + set_length_scatangshift > 0 && hm - bed_time + bed_offset > 0) {scatangshift = max_scatangshift}
 
     //This next part consists of more of the logic that determines whether to output the maximum, current setting value, minimum, or current rising value for each final output based on the time of day.
     //Setting bright_yellow_int to appropriate value based on day segment
@@ -279,8 +306,9 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
     if (sun_altitude > 30) {var scatangshift_blue = ((min_scatangshift) + ((min_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))} else if (sun_altitude <= 30 && sun_altitude > -30) {var scatangshift_blue = ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) + ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))} else {var scatangshift_blue = ((max_scatangshift) + ((max_scatangshift) * ((((altitude-45)/45)*0.125) + ((sun_dist/180)* 0.125))))}; 
     if (sun_altitude > 30) {var scatangshift_yellow = ((min_scatangshift) + ((min_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))} else if (sun_altitude <= 30 && sun_altitude > -30) {var scatangshift_yellow = ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) + ((((1 + (-1 * ((sun_altitude + 30)/60))) * (max_scatangshift - min_scatangshift)) + min_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))} else {var scatangshift_yellow = ((max_scatangshift) + ((max_scatangshift) * ((((altitude-45)/45)* -0.125) + ((sun_dist/180)* -1.20))))}; 
-    if (sun_altitude > -10) {var scatdist_int = Math.round((((sun_altitude + 10)/100) * (max_scatdist - min_scatdist)) + min_scatdist)} else {var scatdist_int = min_scatdist};
-    if (sun_altitude > -10) {var CCT_int = Math.round((((sun_altitude + 10)/100) * (max_CCT - min_CCT)) + min_CCT)} else {var CCT_int = min_CCT};
+    if (sun_altitude > -10) {var scatdist_local = Math.round((((sun_altitude + 10)/100) * (max_scatdist - min_scatdist)) + min_scatdist)} else {var scatdist_local = min_scatdist};
+    if (sun_altitude > -10) {var whiteCCT_local = Math.round((((sun_altitude + 10)/100) * (max_whiteCCT - min_whiteCCT)) + min_whiteCCT)} else {var whiteCCT_local = min_whiteCCT};
+    if (sun_altitude > -10) {var colorCCT_local = Math.round((((sun_altitude + 10)/100) * (max_colorCCT - min_colorCCT)) + min_colorCCT)} else {var colorCCT_local = min_colorCCT};
   
     /*if (sun_azimuth <= 180) {
       if (sun_altitude > rise_max_bright_blue_alt) {bright_blue_int = Math.round((max_bright_blue) * 254)} else if (sun_altitude <= rise_max_bright_blue_alt && sun_altitude > (((rise_max_bright_blue_alt - rise_min_bright_blue_alt)/2)+rise_min_bright_blue_alt)) {
@@ -369,14 +397,21 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //This next bit takes the color temperature supplied above and figures out the appropriate blue and yellow values for use in the sunlight simulator
     //In a nutshell, this part finds the xy values for the main white color temperature and a somewhat warmer color temperature and then finds a blue point exactly opposite on the other side of the central white point from the warmer white point.
     //Lastly, the warm white point is shifted up to make it more yellow and the blue point shifted down to make it more blue by an angle that increases at sunrise and sunset
-    white_CCT = CCT_int
-    yellow_CCT = (CCT_int - scatdist_int)
+    
+    if (localvalues === 1) {var whiteCCT_int = whiteCCT_local; var colorCCT_int = colorCCT_local} else {var whiteCCT_int = whiteCCT; var colorCCT_int = colorCCT}
+    if (localvalues === 0) {var scatangshift_yellow = scatangshift; var scatangshift_blue = scatangshift;}
+    if (localvalues === 1) {var scatdist_int = scatdist_local;}
+   
+    yellow_colorCCT = (colorCCT_int - scatdist_int)
 
     //These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
-    if (white_CCT > 1000) {var white_x = x_transform (white_CCT); var white_y = y_transform (white_CCT);
+    if (whiteCCT > 1000) {var white_white_x = x_transform (whiteCCT_int); var white_white_y = y_transform (whiteCCT_int);
+    } else {var white_white_x = x_transform (1001); var white_white_y = y_transform (1001)}
+
+    if (colorCCT > 1000) {var white_x = x_transform (colorCCT_int); var white_y = y_transform (colorCCT_int);
     } else {var white_x = x_transform (1001); var white_y = y_transform (1001)}
 
-    if (yellow_CCT > 1000) {var yellow_x = x_transform (yellow_CCT); var yellow_y = y_transform (yellow_CCT);
+    if (yellow_colorCCT > 1000) {var yellow_x = x_transform (yellow_colorCCT); var yellow_y = y_transform (yellow_colorCCT);
     } else {var yellow_x = x_transform (1001); var yellow_y = y_transform (1001)}
 
     var scatdist_x = (yellow_x - white_x)
@@ -414,10 +449,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
 
 
 
-    var CCT_mired_int = Math.round((1000000*(1/CCT_int)))
+    var whiteCCT_mired_int = Math.round((1000000*(1/whiteCCT_int)))
 
     //Here is the final return command for the function that returns a object with the lighting parameters named as follows
-    return {bright_int_ret: bright_int, CCT_mired_int_ret: CCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_blue_int, bright_comb_int_ret: bright_comb_int, white_x_ret: white_x, white_y_ret: white_y, yellow_x_shifted_ret: yellow_x_shifted_yellow, yellow_y_shifted_ret: yellow_y_shifted_yellow, blue_x_shifted_ret: blue_x_shifted_blue, blue_y_shifted_ret: blue_y_shifted_blue, comb_x_shifted_ret: comb_x, comb_y_shifted_ret: comb_y, sun_dist_ret: sun_dist, sun_altitude_ret: sun_altitude, sun_azimuth_ret: sun_azimuth, sunrise_ret:sunrise, sunset_ret:sunset}}
+    return {bright_int_ret: bright_int, CCT_mired_int_ret: whiteCCT_mired_int, bright_yellow_int_ret: bright_yellow_int, bright_blue_int_ret: bright_blue_int, bright_comb_int_ret: bright_comb_int, white_x_ret: white_white_x, white_y_ret: white_white_y, yellow_x_shifted_ret: yellow_x_shifted_yellow, yellow_y_shifted_ret: yellow_y_shifted_yellow, blue_x_shifted_ret: blue_x_shifted_blue, blue_y_shifted_ret: blue_y_shifted_blue, comb_x_shifted_ret: comb_x, comb_y_shifted_ret: comb_y, sun_dist_ret: sun_dist, sun_altitude_ret: sun_altitude, sun_azimuth_ret: sun_azimuth, sunrise_ret:sunrise, sunset_ret:sunset}}
 
 //CCT to XY Transformer - Converts CCT values stored as integers in kelvin into CIE 1931 Color Diagram X and Y coordinates specifying the location of that color temperature in that master color space.
 
