@@ -4,7 +4,7 @@
 ## Illustrations
 Check out our live demo for Philips Hue Lights at [TimeGiverDemo.com](http://timegiverdemo.com/) that demonstrates the power of TimeGiver's framework. 
 
-The following gif shows the sky simulator controlling a set of 9 color bulbs positioned at different angles in the Eastern corner of a room.  You can see how the lights get brighter in the morning as the sun appears to rise and cut across the southern sky, leaving the frame and allowing these lights to take on the blue of the sky.
+The following gif shows the sky simulator controlling a set of 9 color bulbs positioned at different angles in the Eastern corner of a room.  You can see how the lights get brighter in the morning as the sun appears to rise and cut across the southern sky, leaving the frame and allowing these lights to take on the blue of the sky and then fade down as the sun sets.
 
 ![Animation of a simple daily rhythm created with TimeGiver](/images/illustrations/BedroomTimeGiverDemo.gif)
 
