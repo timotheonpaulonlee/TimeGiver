@@ -138,11 +138,6 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
       var sun_altitude = radianstodegrees(Math.asin ((Math.sin (degreestoradians(lat)) * Math.sin (decl)) + (Math.cos (degreestoradians(lat)) * Math.cos(decl) * Math.cos (degreestoradians(solar_hour_angle)))))
       if (hm <= solar_noon && hm > solar_midnight) {var sun_azimuth = radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))} else if (hm > solar_noon && hm <= solar_midnight) {var sun_azimuth = 360 - radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))} else if (hm > solar_noon && hm > solar_midnight && solar_noon > solar_midnight) {var sun_azimuth = 360 - radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))} else if (hm > solar_noon && hm > solar_midnight && solar_noon <= solar_midnight) {var sun_azimuth = radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))} else if (hm <= solar_noon && hm <= solar_midnight && solar_noon > solar_midnight) {var sun_azimuth = 360 - radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))} else if (hm <= solar_noon && hm <= solar_midnight && solar_noon <= solar_midnight) {var sun_azimuth = radianstodegrees(Math.acos(-1 * (((Math.sin(degreestoradians(lat)) * Math.cos(degreestoradians(solar_zenith_angle))) - (Math.sin(decl)))/(Math.cos(degreestoradians(lat)) * Math.sin(degreestoradians(solar_zenith_angle))))))}}; 
 
-    
-    //console.log(day);
-    //console.log(mon);
-    //console.log(sun_altitude);
-    //console.log(sun_azimuth);
 
     var alt_diff_rad = degreestoradians (90 - altitude)
     var sun_alt_diff_rad = degreestoradians (90 - sun_altitude)
@@ -398,11 +393,10 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //In a nutshell, this part finds the xy values for the main white color temperature and a somewhat warmer color temperature and then finds a blue point exactly opposite on the other side of the central white point from the warmer white point.
     //Lastly, the warm white point is shifted up to make it more yellow and the blue point shifted down to make it more blue by an angle that increases at sunrise and sunset
     
-    if (localvalues === 1) {var whiteCCT_int = whiteCCT_local; var colorCCT_int = colorCCT_local} else {var whiteCCT_int = whiteCCT; var colorCCT_int = colorCCT}
+    if (localvalues === 1) {var whiteCCT_int = whiteCCT_local; var colorCCT_int = colorCCT_local; var scatdist_int = scatdist_local;} else {var whiteCCT_int = whiteCCT; var colorCCT_int = colorCCT}
     if (localvalues === 0) {var scatangshift_yellow = scatangshift; var scatangshift_blue = scatangshift;}
-    if (localvalues === 1) {var scatdist_int = scatdist_local;}
    
-    yellow_colorCCT = (colorCCT_int - scatdist_int)
+    var yellow_colorCCT = (colorCCT_int - scatdist_int)
 
     //These conditional statements ensure that the value for the lowest possible number is given rather than an error if the color temperature is too low, since the conversion module only defines color temperatures down to 1000K (pretty much the lowest temperature that produces any visible light)
     if (whiteCCT > 1000) {var white_white_x = x_transform (whiteCCT_int); var white_white_y = y_transform (whiteCCT_int);
@@ -441,11 +435,11 @@ function TimeGiver({ //The meaning and use of these arguments is explained at le
     //var blue_y_shifted_yellow = (blue_y_yellow + ((yellow_y_shifted_yellow - blue_y_yellow) * (-1 * (((altitude-45)/45)*0.12) -1 * (((sun_dist-90)/90)*0.15))))
 
     if (sun_dist < 1) {comb_x = yellow_x_shifted; comb_y = yellow_y_shifted;} else {
-      var comb_x = (blue_x_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_x_shifted - blue_x_shifted_blue)));
-      var comb_y = (blue_y_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_y_shifted - blue_y_shifted_blue)));}
+      var comb_x = (blue_x_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(Math.abs(sun_altitude)/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_x_shifted - blue_x_shifted_blue)));
+      var comb_y = (blue_y_shifted_blue + (Math.max((1 - (sun_dist/(((((-1*(Math.abs(sun_altitude)/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (yellow_y_shifted - blue_y_shifted_blue)));}
 
     if (sun_dist < 1) {bright_comb_int = bright_yellow_int;} else {
-      var bright_comb_int = Math.round(bright_blue_int + (Math.max((1 - (sun_dist/(((((-1*(sun_altitude/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (bright_yellow_int - bright_blue_int)));}
+      var bright_comb_int = Math.round(bright_blue_int + (Math.max((1 - (sun_dist/(((((-1*(Math.abs(sun_altitude)/90))+1)) * range_sun_rad) + min_sun_rad))), 0) * (bright_yellow_int - bright_blue_int)));}
 
 
 
