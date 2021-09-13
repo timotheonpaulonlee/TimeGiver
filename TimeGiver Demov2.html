@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
   <title> 
     TimeGiver 
@@ -1243,7 +1244,7 @@ function testbridgeaddress(url) {
     var isValid = false;
 
     $.ajax({
-      url: "http://" + encodedURL + "/api",
+      url: "https://" + encodedURL + "/api",
       type: "get",
       async: false,
       dataType: "json",
@@ -1263,7 +1264,7 @@ function testusername(url, username) {
     var isValid = false;
 
     $.ajax({
-      url: "http://" + encodedURL + "/api/" + username,
+      url: "https://" + encodedURL + "/api/" + username,
       type: "get",
       async: false,
       dataType: "json",
@@ -2234,7 +2235,7 @@ Your browser does not support the canvas element.
 <div>
     <p class="header">Welcome to TimeGiver's demo for Philips Hue smart lights<span id="IEexception">--DOES NOT WORK IN INTERNET EXPLORER</span></p>
     <p class="topleveltext">TimeGiver is a piece of computer code that builds smart lighting rhythms: 24-hour schedules that tell the lights how to change during the day to copy the sun in your location. The rhythm tells the lights how to rise in the morning, how to change colors during the day, and how to set in the evening. TimeGiver can use color lights placed around a room to copy the color of a clear sky at your location.  In nature, these kinds of changes in sunlight tell our brains when to have energy and when to feel sleepy. But humans today spend most of our time indoors, so our brains may get confused about when to be awake and when to be tired. By building a rhythm for indoor lights around your daily schedule and your local sunlight, TimeGiver may help you feel more alert during the day and sleep better at night. </p>
-    <p class="topleveltext">TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep and to specify your approximate location. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person raising hands shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the list of lights that shows up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="http://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
+    <p class="topleveltext">TimeGiver has lots of settings that allow you to make your rhythm just right for you and your home. But all the settings have good defaults, so to get started all you need to do is pick times to wake up and go to sleep and to specify your approximate location. The box above shows your rhythm over 24 hours, starting at midnight. Taller lines are brighter, and the color of the lines is the real color that the lights will have at each moment. The sun and moon show your wake time and bed time and how bright your lights are at that moment. The person raising hands shows where you are in the rhythm right now. You can change the settings below and see the difference in your rhythm. Press the Start Demo button to set up your rhythm to work with your Philips Hue smart lights, and then use the list of lights that shows up to pick which of your lights you want to change and which you want to have turn on by themselves in the morning. The demo will only work as long as this page is open and your computer is awake and connected to your network, and lights will only follow the schedule when they are turned on. For more information about TimeGiver, check out: <a href="https://github.com/timotheonpaulonlee/TimeGiver" target="_blank"> TimeGiver on GitHub </a></p>
     <button class="topleveltext" type="button" id="startdemobutton" onclick="startdemo()">Start Demo</button>
     <button class="topleveltext" type="button" id="stopdemobutton" onclick="stopdemo()" disabled="true">Stop Demo</button>
 
@@ -2352,7 +2353,7 @@ Your browser does not support the canvas element.
     <button class="topleveltext" type="button" id="restoresettingsbutton" onclick="restoresettings()">Restore Saved Settings</button>
 
     <p onclick="toggleelement('attributionssettings'); togglearrow('attributionssettingsuparrow'); togglearrow('attributionssettingsdownarrow');" class="settingheader1">Attributions<span  id="attributionssettingsuparrow" style="display: inline-block;">⬆</span><span  id="attributionssettingsdownarrow" style="display: none;">⬇</span></p>
-    <p class="topleveltext" id="attributionssettings">TimeGiver is based on the research and development work of Timothy Lee, a 4th-year medical student at Mayo Clinic Alix School of Medicine going into academic psychiatry with strong interests in mood disorders, circadian rhythm disorders, and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee on <a href= "https://github.com/timotheonpaulonlee" target="_blank">Github</a> or <a href= "http://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
+    <p class="topleveltext" id="attributionssettings">TimeGiver is based on the research and development work of Timothy Lee, a 4th-year medical student at Mayo Clinic Alix School of Medicine going into academic psychiatry with strong interests in mood disorders, circadian rhythm disorders, and the importance of regular, restorative sleep to good mental health. Questions and comments can be directed to Timothy Lee on <a href= "https://github.com/timotheonpaulonlee" target="_blank">Github</a> or <a href= "https://linkedin.com/in/timothy-paul-lee/" target="_blank">LinkedIn</a>.</p>
 
     <p onclick="toggleelement('disclaimersettings'); togglearrow('disclaimersettingsuparrow'); togglearrow('disclaimersettingsdownarrow');" class="settingheader1">License & Disclaimer<span  id="disclaimersettingsuparrow" style="display: none;">⬆</span><span  id="disclaimersettingsdownarrow" style="display: inline-block;">⬇</span></p>
     <div id="disclaimersettings" style="display: none;"><p class="topleveltext">MIT License Copyright (c) 2021 Timothy Lee</p>
