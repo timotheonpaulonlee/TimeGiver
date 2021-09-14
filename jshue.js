@@ -162,7 +162,7 @@ var jsHueAPI = (fetch, Response, JSON, Promise) => {
             /**
              * @class jsHueBridge
              */
-            var _baseUrl = `https://${ip}`,
+            var _baseUrl = `http://${ip}`,
                 _bridgeUrl = `${_baseUrl}/api`;
 
             return {
