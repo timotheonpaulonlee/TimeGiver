@@ -1245,7 +1245,7 @@ function testbridgeaddress(url) {
     var isValid = false;
 
     $.ajax({
-      url: "https://" + encodedURL + "/api",
+      url: "http://" + encodedURL + "/api",
       type: "get",
       async: false,
       dataType: "json",
@@ -1265,7 +1265,7 @@ function testusername(url, username) {
     var isValid = false;
 
     $.ajax({
-      url: "https://" + encodedURL + "/api/" + username,
+      url: "http://" + encodedURL + "/api/" + username,
       type: "get",
       async: false,
       dataType: "json",
