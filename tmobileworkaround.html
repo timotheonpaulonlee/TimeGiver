@@ -1312,7 +1312,7 @@ function labelchanger (x, mult) {
 
 async function startdemo (){
   await gethuebridgeaddresscookie();
-  //var huebridgeaddress = "192.168.1.38"
+  var huebridgeaddress = "192.168.12.139"
   var bridgeaddresstest = testbridgeaddress(huebridgeaddress);
   //console.log (bridgeaddresstest);
   if (bridgeaddresstest === false) {await gethuebridgeaddressnocookie(); var bridge = await hue.bridge(huebridgeaddress);} else {console.log("bridge found at " + huebridgeaddress); var bridge = await hue.bridge(huebridgeaddress);}
