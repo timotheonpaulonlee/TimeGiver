@@ -1207,7 +1207,6 @@ async function gethuebridgeaddresscookie (){
     async function discoverbridge() {
       await hue.discover().then(bridges => {
       if(bridges.length === 0) {
-        return "192.168.12.139";
         console.log("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.");
       }
       else {
@@ -1227,7 +1226,6 @@ async function gethuebridgeaddressnocookie (){
   async function discoverbridge() {
       await hue.discover().then(bridges => {
       if(bridges.length === 0) {
-        return "192.168.12.139";
         alert("The demo can't find a Hue bridge on your network. Make sure that you actually have a Hue bridge (not just lights you control with Bluetooth) and that this device is connected to the same network as that bridge. This demo does not currently support controlling Hue lights remotely.");
       }
       else {
@@ -1314,7 +1312,7 @@ function labelchanger (x, mult) {
 
 async function startdemo (){
   await gethuebridgeaddresscookie();
-  //var huebridgeaddress = "192.168.1.38"
+  var huebridgeaddress = "192.168.12.139"
   var bridgeaddresstest = testbridgeaddress(huebridgeaddress);
   //console.log (bridgeaddresstest);
   if (bridgeaddresstest === false) {await gethuebridgeaddressnocookie(); var bridge = await hue.bridge(huebridgeaddress);} else {console.log("bridge found at " + huebridgeaddress); var bridge = await hue.bridge(huebridgeaddress);}
